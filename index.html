@@ -19,26 +19,26 @@
         .input-panel {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 25px; 
+            padding: 25px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             margin-bottom: 25px;
             width: 100%; max-width: 380px;
-            border: 1px solid rgba(255,255,255,0.5);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
-        .input-panel h3 { 
-            margin-bottom: 20px; text-align: center; color: #333; 
+        .input-panel h3 {
+            margin-bottom: 20px; text-align: center; color: #333;
             font-size: 20px; font-weight: 700; letter-spacing: 0.5px;
         }
 
         .form-group { margin-bottom: 20px; }
-        .form-group label { 
-            display: block; font-size: 13px; margin-bottom: 8px; color: #555; 
+        .form-group label {
+            display: block; font-size: 13px; margin-bottom: 8px; color: #555;
             font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .form-group input { 
-            width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0; 
+        .form-group input {
+            width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0;
             border-radius: 12px; font-size: 16px; color: #333; background: #f9f9f9;
             transition: all 0.3s ease;
         }
@@ -48,15 +48,15 @@
         }
 
         .btn {
-            width: 100%; padding: 14px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-            color: white; border: none; border-radius: 12px; cursor: pointer; 
+            width: 100%; padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white; border: none; border-radius: 12px; cursor: pointer;
             font-size: 16px; font-weight: 600; letter-spacing: 0.5px;
             transition: transform 0.2s, box-shadow 0.2s; margin-bottom: 10px;
             box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
         }
         .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4); }
-        
+
         /* Tombol Instan RawBT */
         .btn-instan { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3); }
         .btn-instan:hover { box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4); }
@@ -65,50 +65,92 @@
            AREA STRUK (TAMPILAN LAYAR)
            ========================================== */
         .struk-container {
-            background: white; width: 100%; max-width: 300px; padding: 15px; 
-            font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.3; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: none; 
+            background: white; width: 100%; max-width: 320px; padding: 15px;
+            font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.3;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); display: none;
             border-radius: 5px; color: #000; margin-top: 10px;
+            overflow: hidden; 
         }
-        
+
         .struk-header { text-align: left; margin-bottom: 10px; }
         .garis { border-top: 1px dashed #000; margin: 8px 0; }
-        .title-struk { text-align: center; margin: 8px 0; font-size: 11.5px; white-space: nowrap; }
-        
-        .data-table, .footer-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        .data-table td, .footer-table td { padding: 2px 0; vertical-align: top; }
-        .data-table td:nth-child(1), .footer-table td:nth-child(1) { white-space: nowrap; } 
-        .data-table td:nth-child(2), .footer-table td:nth-child(2) { text-align: left; } 
-        
-        .val-container {
-            display: flex; flex-wrap: nowrap; justify-content: space-between; 
-            align-items: center; width: 100%;
-        }
-        
-        .edit-input {
-            border: none; background: transparent; font-family: inherit; font-size: inherit;
-            color: blue; outline: none; width: 70px;
-            border-bottom: 1px dashed #999; text-align: right; 
-        }
-        .edit-input:focus { background: #eef; border-bottom: 1px solid blue; }
+        .title-struk { text-align: center; margin: 8px 0; font-size: 11.5px; white-space: nowrap; font-weight: bold; }
 
-        .amount-text { text-align: right; }
+        /* PERBAIKAN TABEL AGAR SEJAJAR KIRI */
+        .data-table, .footer-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            table-layout: fixed; 
+        }
+        .data-table td, .footer-table td { 
+            padding: 3px 0; 
+            vertical-align: top; 
+            overflow-wrap: break-word; 
+            word-wrap: break-word;
+        }
+        
+        /* Pengaturan Lebar Kolom */
+        .data-table td:nth-child(1), .footer-table td:nth-child(1) { width: 35%; white-space: nowrap; }
+        .data-table td:nth-child(2), .footer-table td:nth-child(2) { width: 5%; text-align: left; padding-right: 2px; }
+        .data-table td:nth-child(3), .footer-table td:nth-child(3) { width: 60%; text-align: left; } /* Rata Kiri */
+
+        /* Wadah Input Harga */
+        .val-container {
+            display: flex; 
+            align-items: baseline; 
+            justify-content: space-between; 
+            width: 100%;
+        }
+
+        .val-container .rp-label {
+            flex-shrink: 0; 
+            margin-right: 4px;
+        }
+
+        /* Input harga dengan garis putus-putus di bawahnya */
+        .edit-input {
+            border: none; 
+            border-bottom: 1px dashed #000; /* Garis putus-putus di sini */
+            background: transparent; 
+            font-family: inherit; 
+            font-size: inherit;
+            color: blue; 
+            outline: none; 
+            width: 100%; 
+            max-width: 110px; /* Batasi lebar garis */
+            text-align: right; 
+            padding: 0 0 1px 0;
+            margin-left: auto; /* Dorong ke kanan */
+        }
+        .edit-input:focus { background: #eef; }
+
+        .total-amount {
+            flex-grow: 1;
+            text-align: right;
+            border-bottom: 1px dashed #000;
+            margin-left: 4px;
+            display: block;
+            padding-bottom: 1px;
+            width: 100%;
+            max-width: 110px;
+        }
+
         .disclaimer { text-align: center; margin: 12px 0; font-size: 12px; }
         .footer-table { margin-top: 10px; }
         .closing-text { text-align: center; margin-top: 15px; font-size: 12px; line-height: 1.4; }
 
         /* ==========================================
-           PENGATURAN SAAT DI-PRINT (Jika dibutuhkan)
+           PENGATURAN SAAT DI-PRINT MANUAL (Ctrl+P)
            ========================================== */
         @media print {
             @page { margin: 0; size: 58mm auto; }
-            html, body { 
-                margin: 0 !important; padding: 0 !important; height: auto !important; 
-                min-height: auto !important; background: white !important; 
-                background-image: none !important; overflow: hidden !important; 
+            html, body {
+                margin: 0 !important; padding: 0 !important; height: auto !important;
+                min-height: auto !important; background: white !important;
+                background-image: none !important; overflow: hidden !important;
             }
             .input-panel, #panelPrint, .btn { display: none !important; }
-            
+
             .struk-container {
                 box-shadow: none !important; width: 58mm !important; max-width: 58mm !important;
                 padding: 2mm 2mm 10mm 2mm !important; margin: 0 !important; border-radius: 0 !important;
@@ -116,11 +158,13 @@
                 page-break-inside: avoid !important; page-break-after: avoid !important;
             }
             .struk-container > div:last-child { margin-bottom: 0 !important; }
-            .garis { margin: 5px 0 !important; } 
+            .garis { margin: 5px 0 !important; }
             .title-struk { font-size: 9.5px !important; letter-spacing: -0.2px !important; }
-            .disclaimer { font-size: 9.5px !important; margin: 8px 0 !important;}
-            .closing-text { font-size: 9.5px !important; margin-top: 10px !important;}
-            .edit-input { border-bottom: none !important; color: black !important; width: auto !important; min-width: 50px !important; padding: 0 !important; margin: 0 !important; }
+            .disclaimer { font-size: 9.5px !important; margin: 8px 0 !important; }
+            .closing-text { font-size: 9.5px !important; margin-top: 10px !important; }
+            .edit-input, .total-amount {
+                border-bottom: none !important; color: black !important;
+            }
         }
     </style>
 </head>
@@ -142,32 +186,29 @@
             <span id="outDate">#date#</span> <span id="outTime">#time#</span><br>
             CKG_53704.PLN LEMAHABANG
         </div>
-        
+
         <div class="garis"></div>
         <div class="title-struk">STRUK PEMBAYARAN TAGIHAN LISTRIK</div>
         <div class="garis"></div>
 
         <table class="data-table">
-            <colgroup>
-                <col style="width: 38%;"><col style="width: 5%;"><col style="width: 57%;">
-            </colgroup>
             <tr><td>IDPEL</td><td>:</td><td id="outIdpel">-</td></tr>
             <tr><td>NAMA</td><td>:</td><td id="outNama">-</td></tr>
             <tr><td>TARIF/DAYA</td><td>:</td><td id="outTarif">-</td></tr>
             <tr><td>BL/TH</td><td>:</td><td id="outBlTh">-</td></tr>
-            
+
             <tr>
                 <td>RP TAG PLN</td><td>:</td>
                 <td>
                     <div class="val-container">
-                        <span>Rp</span>
+                        <span class="rp-label">Rp</span>
                         <input type="text" id="inputTagihanStruk" class="edit-input" value="0" oninput="hitungTotal()" title="Klik untuk mengedit nominal">
                     </div>
                 </td>
             </tr>
-            
-            <tr><td>NO REF</td><td>:</td><td id="outRef1">-</td></tr>
-            <tr><td></td><td></td><td id="outRef2">-</td></tr>
+
+            <tr><td>NO REF</td><td>:</td><td id="outRef1" style="text-align:left;">-</td></tr>
+            <tr><td></td><td></td><td id="outRef2" style="text-align:left;">-</td></tr>
         </table>
 
         <div class="disclaimer">
@@ -176,14 +217,11 @@
         </div>
 
         <table class="footer-table">
-            <colgroup>
-                <col style="width: 38%;"><col style="width: 5%;"><col style="width: 57%;">
-            </colgroup>
             <tr>
                 <td>ADMIN BANK</td><td>:</td>
                 <td>
                     <div class="val-container">
-                        <span>Rp</span>
+                        <span class="rp-label">Rp</span>
                         <input type="text" id="inputAdmin" class="edit-input" value="3.000" oninput="hitungTotal()">
                     </div>
                 </td>
@@ -192,8 +230,8 @@
                 <td>TOTAL BAYAR</td><td>:</td>
                 <td>
                     <div class="val-container">
-                        <span>Rp</span>
-                        <span id="outTotal" class="amount-text">0</span>
+                        <span class="rp-label">Rp</span>
+                        <span id="outTotal" class="total-amount">0</span>
                     </div>
                 </td>
             </tr>
@@ -208,442 +246,493 @@
     </div>
 
     <!-- Panel Tombol Cetak -->
-    <div style="margin-top: 20px; text-align: center; display:none; width: 100%; max-width: 300px;" id="panelPrint">
+    <div style="margin-top: 20px; text-align: center; display:none; width: 100%; max-width: 320px;" id="panelPrint">
         <button class="btn btn-instan" onclick="cetakInstanRawBT()">CETAK STRUK</button>
     </div>
 
     <script>
         let dataMentah = `
-537210239375	LANDI IRIANDI            	R1	1300	1	-Rp 77,378-
-537212624288	UDIN S B DESIN           	R1	450	1	-Rp 194,794-
-537210096638	AHMAD B DESIN            	R1	900	1	-Rp 79,758-
-537612793710	H E R M A W A N	R1	450	1	-Rp 111,178-
-537212624184	ACUH B MIIN              	R1	450	1	-Rp 110,159-
-537612078017	ARWAT BIN ANIM           	R1	450	1	-Rp 93,333-
-537612427174	JUKI                     	R1	450	1	-Rp 29,092-
-537214446986	INAN                     	R1	450	1	-Rp 108,119-
-537210100927	MIAN SAMSUDIN            	R1	900	3	-Rp 822,982-
-537612514677	NEMAN BIN ATA            	R1	450	1	-Rp 56,624-
-537612475245	AMAN BIN DASIM           	R1	450	1	-Rp 39,289-
-537212624143	JISIN B MUIN             	R1	450	1	-Rp 29,602-
-537612346553	ASHNAR AHMADI BIN JINSIN 	R1	450	1	-Rp 107,609-
-537212624119	TUTUN                    	R1	450	1	-Rp 53,565-
-537212624205	AMAN NARSIH              	R1	450	1	-Rp 48,467-
-537210118670	ANTA BIN AYIM            	R1M	900	1	-Rp 50,132-
-537612160472	SITI HODIJAH SAG         	R1M	900	1	-Rp 185,210-
-537612411305	MARHALI BIN MANAP        	R1	450	2	-Rp 230,396-
-537212623938	P OTONG                  	R1	450	1	-Rp 71,410-
-537612170280	AAM BIN ASAN             	R1	450	1	-Rp 37,760-
-537212624006	ENYIN                    	R1	450	1	-Rp 69,371-
-537612481373	UCI SANUSI BIN CIIN      	R1	450	1	-Rp 71,920-
-537612212350	SANIN                    	R1	450	1	-Rp 108,629-
-537612381438	ILAN BIN ILUT            	R1	450	1	-Rp 71,410-
-537212623468	ABAS                     	R1	450	1	-Rp 87,725-
-537212624101	NASIM                    	R1	450	1	-Rp 39,289-
-537212623683	MUSLIM                   	R1	450	1	-Rp 31,642-
-537212623514	SAEPUDIN B SAJU          	R1	450	1	-Rp 44,898-
-537614459469	SUSI	R1	450	1	-Rp 52,036-
-537210089669	ANANG                    	R1	900	1	-Rp 81,288-
-537212624270	KANIH RENDAN             	R1	450	1	-Rp 156,327-
-537212623747	KAJAN                    	R1	450	1	-Rp 56,624-
-537212624014	MA UBIH                  	R1M	900	1	-Rp 487,396-
-537612875220	ANING BIN SARDI	R1	450	1	-Rp 92,824-
-537212624055	ALING                    	R1	450	1	-Rp 52,036-
-537612269249	SARTA B MISKA            	R1	900	1	-Rp 28,789-
-537212581532	MIMI BT SAIN             	R1	450	1	-Rp 21,954-
-537612150503	AI BT ENIN               	R1	450	1	-Rp 95,883-
-537612217847	ELA BT ENING             	R1M	900	1	-Rp 139,256-
-537212623809	MA ICAH                  	R1	450	1	-Rp 74,469-
-537612398466	LIAN BIN LASAN           	R1	450	1	-Rp 121,885-
-537612391723	UPIT BT DAMO             	R1	450	1	-Rp 64,272-
-537612437210	ROSIDIN BA               	R1	450	1	-Rp 58,154-
-537212623380	ANWAR B H SUHADA         	R1	450	1	-Rp 37,250-
-537212623796	SOTON                    	R1	900	1	-Rp 162,354-
-537212589419	SAMAT                    	R1	450	1	-Rp 51,016-
-537612506529	ITI BT SOTON             	R1	450	1	-Rp 73,449-
-537612283857	SYAHROJA BIN UJUD        	R1	450	1	-Rp 96,902-
-537612058944	SUIMAN BIN YADI          	R1	450	1	-Rp 74,979-
-537212623011	MAD SUPI                 	R1	450	1	-Rp 86,705-
-537612825793	USNA SUTISNA	R1	450	1	-Rp 81,607-
-537210335175	PENA                     	R1	450	1	-Rp 68,351-
-537210335167	MARIN                    	R1	450	1	-Rp 73,449-
-537612443028	NANA B USUP              	R1	450	1	-Rp 28,073-
-537212622794	A M A T                  	R1	450	1	-Rp 119,846-
-537212622849	RACHMAT                  	R1	450	1	-Rp 31,642-
-537212623060	MISAN                    	R1	450	1	-Rp 5,099-
-537212623349	IRSAN                    	R1	450	1	-Rp 56,114-
-537612063613	DAYING BIN ABUN          	R1	450	1	-Rp 36,230-
-537612614401	NANDIN                   	R1	450	1	-Rp 64,272-
-537212626241	ROSID                    	R1	450	1	-Rp 54,075-
-537210184330	MUSHOLA ATTAIDIN         	S1	450	1	-Rp 53,940-
-537612412626	SARIPUDIN BIN KANUNG     	R1	450	1	-Rp 70,900-
-537612591217	EDI SURYADI              	R1	450	1	-Rp 9,798-
-537612222375	PATIMAH BT U ASAN        	R1	450	1	-Rp 123,415-
-537612159849	ENDANG BIN ARNAN         	R1	450	1	-Rp 76,508-
-537212623427	ENDAH                    	R1	450	1	-Rp 96,393-
-537210049456	ROHMAN B REMBING         	R1	900	1	-Rp 100,152-
-537612119772	AISAH BINTI CIMING       	R1	450	1	-Rp 136,161-
-537210335096	NEIN                     	R1	900	1	-Rp 167,962-
-537210335126	OMANM                    	R1	450	1	-Rp 44,898-
-537210335159	WAKIL ININ               	R1	450	1	-Rp 10,691-
-537210335118	NAJI                     	R1	450	1	-Rp 47,447-
-537612819785	KARMA BIN ENCEP	R1	450	1	-Rp 194,794-
-537612283994	KAYO BIN MIDIN           	R1	450	1	-Rp 84,156-
-537612361145	KARMA BIN ENCEP          	R1	450	1	-Rp 46,937-
-537612486054	AGUS HARIANTO BIN TARIM  	R1	900	2	-Rp 224,149-
-537612948078	KARMIN BIN SULAEMAN	R1	450	2	-Rp 182,470-
-537210111753	INA BT INEN              	R1	900	1	-Rp 90,465-
-537612225874	SALIP BIN SAAT           	R1	450	1	-Rp 94,863-
-537212623244	EMPUH                    	R1M	900	1	-Rp 140,649-
-537612824846	PENDI BIN ENCEP	R1	450	1	-Rp 71,410-
-537612478752	KASINO                   	R1	450	1	-Rp 5,099-
-537212623199	ENCUNG                   	R1	450	1	-Rp 92,314-
-537210048973	MAD ARIP                 	R1	900	1	-Rp 165,923-
-537612280429	IYAR BIN NASIP           	R1	450	1	-Rp 26,033-
-537614477137	ROHATI	R1	450	1	-Rp 103,530-
-537612432259	OTIH BT KOTOT            	B1	900	1	-Rp 204,913-
-537212623825	GOJALI                   	R1	450	1	-Rp 182,047-
-537214446978	SABAN                    	R1	450	1	-Rp 84,666-
-537212623866	M ASUR                   	R1	900	1	-Rp 90,465-
-537612593260	BURHANI BIN ESIM         	R1	450	1	-Rp 40,309-
-537210100935	DARYO                    	R1	900	1	-Rp 22,506-
-537212623817	MAHMUD B                 	R1	900	1	-Rp 292,366-
-537212622673	SAMAD                    	R1M	900	1	-Rp 50,132-
-537612171977	ATIP BIN JALI            	R1	450	1	-Rp 78,548-
-537210335220	EMBUK                    	R1	450	1	-Rp 40,819-
-537211584726	MARYATI BINTI MIING      	R1	450	1	-Rp 17,737-
-537212654667	UTAY                     	R1	450	1	-Rp 89,255-
-537612405458	RACIM BIN GANDA          	R1	450	1	-Rp 63,762-
-537212626503	GANDA                    	R1	450	1	-Rp 66,311-
-537210335309	YUSUP B SAAN             	R1	450	1	-Rp 196,095-
-537612168414	NURYAMI BT KIAN          	R1	450	1	-Rp 82,627-
-537612287682	ENGKUS                   	R1	450	1	-Rp 112,708-
-537612138106	NEMAN BIN RADIN          	R1	450	1	-Rp 95,373-
-537612454117	RASIM NURHASAN BIN RAHMAT	R1	450	1	-Rp 56,114-
-537612638656	RAHMATULLOH              	R1	450	1	-Rp 32,661-
-537612381923	HASAN BASRI B M YUSUP    	R1	450	1	-Rp 60,703-
-537210103741	IBRAHIM MUNADI           	R1	900	1	-Rp 91,994-
-537612083487	ESAN BIN SAIN            	R1	450	1	-Rp 29,092-
-537612160232	H SAMIN BIN AMIN         	R1	450	1	-Rp 69,880-
-537612802884	RAHMAN PAHRUDIN	R1M	900	1	-Rp 50,132-
-537612791590	SITI HAJAR BTH.M.RUSYIDI	R1	900	1	-Rp 65,482-
-537612346050	EDOM                     	R1	450	1	-Rp 135,141-
-537212624732	SAKIR                    	R1	450	1	-Rp 61,723-
-537210241837	UUN BT UJANG             	R1	900	1	-Rp 25,580-
-537614465436	AMELI	R1M	900	1	-Rp 105,835-
-537212625448	ATIM SUHERMAN            	R1	450	1	-Rp 126,984-
-537212617875	ERSIH                    	R1	450	1	-Rp 87,725-
-537212625887	SUROM                    	R1	450	1	-Rp 23,994-
-537212625933	TUMPEL                   	R1	450	1	-Rp 90,274-
-537212623323	AMAN                     	R1	450	1	-Rp 40,819-
-537212624487	TAPIAN NURDIN            	R1M	900	1	-Rp 161,782-
-537212626083	KARTAWI                  	R1	450	1	-Rp 18,849-
-537212626855	AMSIR                    	R1	450	1	-Rp 94,353-
-537614447068	LIA TRESNAWATI	R1	900	1	-Rp 67,012-
-537212626188	AMAN BIN JALI            	R1	450	1	-Rp 97,922-
-537612512664	INUN BIN JAISIN          	R1	450	1	-Rp 19,961-
-537612424612	MANTA                    	R1	450	1	-Rp 83,646-
-537612381509	SAMIH                    	R1	450	1	-Rp 52,036-
-537612381495	KARYAT KARYANI           	R1	450	1	-Rp 39,799-
-537212626395	KARMALI                  	R1	450	1	-Rp 104,550-
-537612442901	SUHARA BIN H BOTIN       	R1M	900	1	-Rp 264,586-
-537212626018	AWANG                    	R1	450	1	-Rp 111,688-
-537612379516	KADA BIN NAMIT           	R1	450	1	-Rp 33,681-
-537612436631	ASMAN                    	R1	450	1	-Rp 181,538-
-537212625853	JUNAEDI                  	R1	450	1	-Rp 61,213-
-537612089935	SAREM BT MAAN            	R1	450	1	-Rp 129,533-
-537214457627	NEMBON                   	R1	450	1	-Rp 83,136-
-537612437419	NIJA B ISNA              	R1	450	1	-Rp 87,215-
-537210080564	ASRI B SAINAN            	R1	450	1	-Rp 219,548-
-537612001059	UDIN                     	R1	900	1	-Rp 146,548-
-537212624781	NASAN                    	R1	450	1	-Rp 41,839-
-537612181312	UNAH BT UKI              	R1	450	1	-Rp 5,099-
-537612405490	NUNUNG                   	R1	450	1	-Rp 113,218-
-537212625639	BOSI                     	R1	450	1	-Rp 31,132-
-537211624547	SARMAN B KAWIR           	R1M	900	1	-Rp 185,210-
-537212626769	SARBINI B SARWALA        	R1	450	1	-Rp 66,821-
-537212625820	PARMAN                   	R1	450	1	-Rp 5,099-
-537612207457	SDN KERTA JAYA 04        	S1	900	1	-Rp 40,100-
-537210335279	JAMSIR                   	R1	450	1	-Rp 151,966-
-537612150162	ARMAT BIN MARTU          	R1	450	1	-Rp 72,939-
-537612109334	TIRMANSYAH               	R1	450	1	-Rp 114,237-
-537210335287	ISAR                     	R1	450	1	-Rp 169,301-
-537612085504	SUEIB BIN MADIH          	R1	450	1	-Rp 128,513-
-537212624708	ASDEN BIN RENDAN         	R1	450	1	-Rp 103,021-
-537212626026	ECIN                     	R1	450	1	-Rp 88,235-
-537212626312	ONYIN                    	R1	450	1	-Rp 71,410-
-537614300744	ANDA	R1	450	1	-Rp 113,218-
-537212626822	D A B E H                	R1	900	1	-Rp 18,540-
-537212625812	OYIM                     	R1	450	1	-Rp 91,294-
-537612255042	OCEN                     	R1	450	1	-Rp 35,720-
-537212626147	NURI                     	R1	450	1	-Rp 62,742-
-537612485597	SYAMSUDIN                	R1	450	1	-Rp 58,154-
-537612266050	ISANUDIN                 	R1	900	1	-Rp 62,423-
-537612816904	SARLOJI	R1	450	1	-Rp 58,154-
-537212626000	LONJI B ENEN             	R1	450	1	-Rp 31,642-
-537212628183	DONENG                   	R1	450	1	-Rp 46,937-
-537612377910	DARSIH BT SAPNA          	R1	450	1	-Rp 41,839-
-537612819777	IMUN BIN SAINAN	R1	450	1	-Rp 21,954-
-537212627398	KENENG                   	R1	450	1	-Rp 60,193-
-537210043204	JALIL                    	B1	450	1	-Rp 41,236-
-537612436806	MISNAH BT KINUNG         	R1	450	1	-Rp 79,568-
-537212628175	SIMIT                    	R1	450	1	-Rp 74,979-
-537612546724	SAIM                     	R1	450	1	-Rp 73,449-
-537612356855	NALIM BIN NOIN           	R1	450	1	-Rp 25,014-
-537212626075	ANDI                     	R1	450	1	-Rp 98,942-
-537612168160	ARDI BIN KENJIM          	R1	450	1	-Rp 135,141-
-537210275946	KANA                     	R1	900	1	-Rp 69,051-
-537612323022	ENJU JUNAEDI             	R1	450	1	-Rp 150,437-
-537212626968	KUWAT                    	R1	450	1	-Rp 81,097-
-537212626919	YONO                     	R1	450	1	-Rp 89,255-
-537612234968	ACIH BINTI AMAD          	R1	900	1	-Rp 109,839-
-537212627841	MESJID AL HIDAYAH 1      	S1	900	1	-Rp 232,577-
-537612062479	ENTIN B NEMAN            	R1	450	1	-Rp 71,410-
-537614452527	IWAN	R1	450	2	-Rp 7,150,864-
-537612464754	H TABAN THOIBILLAH       	R1	450	1	-Rp 75,999-
-537612169113	KARMA BIN AGIS           	R1	450	2	-Rp 208,473-
-537612236053	EYOT BIN ILAN            	R1	900	1	-Rp 79,248-
-537612891891	NAIN	R1	450	1	-Rp 102,001-
-537040982697	RYCA PRIYANI	B1	900	1	-Rp 124,450-
-537212628437	GANANG                   	R1	450	1	-Rp 65,802-
-537212066918	UNIN                     	R1	450	1	-Rp 36,230-
-537212628403	ANDUN                    	R1	450	1	-Rp 16,253-
-537212620611	TALEN                    	R1	450	1	-Rp 15,141-
-537212628366	AMIN                     	R1	450	1	-Rp 66,821-
-537212732256	IYA                      	R1	450	1	-Rp 62,742-
-537612058267	JUNIN                    	R1	450	1	-Rp 139,730-
-537212622490	DALU B                   	R1	450	1	-Rp 101,491-
-537612426321	TENAH BT SIONG           	R1	450	1	-Rp 94,353-
-537612295221	ANTONG                   	R1	450	1	-Rp 84,666-
-537612436578	SUHENDA                  	R1	450	1	-Rp 84,156-
-537212621104	UNIN                     	R1	450	1	-Rp 25,014-
-537612356607	ROJAK BIN UNIN           	R1	450	1	-Rp 73,959-
-537612170838	KARTO                    	R1	450	1	-Rp 33,681-
-537212621153	NIMAN                    	R1	450	1	-Rp 63,762-
-537612437011	IMAN                     	R1	450	1	-Rp 39,799-
-537612159520	AJUM BIN MISA            	R1	450	1	-Rp 60,703-
-537612228170	ANING BIN TAMBUR         	R1	450	1	-Rp 36,740-
-537612144752	ACUM BT ASUR             	R1	450	1	-Rp 46,937-
-537612436649	ATIM                     	R1	450	2	-Rp 67,753-
-537210334920	ISIN BIN JUMIN           	R1	450	1	-Rp 22,464-
-537212621299	ISIN                     	R1	450	1	-Rp 60,193-
-537612324805	ASEN                     	R1	450	1	-Rp 38,270-
-537212628508	ACIM                     	R1	450	1	-Rp 46,937-
-537612168280	SOBARI                   	R1	450	1	-Rp 45,408-
-537612325608	SANEN BIN ALIH           	R1	450	1	-Rp 70,390-
-537211575218	IJAN BIN KARIN           	R1	450	1	-Rp 122,771-
-537612592028	PARDI                    	R1	450	1	-Rp 15,512-
-537612150147	AMINAH                   	R1	450	1	-Rp 43,878-
-537614466391	NOVIA FITRIANA	R1	900	1	-Rp 74,150-
-537212620541	HAMDAN B TUMING          	B1	900	1	-Rp 76,555-
-537212620525	RANIM                    	R1	450	1	-Rp 19,220-
-537210053061	TIBO B SUKAR             	R1	900	1	-Rp 79,248-
-537210024976	DALIM B KURU             	B1	450	1	-Rp 102,233-
-537212628906	ENCIM B ANIM             	R1	450	1	-Rp 79,568-
-537210334882	AMONG                    	R1M	900	1	-Rp 289,652-
-537612475004	UKI BIN NATA             	R1	450	1	-Rp 27,563-
-537612429099	KANTA B NAMAN S          	R1	450	1	-Rp 73,959-
-537612816659	KALIM	R1	450	1	-Rp 193,264-
-537212625775	ROHIM BINTI ANGIN        	R1	450	1	-Rp 77,528-
-537212628341	T A S U M                	R1	450	1	-Rp 80,587-
-537212628756	KASIP                    	R1	450	1	-Rp 58,154-
-537212628801	IRMAN BIN MACEN          	R1	450	1	-Rp 88,745-
-537212628644	RADI B BIDONG            	R1	450	1	-Rp 68,861-
-537212628557	ACIM                     	R1	450	1	-Rp 42,858-
-537212066991	KAMIN                    	R1	450	1	-Rp 73,959-
-537612436680	KAMAL B WARLI            	R1	450	1	-Rp 49,486-
-537212621934	AMUNG	R1	450	1	-Rp 50,506-
-537212620686	YANSUN                   	R1	450	1	-Rp 87,725-
-537612171944	ENGKAN                   	R1	450	2	-Rp 108,542-
-537212066959	LIM NEM BIH              	R1	450	1	-Rp 72,430-
-537612112033	ERNIH                    	R1	450	1	-Rp 13,658-
-537614468458	KATIRI	R1	900	1	-Rp 205,837-
-537212620799	ENGLIN                   	R1M	900	2	-Rp 753,805-
-537212620802	ENCENG                   	R1	2200	1	-Rp 132,219-
-537212621456	ININ                     	R1	450	1	-Rp 68,351-
-537612544873	MINI                     	R1	450	1	-Rp 55,095-
-537612178064	WARNATA                  	R1	450	1	-Rp 33,171-
-537612486403	MEDIH                    	R1	450	1	-Rp 43,878-
-537210017974	MASRAN MUNAWAR H         	R1M	900	1	-Rp 540,313-
-537612428326	LILIS                    	R1	450	1	-Rp 95,373-
-537210084020	ENCA B BOIH              	R1	900	1	-Rp 179,179-
-537212621536	IKAN                     	R1	450	1	-Rp 69,880-
-537612372299	SATI BT IKAM             	R1	450	1	-Rp 92,824-
-537211609636	CICIH BT SOLEH           	R1	900	1	-Rp 244,949-
-537614240280	MANTA	R1	450	1	-Rp 67,331-
-537040686174	TAUFAN AKBARI AL ARIF	B1	900	1	-Rp 95,713-
-537212628599	OWEH SOPANDI	R1	450	1	-Rp 54,585-
-537212620558	OTONG                    	R1	450	1	-Rp 76,508-
-537212620629	AAN B                    	R1	1300	1	-Rp 189,028-
-537212620590	SUWANDI                  	R1M	900	1	-Rp 50,132-
-537212620637	ICAN                     	R1	450	1	-Rp 56,624-
-537612479675	ALBERT TIO BASKORO       	R1	450	1	-Rp 5,447-
-537214447047	YOE SUIH                 	R1	450	2	-Rp 311,462-
-537210222608	ENCONG A                 	R1	900	1	-Rp 127,684-
-537612803965	YANTI ISWATI	R1	450	1	-Rp 21,074-
-537212620509	INAN                     	R1	450	2	-Rp 141,682-
-537612274318	WICAN TRISTIAWAN         	R1	450	1	-Rp 78,038-
-537210334866	THENG TALEN              	R1	450	1	-Rp 52,036-
-537612242771	DEDI                     	R1	900	1	-Rp 260,755-
-537210334904	DEDI S B ANO             	R1	450	1	-Rp 257,277-
-537212621926	KOSIM                    	R1	450	1	-Rp 66,821-
-537612168152	YANAH BT KOSIM           	R1	450	1	-Rp 49,996-
-537212629214	ADE M BIN ADIS           	R1	450	1	-Rp 49,486-
-537212628731	TAMANG BIN MUTA          	R1	450	1	-Rp 56,624-
-537210276524	KAKA BIN EMPUT           	R1	900	1	-Rp 80,778-
-537612436560	BUANG                    	R1	450	1	-Rp 129,533-
-537212621821	AMIL SAIRAN              	R1	450	1	-Rp 68,351-
-537212621663	ENDAH BIN TUTIT          	R1	450	1	-Rp 79,058-
-537212620453	RISIN                    	R1	450	1	-Rp 97,412-
-537212621161	IING                     	R1	450	1	-Rp 73,449-
-537212621743	ROHAMAN                  	R1	450	1	-Rp 117,548-
-537212621854	WADI                     	R1	450	1	-Rp 117,548-
-537212621689	UMING                    	R1	450	1	-Rp 82,117-
-537212620383	ENDAH                    	R1M	900	1	-Rp 101,657-
-537612134164	OCIN BIN SERUN           	R1	450	1	-Rp 135,141-
-537212628651	ABDUL YOSEP              	R1	450	1	-Rp 117,548-
-537612493023	NEAN                     	R1	450	1	-Rp 36,230-
-537612224823	SARMAT                   	R1	900	1	-Rp 18,540-
-537210118783	AHMAD EPENDI             	R1	900	1	-Rp 252,662-
-537212709837	SANUSI	R1M	900	1	-Rp 334,214-
-537612514445	ENI BT SAIM              	R1	450	1	-Rp 91,804-
-537212622050	KARTA                    	R1	450	1	-Rp 52,036-
-537212622068	TUTIT                    	R1	450	1	-Rp 31,132-
-537212621630	SAKUM S                  	R1	450	1	-Rp 120,356-
-537612186504	NEMIN B AJUK             	R1	450	1	-Rp 45,408-
-537212629177	ACIP BIN IMIN            	R1	450	1	-Rp 72,939-
-537614470831	JUJU	R1	450	1	-Rp 52,036-
-537210071647	AMIN SANEN               	R1	900	1	-Rp 134,822-
-537612437003	WATI BT MATA             	R1	450	1	-Rp 116,787-
-537212622106	JUMBIH                   	R1	450	1	-Rp 8,406-
-537211539174	YANI BT UTAS             	R1	900	1	-Rp 78,738-
-537212621942	ANIM B RUMIN             	R1	450	1	-Rp 43,878-
-537212621805	MIAN                     	R1	450	1	-Rp 79,568-
-537212624611	MEDI B MAJAN             	R1	450	1	-Rp 244,343-
-537212622001	KUMIN                    	R1	450	1	-Rp 139,730-
-537612447123	JUMAN                    	R1	450	1	-Rp 19,220-
-537612468418	ADI                      	R1	450	2	-Rp 196,235-
-537210120194	ALIN B EMBEN             	R1	900	1	-Rp 58,344-
-537212621784	MUSAN                    	R1	450	1	-Rp 54,075-
-537212621768	SERUN                    	R1	450	1	-Rp 51,526-
-537612380858	ROHIM                    	R1	450	1	-Rp 23,994-
-537612157526	NATA                     	R1	450	1	-Rp 56,114-
-537612514142	ASIH RATNASIH            	B1	900	1	-Rp 181,445-
-537212620461	ABONG PRAWORO            	R1	1300	1	-Rp 157,732-
-537212622155	H KESIN                  	R1	450	1	-Rp 128,003-
-537612228075	ELLSE CRISTIAN           	R1M	900	1	-Rp 50,132-
-537212628892	RUMAN BIN DARKI          	R1	450	1	-Rp 53,055-
-537212629015	ADANG ASMAWIJAYA         	R1	900	1	-Rp 316,939-
-537210076622	ALI B TUTI               	R1	450	1	-Rp 52,036-
-537212629151	ODI BIN EMPUT            	R1	450	2	-Rp 182,470-
-537212629056	M ARIFIN BIN JININ       	R1	450	1	-Rp 117,548-
-537212622409	DAUD                     	R1	450	1	-Rp 48,977-
-537212622370	UMI                      	R1	450	1	-Rp 102,511-
-537212628930	ADITIA BIN AMANG         	R1	450	1	-Rp 22,464-
-537212629098	SOHIB                    	R1	450	1	-Rp 70,900-
-537612178695	ENDA BIN OLI             	R1	450	1	-Rp 42,858-
-537211515845	JALI BIN TAIH            	R1	900	1	-Rp 195,494-
-537612827366	BIRNES SILITONGA	R1	450	1	-Rp 14,029-
-537612235881	M.SAWI                   	R1M	900	1	-Rp 296,615-
-537612381956	MASNI                    	R1	450	1	-Rp 118,826-
-537212628749	SANUN BIN SUGIH          	R1	450	1	-Rp 186,126-
-537612148361	NASEP                    	R1	450	1	-Rp 121,375-
-537612191273	ENCIN                    	R1	450	1	-Rp 73,959-
-537612589232	WARJA BIN NAKIM          	R1	450	1	-Rp 100,471-
-537212622538	UNIN                     	R1	450	1	-Rp 136,161-
-537212629031	ADI BIN SAEMAN           	R1	450	1	-Rp 68,351-
-537212622546	SAPE I                   	R1	450	1	-Rp 125,964-
-537212629301	NARISAN                  	R1	450	1	-Rp 64,272-
-537210335021	UMAR                     	R1	450	1	-Rp 55,095-
-537212628971	SAUN                     	R1	450	1	-Rp 26,543-
-537212629206	TAMAN BIN IBIH           	R1	450	1	-Rp 84,156-
-537212622595	ENDING ENDAS             	R1	450	1	-Rp 91,804-
-537210024919	RASIM                    	R1	450	1	-Rp 91,294-
-537210276540	UJANG B H ARIN           	R1M	900	1	-Rp 196,351-
-537212622553	TIAH                     	R1	450	1	-Rp 47,957-
-537212585125	RANIN                    	R1	450	1	-Rp 73,449-
-537612211532	ALIN BIN KOIH            	R1	450	1	-Rp 100,471-
-537212590969	TATANG S                 	R1	450	1	-Rp 55,095-
-537612437116	ASAN                     	R1	450	1	-Rp 53,565-
-537212558237	MADU BIN MISTAP          	R1	450	1	-Rp 65,802-
-537612377807	NEING                    	R1	450	1	-Rp 115,257-
-537612623195	IMAN                     	R1	900	1	-Rp 337,333-
-537612002276	IMAS SITI MASITOH        	R1	900	1	-Rp 104,231-
-537612591018	TATANG TIRTANA           	R1	450	1	-Rp 100,981-
-537612619012	OMAN BIN ESTIM           	R1	450	1	-Rp 89,765-
-537212091100	ENCUNG                   	R1	450	1	-Rp 95,883-
-537211848382	MASAN                    	R1	450	1	-Rp 140,240-
-537212558203	MOH AKID JAELANI         	R1	450	1	-Rp 68,351-
-537612593294	NEMAN BIN KAMIN          	R1	450	1	-Rp 88,235-
-537212091159	UAR                      	R1	450	1	-Rp 75,999-
-537211848516	ANDI                     	R1	450	1	-Rp 100,471-
-537212544907	SUDARMO                  	R1	450	1	-Rp 55,605-
-537212558308	ABUDIN AB                	R1	450	1	-Rp 14,770-
-537211848494	UJI                      	R1	450	1	-Rp 64,272-
-537612098144	SAHIM                    	R1M	900	1	-Rp 50,132-
-537212650882	KAMIN BIN NASAN          	R1	450	1	-Rp 58,154-
-537211848460	SUPRI                    	R1	450	1	-Rp 20,703-
-537612033409	ETI                      	R1	900	1	-Rp 161,844-
-537612097780	SAHIR                    	R1	450	2	-Rp 285,648-
-537612404896	NOLIN BIN ACIH           	R1	450	1	-Rp 62,233-
-537210041433	SAKINAN BIN NALIM        	R1	900	1	-Rp 78,229-
-537612097756	YAYAN                    	R1M	900	1	-Rp 108,620-
-537041014524	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 419,627-
-537041014540	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 348,202-
-537041014557	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 482,125-
-537041014599	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014636	PT PRIMA STEADY DEVELOPME	R1	2200	1	-Rp 616,020-
-537041014764	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 130,948-
-537041014780	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 379,451-
-537041014798	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014843	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 787,173-
-537041047847	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 217,254-
-537041047862	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 230,647-
-537041047900	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041047926	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 453,853-
-537041047959	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014039	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257,134-
-537041014054	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 379,451-
-537041014088	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 717,235-
-537041014191	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 373,499-
-537041014204	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 339,274-
-537041014220	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 165,173-
-537041014238	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 291,240-
-537041014246	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 141,364-
-537041014261	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 302,072-
-537041014279	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014325	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 174,101-
-537041048657	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 4,356,687-
-537041048313	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-537041048441	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-537041048347	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 516,350-
-537041048339	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 438,973-
-537041048433	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 278,264-
-537041048665	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 251,479-
-537041048259	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 349,812-
-537041048711	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 126,484-
-537041014341	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048703	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048417	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048458	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014382	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 311,000-
-537041048218	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-537041048561	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 427,068-
-537041048608	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 345,225-
-537041048226	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 90,771-
-537041014452	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014478	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 558,016-
-537041048050	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 354,154-
-537041048106	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048786	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048807	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048898	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 316,953-
-537041048928	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 366,058-
-537041048951	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 232,134-
-537041049124	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 290,169-
-537041049157	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257,134-
-537041049236	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-        `;
+537210239375	LANDI IRIANDI            	R1	1300	1	-Rp 77,378-
+537212624288	UDIN S B DESIN           	R1	450	1	-Rp 194,794-
+537210096638	AHMAD B DESIN            	R1	900	1	-Rp 79,758-
+537612793710	H E R M A W A N	R1	450	1	-Rp 111,178-
+537212624184	ACUH B MIIN              	R1	450	1	-Rp 110,159-
+537612078017	ARWAT BIN ANIM           	R1	450	1	-Rp 93,333-
+537612427174	JUKI                     	R1	450	1	-Rp 29,092-
+537214446986	INAN                     	R1	450	1	-Rp 108,119-
+537210100927	MIAN SAMSUDIN            	R1	900	3	-Rp 822,982-
+537612514677	NEMAN BIN ATA            	R1	450	1	-Rp 56,624-
+537612475245	AMAN BIN DASIM           	R1	450	1	-Rp 39,289-
+537212624143	JISIN B MUIN             	R1	450	1	-Rp 29,602-
+537612346553	ASHNAR AHMADI BIN JINSIN 	R1	450	1	-Rp 107,609-
+537212624119	TUTUN                    	R1	450	1	-Rp 53,565-
+537212624205	AMAN NARSIH              	R1	450	1	-Rp 48,467-
+537210118670	ANTA BIN AYIM            	R1M	900	1	-Rp 50,132-
+537612160472	SITI HODIJAH SAG         	R1M	900	1	-Rp 185,210-
+537612411305	MARHALI BIN MANAP        	R1	450	2	-Rp 230,396-
+537212623938	P OTONG                  	R1	450	1	-Rp 71,410-
+537612170280	AAM BIN ASAN             	R1	450	1	-Rp 37,760-
+537212624006	ENYIN                    	R1	450	1	-Rp 69,371-
+537612481373	UCI SANUSI BIN CIIN      	R1	450	1	-Rp 71,920-
+537612212350	SANIN                    	R1	450	1	-Rp 108,629-
+537612381438	ILAN BIN ILUT            	R1	450	1	-Rp 71,410-
+537212623468	ABAS                     	R1	450	1	-Rp 87,725-
+537212624101	NASIM                    	R1	450	1	-Rp 39,289-
+537212623683	MUSLIM                   	R1	450	1	-Rp 31,642-
+537212623514	SAEPUDIN B SAJU          	R1	450	1	-Rp 44,898-
+537614459469	SUSI	R1	450	1	-Rp 52,036-
+537210089669	ANANG                    	R1	900	1	-Rp 81,288-
+537212624270	KANIH RENDAN             	R1	450	1	-Rp 156,327-
+537212623747	KAJAN                    	R1	450	1	-Rp 56,624-
+537212624014	MA UBIH                  	R1M	900	1	-Rp 487,396-
+537612875220	ANING BIN SARDI	R1	450	1	-Rp 92,824-
+537212624055	ALING                    	R1	450	1	-Rp 52,036-
+537612269249	SARTA B MISKA            	R1	900	1	-Rp 28,789-
+537212581532	MIMI BT SAIN             	R1	450	1	-Rp 21,954-
+537612150503	AI BT ENIN               	R1	450	1	-Rp 95,883-
+537612217847	ELA BT ENING             	R1M	900	1	-Rp 139,256-
+537212623809	MA ICAH                  	R1	450	1	-Rp 74,469-
+537612398466	LIAN BIN LASAN           	R1	450	1	-Rp 121,885-
+537612391723	UPIT BT DAMO             	R1	450	1	-Rp 64,272-
+537612437210	ROSIDIN BA               	R1	450	1	-Rp 58,154-
+537212623380	ANWAR B H SUHADA         	R1	450	1	-Rp 37,250-
+537212623796	SOTON                    	R1	900	1	-Rp 162,354-
+537212589419	SAMAT                    	R1	450	1	-Rp 51,016-
+537612506529	ITI BT SOTON             	R1	450	1	-Rp 73,449-
+537612283857	SYAHROJA BIN UJUD        	R1	450	1	-Rp 96,902-
+537612058944	SUIMAN BIN YADI          	R1	450	1	-Rp 74,979-
+537212623011	MAD SUPI                 	R1	450	1	-Rp 86,705-
+537612825793	USNA SUTISNA	R1	450	1	-Rp 81,607-
+537210335175	PENA                     	R1	450	1	-Rp 68,351-
+537210335167	MARIN                    	R1	450	1	-Rp 73,449-
+537612443028	NANA B USUP              	R1	450	1	-Rp 28,073-
+537212622794	A M A T                  	R1	450	1	-Rp 119,846-
+537212622849	RACHMAT                  	R1	450	1	-Rp 31,642-
+537212623060	MISAN                    	R1	450	1	-Rp 5,099-
+537212623349	IRSAN                    	R1	450	1	-Rp 56,114-
+537612063613	DAYING BIN ABUN          	R1	450	1	-Rp 36,230-
+537612614401	NANDIN                   	R1	450	1	-Rp 64,272-
+537212626241	ROSID                    	R1	450	1	-Rp 54,075-
+537210184330	MUSHOLA ATTAIDIN         	S1	450	1	-Rp 53,940-
+537612412626	SARIPUDIN BIN KANUNG     	R1	450	1	-Rp 70,900-
+537612591217	EDI SURYADI              	R1	450	1	-Rp 9,798-
+537612222375	PATIMAH BT U ASAN        	R1	450	1	-Rp 123,415-
+537612159849	ENDANG BIN ARNAN         	R1	450	1	-Rp 76,508-
+537212623427	ENDAH                    	R1	450	1	-Rp 96,393-
+537210049456	ROHMAN B REMBING         	R1	900	1	-Rp 100,152-
+537612119772	AISAH BINTI CIMING       	R1	450	1	-Rp 136,161-
+537210335096	NEIN                     	R1	900	1	-Rp 167,962-
+537210335126	OMANM                    	R1	450	1	-Rp 44,898-
+537210335159	WAKIL ININ               	R1	450	1	-Rp 10,691-
+537210335118	NAJI                     	R1	450	1	-Rp 47,447-
+537612819785	KARMA BIN ENCEP	R1	450	1	-Rp 194,794-
+537612283994	KAYO BIN MIDIN           	R1	450	1	-Rp 84,156-
+537612361145	KARMA BIN ENCEP          	R1	450	1	-Rp 46,937-
+537612486054	AGUS HARIANTO BIN TARIM  	R1	900	2	-Rp 224,149-
+537612948078	KARMIN BIN SULAEMAN	R1	450	2	-Rp 182,470-
+537210111753	INA BT INEN              	R1	900	1	-Rp 90,465-
+537612225874	SALIP BIN SAAT           	R1	450	1	-Rp 94,863-
+537212623244	EMPUH                    	R1M	900	1	-Rp 140,649-
+537612824846	PENDI BIN ENCEP	R1	450	1	-Rp 71,410-
+537612478752	KASINO                   	R1	450	1	-Rp 5,099-
+537212623199	ENCUNG                   	R1	450	1	-Rp 92,314-
+537210048973	MAD ARIP                 	R1	900	1	-Rp 165,923-
+537612280429	IYAR BIN NASIP           	R1	450	1	-Rp 26,033-
+537614477137	ROHATI	R1	450	1	-Rp 103,530-
+537612432259	OTIH BT KOTOT            	B1	900	1	-Rp 204,913-
+537212623825	GOJALI                   	R1	450	1	-Rp 182,047-
+537214446978	SABAN                    	R1	450	1	-Rp 84,666-
+537212623866	M ASUR                   	R1	900	1	-Rp 90,465-
+537612593260	BURHANI BIN ESIM         	R1	450	1	-Rp 40,309-
+537210100935	DARYO                    	R1	900	1	-Rp 22,506-
+537212623817	MAHMUD B                 	R1	900	1	-Rp 292,366-
+537212622673	SAMAD                    	R1M	900	1	-Rp 50,132-
+537612171977	ATIP BIN JALI            	R1	450	1	-Rp 78,548-
+537210335220	EMBUK                    	R1	450	1	-Rp 40,819-
+537211584726	MARYATI BINTI MIING      	R1	450	1	-Rp 17,737-
+537212654667	UTAY                     	R1	450	1	-Rp 89,255-
+537612405458	RACIM BIN GANDA          	R1	450	1	-Rp 63,762-
+537212626503	GANDA                    	R1	450	1	-Rp 66,311-
+537210335309	YUSUP B SAAN             	R1	450	1	-Rp 196,095-
+537612168414	NURYAMI BT KIAN          	R1	450	1	-Rp 82,627-
+537612287682	ENGKUS                   	R1	450	1	-Rp 112,708-
+537612138106	NEMAN BIN RADIN          	R1	450	1	-Rp 95,373-
+537612454117	RASIM NURHASAN BIN RAHMAT	R1	450	1	-Rp 56,114-
+537612638656	RAHMATULLOH              	R1	450	1	-Rp 32,661-
+537612381923	HASAN BASRI B M YUSUP    	R1	450	1	-Rp 60,703-
+537210103741	IBRAHIM MUNADI           	R1	900	1	-Rp 91,994-
+537612083487	ESAN BIN SAIN            	R1	450	1	-Rp 29,092-
+537612160232	H SAMIN BIN AMIN         	R1	450	1	-Rp 69,880-
+537612802884	RAHMAN PAHRUDIN	R1M	900	1	-Rp 50,132-
+537612791590	SITI HAJAR BTH.M.RUSYIDI	R1	900	1	-Rp 65,482-
+537612346050	EDOM                     	R1	450	1	-Rp 135,141-
+537212624732	SAKIR                    	R1	450	1	-Rp 61,723-
+537210241837	UUN BT UJANG             	R1	900	1	-Rp 25,580-
+537614465436	AMELI	R1M	900	1	-Rp 105,835-
+537212625448	ATIM SUHERMAN            	R1	450	1	-Rp 126,984-
+537212617875	ERSIH                    	R1	450	1	-Rp 87,725-
+537212625887	SUROM                    	R1	450	1	-Rp 23,994-
+537212625933	TUMPEL                   	R1	450	1	-Rp 90,274-
+537212623323	AMAN                     	R1	450	1	-Rp 40,819-
+537212624487	TAPIAN NURDIN            	R1M	900	1	-Rp 161,782-
+537212626083	KARTAWI                  	R1	450	1	-Rp 18,849-
+537212626855	AMSIR                    	R1	450	1	-Rp 94,353-
+537614447068	LIA TRESNAWATI	R1	900	1	-Rp 67,012-
+537212626188	AMAN BIN JALI            	R1	450	1	-Rp 97,922-
+537612512664	INUN BIN JAISIN          	R1	450	1	-Rp 19,961-
+537612424612	MANTA                    	R1	450	1	-Rp 83,646-
+537612381509	SAMIH                    	R1	450	1	-Rp 52,036-
+537612381495	KARYAT KARYANI           	R1	450	1	-Rp 39,799-
+537212626395	KARMALI                  	R1	450	1	-Rp 104,550-
+537612442901	SUHARA BIN H BOTIN       	R1M	900	1	-Rp 264,586-
+537212626018	AWANG                    	R1	450	1	-Rp 111,688-
+537612379516	KADA BIN NAMIT           	R1	450	1	-Rp 33,681-
+537612436631	ASMAN                    	R1	450	1	-Rp 181,538-
+537212625853	JUNAEDI                  	R1	450	1	-Rp 61,213-
+537612089935	SAREM BT MAAN            	R1	450	1	-Rp 129,533-
+537214457627	NEMBON                   	R1	450	1	-Rp 83,136-
+537612437419	NIJA B ISNA              	R1	450	1	-Rp 87,215-
+537210080564	ASRI B SAINAN            	R1	450	1	-Rp 219,548-
+537612001059	UDIN                     	R1	900	1	-Rp 146,548-
+537212624781	NASAN                    	R1	450	1	-Rp 41,839-
+537612181312	UNAH BT UKI              	R1	450	1	-Rp 5,099-
+537612405490	NUNUNG                   	R1	450	1	-Rp 113,218-
+537212625639	BOSI                     	R1	450	1	-Rp 31,132-
+537211624547	SARMAN B KAWIR           	R1M	900	1	-Rp 185,210-
+537212626769	SARBINI B SARWALA        	R1	450	1	-Rp 66,821-
+537212625820	PARMAN                   	R1	450	1	-Rp 5,099-
+537612207457	SDN KERTA JAYA 04        	S1	900	1	-Rp 40,100-
+537210335279	JAMSIR                   	R1	450	1	-Rp 151,966-
+537612150162	ARMAT BIN MARTU          	R1	450	1	-Rp 72,939-
+537612109334	TIRMANSYAH               	R1	450	1	-Rp 114,237-
+537210335287	ISAR                     	R1	450	1	-Rp 169,301-
+537612085504	SUEIB BIN MADIH          	R1	450	1	-Rp 128,513-
+537212624708	ASDEN BIN RENDAN         	R1	450	1	-Rp 103,021-
+537212626026	ECIN                     	R1	450	1	-Rp 88,235-
+537212626312	ONYIN                    	R1	450	1	-Rp 71,410-
+537614300744	ANDA	R1	450	1	-Rp 113,218-
+537212626822	D A B E H                	R1	900	1	-Rp 18,540-
+537212625812	OYIM                     	R1	450	1	-Rp 91,294-
+537612255042	OCEN                     	R1	450	1	-Rp 35,720-
+537212626147	NURI                     	R1	450	1	-Rp 62,742-
+537612485597	SYAMSUDIN                	R1	450	1	-Rp 58,154-
+537612266050	ISANUDIN                 	R1	900	1	-Rp 62,423-
+537612816904	SARLOJI	R1	450	1	-Rp 58,154-
+537212626000	LONJI B ENEN             	R1	450	1	-Rp 31,642-
+537212628183	DONENG                   	R1	450	1	-Rp 46,937-
+537612377910	DARSIH BT SAPNA          	R1	450	1	-Rp 41,839-
+537612819777	IMUN BIN SAINAN	R1	450	1	-Rp 21,954-
+537212627398	KENENG                   	R1	450	1	-Rp 60,193-
+537210043204	JALIL                    	B1	450	1	-Rp 41,236-
+537612436806	MISNAH BT KINUNG         	R1	450	1	-Rp 79,568-
+537212628175	SIMIT                    	R1	450	1	-Rp 74,979-
+537612546724	SAIM                     	R1	450	1	-Rp 73,449-
+537612356855	NALIM BIN NOIN           	R1	450	1	-Rp 25,014-
+537212626075	ANDI                     	R1	450	1	-Rp 98,942-
+537612168160	ARDI BIN KENJIM          	R1	450	1	-Rp 135,141-
+537210275946	KANA                     	R1	900	1	-Rp 69,051-
+537612323022	ENJU JUNAEDI             	R1	450	1	-Rp 150,437-
+537212626968	KUWAT                    	R1	450	1	-Rp 81,097-
+537212626919	YONO                     	R1	450	1	-Rp 89,255-
+537612234968	ACIH BINTI AMAD          	R1	900	1	-Rp 109,839-
+537212627841	MESJID AL HIDAYAH 1      	S1	900	1	-Rp 232,577-
+537612062479	ENTIN B NEMAN            	R1	450	1	-Rp 71,410-
+537614452527	IWAN	R1	450	2	-Rp 7.150.864-
+537612464754	H TABAN THOIBILLAH       	R1	450	1	-Rp 75,999-
+537612169113	KARMA BIN AGIS           	R1	450	2	-Rp 208,473-
+537612236053	EYOT BIN ILAN            	R1	900	1	-Rp 79,248-
+537612891891	NAIN	R1	450	1	-Rp 102,001-
+537040982697	RYCA PRIYANI	B1	900	1	-Rp 124,450-
+537212628437	GANANG                   	R1	450	1	-Rp 65,802-
+537212066918	UNIN                     	R1	450	1	-Rp 36,230-
+537212628403	ANDUN                    	R1	450	1	-Rp 16,253-
+537212620611	TALEN                    	R1	450	1	-Rp 15,141-
+537212628366	AMIN                     	R1	450	1	-Rp 66,821-
+537212732256	IYA                      	R1	450	1	-Rp 62,742-
+537612058267	JUNIN                    	R1	450	1	-Rp 139,730-
+537212622490	DALU B                   	R1	450	1	-Rp 101,491-
+537612426321	TENAH BT SIONG           	R1	450	1	-Rp 94,353-
+537612295221	ANTONG                   	R1	450	1	-Rp 84,666-
+537612436578	SUHENDA                  	R1	450	1	-Rp 84,156-
+537212621104	UNIN                     	R1	450	1	-Rp 25,014-
+537612356607	ROJAK BIN UNIN           	R1	450	1	-Rp 73,959-
+537612170838	KARTO                    	R1	450	1	-Rp 33,681-
+537212621153	NIMAN                    	R1	450	1	-Rp 63,762-
+537612437011	IMAN                     	R1	450	1	-Rp 39,799-
+537612159520	AJUM BIN MISA            	R1	450	1	-Rp 60,703-
+537612228170	ANING BIN TAMBUR         	R1	450	1	-Rp 36,740-
+537612144752	ACUM BT ASUR             	R1	450	1	-Rp 46,937-
+537612436649	ATIM                     	R1	450	2	-Rp 67,753-
+537210334920	ISIN BIN JUMIN           	R1	450	1	-Rp 22,464-
+537212621299	ISIN                     	R1	450	1	-Rp 60,193-
+537612324805	ASEN                     	R1	450	1	-Rp 38,270-
+537212628508	ACIM                     	R1	450	1	-Rp 46,937-
+537612168280	SOBARI                   	R1	450	1	-Rp 45,408-
+537612325608	SANEN BIN ALIH           	R1	450	1	-Rp 70,390-
+537211575218	IJAN BIN KARIN           	R1	450	1	-Rp 122,771-
+537612592028	PARDI                    	R1	450	1	-Rp 15,512-
+537612150147	AMINAH                   	R1	450	1	-Rp 43,878-
+537614466391	NOVIA FITRIANA	R1	900	1	-Rp 74,150-
+537212620541	HAMDAN B TUMING          	B1	900	1	-Rp 76,555-
+537212620525	RANIM                    	R1	450	1	-Rp 19,220-
+537210053061	TIBO B SUKAR             	R1	900	1	-Rp 79,248-
+537210024976	DALIM B KURU             	B1	450	1	-Rp 102,233-
+537212628906	ENCIM B ANIM             	R1	450	1	-Rp 79,568-
+537210334882	AMONG                    	R1M	900	1	-Rp 289,652-
+537612475004	UKI BIN NATA             	R1	450	1	-Rp 27,563-
+537612429099	KANTA B NAMAN S          	R1	450	1	-Rp 73,959-
+537612816659	KALIM	R1	450	1	-Rp 193,264-
+537212625775	ROHIM BINTI ANGIN        	R1	450	1	-Rp 77,528-
+537212628341	T A S U M                	R1	450	1	-Rp 80,587-
+537212628756	KASIP                    	R1	450	1	-Rp 58,154-
+537212628801	IRMAN BIN MACEN          	R1	450	1	-Rp 88,745-
+537212628644	RADI B BIDONG            	R1	450	1	-Rp 68,861-
+537212628557	ACIM                     	R1	450	1	-Rp 42,858-
+537212066991	KAMIN                    	R1	450	1	-Rp 73,959-
+537612436680	KAMAL B WARLI            	R1	450	1	-Rp 49,486-
+537212621934	AMUNG	R1	450	1	-Rp 50,506-
+537212620686	YANSUN                   	R1	450	1	-Rp 87,725-
+537612171944	ENGKAN                   	R1	450	2	-Rp 108,542-
+537212066959	LIM NEM BIH              	R1	450	1	-Rp 72,430-
+537612112033	ERNIH                    	R1	450	1	-Rp 13,658-
+537614468458	KATIRI	R1	900	1	-Rp 205,837-
+537212620799	ENGLIN                   	R1M	900	2	-Rp 753,805-
+537212620802	ENCENG                   	R1	2200	1	-Rp 132,219-
+537212621456	ININ                     	R1	450	1	-Rp 68,351-
+537612544873	MINI                     	R1	450	1	-Rp 55,095-
+537612178064	WARNATA                  	R1	450	1	-Rp 33,171-
+537612486403	MEDIH                    	R1	450	1	-Rp 43,878-
+537210017974	MASRAN MUNAWAR H         	R1M	900	1	-Rp 540,313-
+537612428326	LILIS                    	R1	450	1	-Rp 95,373-
+537210084020	ENCA B BOIH              	R1	900	1	-Rp 179,179-
+537212621536	IKAN                     	R1	450	1	-Rp 69,880-
+537612372299	SATI BT IKAM             	R1	450	1	-Rp 92,824-
+537211609636	CICIH BT SOLEH           	R1	900	1	-Rp 244,949-
+537614240280	MANTA	R1	450	1	-Rp 67,331-
+537040686174	TAUFAN AKBARI AL ARIF	B1	900	1	-Rp 95,713-
+537212628599	OWEH SOPANDI	R1	450	1	-Rp 54,585-
+537212620558	OTONG                    	R1	450	1	-Rp 76,508-
+537212620629	AAN B                    	R1	1300	1	-Rp 189,028-
+537212620590	SUWANDI                  	R1M	900	1	-Rp 50,132-
+537212620637	ICAN                     	R1	450	1	-Rp 56,624-
+537612479675	ALBERT TIO BASKORO       	R1	450	1	-Rp 5,447-
+537214447047	YOE SUIH                 	R1	450	2	-Rp 311,462-
+537210222608	ENCONG A                 	R1	900	1	-Rp 127,684-
+537612803965	YANTI ISWATI	R1	450	1	-Rp 21,074-
+537212620509	INAN                     	R1	450	2	-Rp 141,682-
+537612274318	WICAN TRISTIAWAN         	R1	450	1	-Rp 78,038-
+537210334866	THENG TALEN              	R1	450	1	-Rp 52,036-
+537612242771	DEDI                     	R1	900	1	-Rp 260,755-
+537210334904	DEDI S B ANO             	R1	450	1	-Rp 257,277-
+537212621926	KOSIM                    	R1	450	1	-Rp 66,821-
+537612168152	YANAH BT KOSIM           	R1	450	1	-Rp 49,996-
+537212629214	ADE M BIN ADIS           	R1	450	1	-Rp 49,486-
+537212628731	TAMANG BIN MUTA          	R1	450	1	-Rp 56,624-
+537210276524	KAKA BIN EMPUT           	R1	900	1	-Rp 80,778-
+537612436560	BUANG                    	R1	450	1	-Rp 129,533-
+537212621821	AMIL SAIRAN              	R1	450	1	-Rp 68,351-
+537212621663	ENDAH BIN TUTIT          	R1	450	1	-Rp 79,058-
+537212620453	RISIN                    	R1	450	1	-Rp 97,412-
+537212621161	IING                     	R1	450	1	-Rp 73,449-
+537212621743	ROHAMAN                  	R1	450	1	-Rp 117,548-
+537212621854	WADI                     	R1	450	1	-Rp 117,548-
+537212621689	UMING                    	R1	450	1	-Rp 82,117-
+537212620383	ENDAH                    	R1M	900	1	-Rp 101,657-
+537612134164	OCIN BIN SERUN           	R1	450	1	-Rp 135,141-
+537212628651	ABDUL YOSEP              	R1	450	1	-Rp 117,548-
+537612493023	NEAN                     	R1	450	1	-Rp 36,230-
+537612224823	SARMAT                   	R1	900	1	-Rp 18,540-
+537210118783	AHMAD EPENDI             	R1	900	1	-Rp 252,662-
+537212709837	SANUSI	R1M	900	1	-Rp 334,214-
+537612514445	ENI BT SAIM              	R1	450	1	-Rp 91,804-
+537212622050	KARTA                    	R1	450	1	-Rp 52,036-
+537212622068	TUTIT                    	R1	450	1	-Rp 31,132-
+537212621630	SAKUM S                  	R1	450	1	-Rp 120,356-
+537612186504	NEMIN B AJUK             	R1	450	1	-Rp 45,408-
+537212629177	ACIP BIN IMIN            	R1	450	1	-Rp 72,939-
+537614470831	JUJU	R1	450	1	-Rp 52,036-
+537210071647	AMIN SANEN               	R1	900	1	-Rp 134,822-
+537612437003	WATI BT MATA             	R1	450	1	-Rp 116,787-
+537212622106	JUMBIH                   	R1	450	1	-Rp 8,406-
+537211539174	YANI BT UTAS             	R1	900	1	-Rp 78,738-
+537212621942	ANIM B RUMIN             	R1	450	1	-Rp 43,878-
+537212621805	MIAN                     	R1	450	1	-Rp 79,568-
+537212624611	MEDI B MAJAN             	R1	450	1	-Rp 244,343-
+537212622001	KUMIN                    	R1	450	1	-Rp 139,730-
+537612447123	JUMAN                    	R1	450	1	-Rp 19,220-
+537612468418	ADI                      	R1	450	2	-Rp 196,235-
+537210120194	ALIN B EMBEN             	R1	900	1	-Rp 58,344-
+537212621784	MUSAN                    	R1	450	1	-Rp 54,075-
+537212621768	SERUN                    	R1	450	1	-Rp 51,526-
+537612380858	ROHIM                    	R1	450	1	-Rp 23,994-
+537612157526	NATA                     	R1	450	1	-Rp 56,114-
+537612514142	ASIH RATNASIH            	B1	900	1	-Rp 181,445-
+537212620461	ABONG PRAWORO            	R1	1300	1	-Rp 157,732-
+537212622155	H KESIN                  	R1	450	1	-Rp 128,003-
+537612228075	ELLSE CRISTIAN           	R1M	900	1	-Rp 50,132-
+537212628892	RUMAN BIN DARKI          	R1	450	1	-Rp 53,055-
+537212629015	ADANG ASMAWIJAYA         	R1	900	1	-Rp 316,939-
+537210076622	ALI B TUTI               	R1	450	1	-Rp 52,036-
+537212629151	ODI BIN EMPUT            	R1	450	2	-Rp 182,470-
+537212629056	M ARIFIN BIN JININ       	R1	450	1	-Rp 117,548-
+537212622409	DAUD                     	R1	450	1	-Rp 48,977-
+537212622370	UMI                      	R1	450	1	-Rp 102,511-
+537212628930	ADITIA BIN AMANG         	R1	450	1	-Rp 22,464-
+537212629098	SOHIB                    	R1	450	1	-Rp 70,900-
+537612178695	ENDA BIN OLI             	R1	450	1	-Rp 42,858-
+537211515845	JALI BIN TAIH            	R1	900	1	-Rp 195,494-
+537612827366	BIRNES SILITONGA	R1	450	1	-Rp 14,029-
+537612235881	M.SAWI                   	R1M	900	1	-Rp 296,615-
+537612381956	MASNI                    	R1	450	1	-Rp 118,826-
+537212628749	SANUN BIN SUGIH          	R1	450	1	-Rp 186,126-
+537612148361	NASEP                    	R1	450	1	-Rp 121,375-
+537612191273	ENCIN                    	R1	450	1	-Rp 73,959-
+537612589232	WARJA BIN NAKIM          	R1	450	1	-Rp 100,471-
+537212622538	UNIN                     	R1	450	1	-Rp 136,161-
+537212629031	ADI BIN SAEMAN           	R1	450	1	-Rp 68,351-
+537212622546	SAPE I                   	R1	450	1	-Rp 125,964-
+537212629301	NARISAN                  	R1	450	1	-Rp 64,272-
+537210335021	UMAR                     	R1	450	1	-Rp 55,095-
+537212628971	SAUN                     	R1	450	1	-Rp 26,543-
+537212629206	TAMAN BIN IBIH           	R1	450	1	-Rp 84,156-
+537212622595	ENDING ENDAS             	R1	450	1	-Rp 91,804-
+537210024919	RASIM                    	R1	450	1	-Rp 91,294-
+537210276540	UJANG B H ARIN           	R1M	900	1	-Rp 196,351-
+537212622553	TIAH                     	R1	450	1	-Rp 47,957-
+537212585125	RANIN                    	R1	450	1	-Rp 73,449-
+537612211532	ALIN BIN KOIH            	R1	450	1	-Rp 100,471-
+537212590969	TATANG S                 	R1	450	1	-Rp 55,095-
+537612437116	ASAN                     	R1	450	1	-Rp 53,565-
+537212558237	MADU BIN MISTAP          	R1	450	1	-Rp 65,802-
+537612377807	NEING                    	R1	450	1	-Rp 115,257-
+537612623195	IMAN                     	R1	900	1	-Rp 337,333-
+537612002276	IMAS SITI MASITOH        	R1	900	1	-Rp 104,231-
+537612591018	TATANG TIRTANA           	R1	450	1	-Rp 100,981-
+537612619012	OMAN BIN ESTIM           	R1	450	1	-Rp 89,765-
+537212091100	ENCUNG                   	R1	450	1	-Rp 95,883-
+537211848382	MASAN                    	R1	450	1	-Rp 140,240-
+537212558203	MOH AKID JAELANI         	R1	450	1	-Rp 68,351-
+537612593294	NEMAN BIN KAMIN          	R1	450	1	-Rp 88,235-
+537212091159	UAR                      	R1	450	1	-Rp 75,999-
+537211848516	ANDI                     	R1	450	1	-Rp 100,471-
+537212544907	SUDARMO                  	R1	450	1	-Rp 55,605-
+537212558308	ABUDIN AB                	R1	450	1	-Rp 14,770-
+537211848494	UJI                      	R1	450	1	-Rp 64,272-
+537612098144	SAHIM                    	R1M	900	1	-Rp 50,132-
+537212650882	KAMIN BIN NASAN          	R1	450	1	-Rp 58,154-
+537211848460	SUPRI                    	R1	450	1	-Rp 20,703-
+537612033409	ETI                      	R1	900	1	-Rp 161,844-
+537612097780	SAHIR                    	R1	450	2	-Rp 285,648-
+537612404896	NOLIN BIN ACIH           	R1	450	1	-Rp 62,233-
+537210041433	SAKINAN BIN NALIM        	R1	900	1	-Rp 78,229-
+537612097756	YAYAN                    	R1M	900	1	-Rp 108,620-
+537041014524	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 419,627-
+537041014540	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 348,202-
+537041014557	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 482,125-
+537041014599	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041014636	PT PRIMA STEADY DEVELOPME	R1	2200	1	-Rp 616,020-
+537041014764	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 130,948-
+537041014780	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 379,451-
+537041014798	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041014843	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 787,173-
+537041047847	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 217,254-
+537041047862	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 230,647-
+537041047900	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041047926	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 453,853-
+537041047959	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041014039	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257,134-
+537041014054	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 379,451-
+537041014088	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 717,235-
+537041014191	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 373,499-
+537041014204	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 339,274-
+537041014220	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 165,173-
+537041014238	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 291,240-
+537041014246	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 141,364-
+537041014261	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 302,072-
+537041014279	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041014325	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 174,101-
+537041048657	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 4,356,687-
+537041048313	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
+537041048441	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
+537041048347	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 516,350-
+537041048339	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 438,973-
+537041048433	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 278,264-
+537041048665	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 251,479-
+537041048259	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 349,812-
+537041048711	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 126,484-
+537041014341	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041048703	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041048417	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041048458	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041014382	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 311,000-
+537041048218	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
+537041048561	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 427,068-
+537041048608	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 345,225-
+537041048226	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 90,771-
+537041014452	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041014478	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 558,016-
+537041048050	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 354,154-
+537041048106	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041048786	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041048807	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
+537041048898	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 316,953-
+537041048928	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 366,058-
+537041048951	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 232,134-
+537041049124	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 290,169-
+537041049157	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257,134-
+537041049236	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
+        537612587382	YANIH BINTI ASAN         	R1	450	2	-Rp 273.223-
+537612411305	MARHALI BIN MANAP        	R1	450	2	-Rp 230.396-
+537612035221	LEMAN BIN DESIN          	R1	900	2	-Rp 365.887-
+537210335142	OMING                    	R1M	900	2	-Rp 304.008-
+537211638105	ASEP SUBARI B ACANG      	R1	900	2	-Rp 468.877-
+537211561251	SUBHI B ASID             	R1	900	2	-Rp 228.737-
+537612186197	ESTIM                    	R1	450	2	-Rp 388.449-
+537612377001	BANIH BT BAKRI           	R1	450	2	-Rp 144.231-
+537612486054	AGUS HARIANTO BIN TARIM  	R1	900	2	-Rp 224.149-
+537210117566	ELANG BIN KOIN           	R1	900	2	-Rp 173.164-
+537612948078	KARMIN BIN SULAEMAN	R1	450	2	-Rp 182.470-
+537210196047	DARUS A                  	R1	900	2	-Rp 472.079-
+537212623882	MAHMUD A                 	R1	450	2	-Rp 177.881-
+537212622699	AMAN B ERUS              	R1	450	2	-Rp 181.960-
+537212626121	RASIM A                  	R1	450	2	-Rp 163.606-
+537212623293	KOTOT                    	R1	450	2	-Rp 225.807-
+537612391715	YUL JANIN                	R1	450	2	-Rp 262.517-
+537212760560	H SAONAH                 	R1	900	2	-Rp 382.712-
+537212627817	NAIMIN                   	R1	450	2	-Rp 260.477-
+537612168298	SOMARNA BIN SOLEH        	R1	450	2	-Rp 241.096-
+537614452527	IWAN	R1	450	2	-Rp 7.150.864-
+537612169113	KARMA BIN AGIS           	R1	450	2	-Rp 208.473-
+537612436649	ATIM                     	R1	450	2	-Rp 67.753-
+537612286161	ECIN BIN DARIM           	R1	900	2	-Rp 347.023-
+537612171944	ENGKAN                   	R1	450	2	-Rp 108.542-
+537212620799	ENGLIN                   	R1M	900	2	-Rp 753.805-
+537212628445	RANDO BIN ISAK           	R1	450	2	-Rp 241.096-
+537214447047	YOE SUIH                 	R1	450	2	-Rp 311.462-
+537212620509	INAN                     	R1	450	2	-Rp 141.682-
+537612468418	ADI                      	R1	450	2	-Rp 196.235-
+537614480919	WAWAN KOMARUDIN	R1	900	2	-Rp 461.739-
+537212629151	ODI BIN EMPUT            	R1	450	2	-Rp 182.470-
+537212624221	SD MEKAR SARI	S1	450	2	-Rp 369.398-
+537212621544	DARMAN B BARLI           	R1	450	2	-Rp 176.861-
+537212629049	OMEM B USAN              	R1	450	2	-Rp 163.096-
+537612798945	ENUNG S	R1	450	2	-Rp 356.353-
+537612231003	UJANG BIN RANIN          	R1M	900	2	-Rp 106.264-
+537612121487	ICIH BT ICING            	R1	450	2	-Rp 183.999-
+537041014238	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 291.240-
+537041048313	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
+537041048441	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
+537041048218	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
+537041049236	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
+537210100927	MIAN SAMSUDIN            	R1	900	3	-Rp 822.982-
+537612423598	MANSUR SUAIB             	R1	450	3	-Rp 480.585-
+537211608202	PISIN SONJAYA B ELIH     	R1	900	3	-Rp 464.333-
+537040857391	AMUNG SANATIN	R1M	900	3	-Rp 739.584-
+537612429057	ROMANAH                  	R1	450	3	-Rp 410.736-
+537612436440	NANI SUMARNI             	R1M	900	3	-Rp 839.395-
+537041014039	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257.134-
+537041048657	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 4.356.687-
+537041049157	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257.134-`;
 
         let databasePelanggan = [];
 
@@ -651,8 +740,8 @@
             let teksBersih = dataMentah.replace(/[^\x20-\x7E\n]/g, ' ');
             let baris = teksBersih.split('\n');
             let dataPelangganBaru = "";
-            
-            for(let i=0; i<baris.length; i++) {
+
+            for (let i = 0; i < baris.length; i++) {
                 if (/\d{12}/.test(baris[i])) {
                     dataPelangganBaru += "\n" + baris[i];
                 } else {
@@ -661,15 +750,16 @@
             }
 
             let dataArr = dataPelangganBaru.trim().split('\n');
-            
+
             dataArr.forEach(b => {
-                if(b.trim() === "") return;
-                let match = b.match(/(\d{12})\s+(.*?)\s+(R1[A-Z]*)\s+(\d+)\s+(\d+)\s+.*?([\d,]+)/);
+                if (b.trim() === "") return;
                 
+                let match = b.match(/(\d{12})\s+(.*?)\s+([A-Z]\d[A-Z]*)\s+(\d+)\s+(\d+)\s+.*?([\d,\.]+)/);
+
                 if (match) {
                     databasePelanggan.push({
                         idpel: match[1].trim(),
-                        nama: match[2].trim().replace(/[^a-zA-Z\s\.]/g, ''),
+                        nama: match[2].replace(/[^a-zA-Z\s\.]/g, '').trim(),
                         tarif: match[3].trim(),
                         daya: match[4].trim(),
                         lembar: parseInt(match[5].trim()) || 1,
@@ -704,7 +794,7 @@
         function hitungTotal() {
             let tagihanStr = document.getElementById('inputTagihanStruk').value.replace(/[^0-9]/g, '');
             let adminStr = document.getElementById('inputAdmin').value.replace(/[^0-9]/g, '');
-            
+
             let tagihan = parseInt(tagihanStr) || 0;
             let admin = parseInt(adminStr) || 0;
             let total = tagihan + admin;
@@ -720,16 +810,16 @@
                 document.getElementById('outIdpel').innerText = pelanggan.idpel;
                 document.getElementById('outNama').innerText = pelanggan.nama;
                 document.getElementById('outTarif').innerText = pelanggan.tarif + '/' + pelanggan.daya + 'VA';
-                
+
                 let blthTeks = "";
                 if (pelanggan.lembar === 1) blthTeks = getBulanTahun(0);
                 else if (pelanggan.lembar === 2) blthTeks = getBulanTahun(1) + ", " + getBulanTahun(0);
                 else if (pelanggan.lembar >= 3) blthTeks = getBulanTahun(2) + ", " + getBulanTahun(1) + ", " + getBulanTahun(0);
                 document.getElementById('outBlTh').innerText = blthTeks;
-                
+
                 document.getElementById('inputTagihanStruk').value = formatRupiah(pelanggan.tagihan);
                 hitungTotal();
-                
+
                 document.getElementById('outRef1').innerText = generateRandomRef(18);
                 document.getElementById('outRef2').innerText = generateRandomRef(18);
 
@@ -762,8 +852,7 @@
             let admin = document.getElementById('inputAdmin').value;
             let total = document.getElementById('outTotal').innerText;
 
-            // PERBAIKAN: Teks PLN dibuat 2 baris pas sesuai standar 32 karakter
-            let strukTeks = 
+            let strukTeks =
 `m-Payment
 ${tgl} ${jam}
 CKG_53704.PLN LEMAHABANG

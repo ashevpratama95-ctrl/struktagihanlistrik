@@ -2,737 +2,2833 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cetak Struk Tagihan Listrik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CETAK STRUK TAGIHAN</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         /* ==========================================
-           UI MODERN (LATAR, KOTAK PENCARIAN, TOMBOL)
+           1. RESET & BASE
            ========================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
-            min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; padding: 30px 15px;
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .input-panel {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 25px;
-            width: 100%; max-width: 380px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+        button, label, a, input, textarea {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
         }
-
-        .input-panel h3 {
-            margin-bottom: 20px; text-align: center; color: #333;
-            font-size: 20px; font-weight: 700; letter-spacing: 0.5px;
-        }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block; font-size: 13px; margin-bottom: 8px; color: #555;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
-        }
-        .form-group input {
-            width: 100%; padding: 14px 16px; border: 2px solid #e0e0e0;
-            border-radius: 12px; font-size: 16px; color: #333; background: #f9f9f9;
-            transition: all 0.3s ease;
-        }
-        .form-group input:focus {
-            border-color: #667eea; background: #fff; outline: none;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-
-        .btn {
-            width: 100%; padding: 14px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; border-radius: 12px; cursor: pointer;
-            font-size: 16px; font-weight: 600; letter-spacing: 0.5px;
-            transition: transform 0.2s, box-shadow 0.2s; margin-bottom: 10px;
-            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
-        }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4); }
-
-        /* Tombol Instan RawBT */
-        .btn-instan { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3); }
-        .btn-instan:hover { box-shadow: 0 6px 20px rgba(245, 87, 108, 0.4); }
 
         /* ==========================================
-           AREA STRUK (TAMPILAN LAYAR)
+           2. VARIABLES (HANYA 2 WARNA UTAMA)
+           ========================================== */
+        :root {
+            /* Warna Biru */
+            --blue: #0756a8;
+            --blue-dark: #06417e;
+            --blue-light: #eaf4ff;
+            
+            /* Warna Hijau */
+            --green: #10b981;
+            --green-dark: #059669;
+            --green-light: #ecfdf5;
+
+            --white: #fff;
+            --text: #172b4d;
+            --muted: #718096;
+            --border: #e1e8f0;
+            --radius: 18px;
+            --shadow: 0 10px 28px rgba(7, 86, 168, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04);
+
+            --bg-body: #f3f6fb;
+            --bg-card: var(--white);
+            
+            --bg-input: var(--white);
+            --bg-input-focus: var(--white);
+            
+            --bg-preview: #e6eef9;
+
+            --text-primary: var(--text);
+            --text-secondary: var(--muted);
+            --text-muted: var(--muted);
+
+            --border-color: var(--border);
+            --border-input: var(--border);
+
+            --shadow-card: var(--shadow);
+            --shadow-header: 0 4px 20px rgba(0,0,0,0.08);
+            --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.15);
+
+            --accent: var(--blue); 
+            --accent-hover: var(--blue-dark);
+            --accent-ring: rgba(7, 86, 168, 0.15);
+
+            --t-theme: 0.3s;
+        }
+
+        body.dark-mode {
+            --bg-body: #0b1220;
+            --bg-card: #1e293b;
+            
+            --bg-input: #1e293b;
+            --bg-input-focus: #1e293b;
+            
+            --bg-preview: #0f172a;
+
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #94a3b8;
+
+            --border-color: #334155;
+            --border-input: #334155;
+
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0,0,0,0.3);
+            --shadow-header: 0 4px 20px rgba(0,0,0,0.4);
+            --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.5);
+
+            --accent: #3b82f6; 
+            --accent-hover: #2563eb;
+            --accent-ring: rgba(59, 130, 246, 0.15);
+        }
+
+        /* ==========================================
+           3. BODY & OVERLAY
+           ========================================== */
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background-color: var(--bg-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+            margin: 0;
+            transition: background-color var(--t-theme) ease, color var(--t-theme) ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, #ffffff 0%, transparent 100%);
+            pointer-events: none;
+            z-index: -1;
+            opacity: 1;
+            transition: opacity var(--t-theme) ease;
+        }
+
+        body.dark-mode::before { opacity: 0; }
+
+        /* ==========================================
+           4. APP CONTAINER
+           ========================================== */
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 24px;
+            background: transparent;
+        }
+
+        /* ==========================================
+           5. TOP BAR & TOGGLE DARK MODE & PROFIL
+           ========================================== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg-card);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 30;
+            transition: background-color var(--t-theme) ease, box-shadow var(--t-theme) ease;
+        }
+
+        .top-bar.is-stuck { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08); }
+        body.dark-mode .top-bar.is-stuck { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.5); }
+
+        /* Profil (Kanan) */
+        .top-bar-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-left: auto; 
+        }
+
+        .top-bar-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+            line-height: 1.15;
+        }
+
+        .top-bar-role {
+            font-size: 8px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+            transition: color var(--t-theme) ease;
+        }
+
+        .top-bar-name {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color var(--t-theme) ease;
+            margin-top: 1px;
+        }
+
+        .top-bar-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff; 
+            box-shadow: var(--shadow-card);
+            flex-shrink: 0;
+            transition: border-color var(--t-theme) ease;
+        }
+
+        /* === MINI THEME TOGGLE === */
+        .theme-toggle-mini {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color var(--t-theme) ease, border-color var(--t-theme) ease;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .theme-toggle-mini:hover { border-color: var(--blue); }
+
+        .switch-mini {
+            position: relative;
+            display: inline-block;
+            width: 38px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .switch-mini input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+            position: absolute;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .slider-mini {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1; 
+            border-radius: 30px;
+        }
+
+        .switch-mini input:checked + .slider-mini { 
+            background-color: var(--blue); 
+        }
+
+        .thumb-mini {
+            position: absolute;
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: transform 0.26s cubic-bezier(0.4, 0.0, 0.2, 1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            will-change: transform;
+        }
+
+        .switch-mini input:checked + .slider-mini .thumb-mini { 
+            transform: translateX(18px); 
+        }
+
+        .thumb-mini svg {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            transition: opacity 0.22s ease, transform 0.22s ease;
+        }
+
+        .thumb-mini .icon-sun-mini { color: #f59e0b; opacity: 1; transform: rotate(0deg) scale(1); }
+        .thumb-mini .icon-moon-mini { color: #64748b; opacity: 0; transform: rotate(-90deg) scale(0.5); }
+
+        .switch-mini input:checked + .slider-mini .thumb-mini .icon-sun-mini { opacity: 0; transform: rotate(90deg) scale(0.5); }
+        .switch-mini input:checked + .slider-mini .thumb-mini .icon-moon-mini { opacity: 1; transform: rotate(0deg) scale(1); }
+
+        @media (max-width: 360px) {
+            .top-bar { padding: 10px 12px; }
+            .top-bar-text { display: none; }
+        }
+
+        /* ==========================================
+           6. HERO HEADER
+           ========================================== */
+        .hero-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 55%, var(--blue) 100%);
+            padding: 32px 22px 56px;
+            position: relative;
+            z-index: 10;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15);
+        }
+
+        body.dark-mode .hero-header {
+            background: linear-gradient(135deg, #050a18 0%, #0f2557 55%, #084080 100%);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-header::before {
+            content: '';
+            position: absolute;
+            top: -80px;
+            right: -80px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-header::after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            left: -60px;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(7, 86, 168, 0.4) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 26px;
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+            margin-bottom: 10px;
+        }
+
+        .hero-title .gradient {
+            background: linear-gradient(90deg, var(--green) 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 12px;
+            color: rgba(203, 213, 225, 0.75);
+            font-weight: 600;
+            line-height: 1.45;
+            max-width: 300px;
+        }
+
+        /* ==========================================
+           7. PANEL CARD (INPUT)
+           ========================================== */
+        .panel-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            margin: -30px 12px 0;
+            position: relative;
+            z-index: 20;
+            padding: 20px;
+            transition: background-color var(--t-theme) ease, box-shadow var(--t-theme) ease;
+        }
+
+        /* ==========================================
+           TABS MODE
+           ========================================== */
+        .mode-tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 24px;
+            gap: 20px;
+            transition: border-color var(--t-theme) ease;
+        }
+
+        .mode-tab-btn {
+            flex: 1;
+            padding: 10px 5px;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: inherit;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .mode-tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; 
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--blue);
+            transform: scaleX(0);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+
+        .mode-tab-btn.active {
+            color: var(--blue);
+        }
+
+        .mode-tab-btn.active::after {
+            transform: scaleX(1);
+        }
+
+        .mode-tab-btn:active {
+            opacity: 0.7;
+        }
+
+        /* Input Group Wrapper */
+        .input-group {
+            position: relative;
+            margin-bottom: 16px;
+            max-height: 220px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.3s ease, 
+                        margin-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: visible;
+        }
+
+        .input-group.hidden {
+            max-height: 0;
+            opacity: 0;
+            margin-bottom: 0;
+            transform: translateY(-10px);
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* ====== HINT TEXT (KETERANGAN MULTI) ====== */
+        .input-hint {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: -4px;
+            margin-bottom: 14px;
+            padding: 10px 12px;
+            background: var(--green-light);
+            border: 1px dashed #6ee7b7;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green-dark);
+            line-height: 1.45;
+            transition: all var(--t-theme) ease;
+        }
+
+        body.dark-mode .input-hint {
+            background: rgba(16, 185, 129, 0.10);
+            border-color: rgba(16, 185, 129, 0.35);
+            color: #6ee7b7;
+        }
+
+        .input-hint svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            stroke-width: 2.4;
+        }
+
+        .input-hint span {
+            border-left: 2px solid #6ee7b7;
+            padding-left: 10px;
+            display: block;
+        }
+
+        body.dark-mode .input-hint span {
+            border-left-color: rgba(16, 185, 129, 0.5);
+        }
+
+        .input-hint.hidden {
+            display: none;
+        }
+
+        /* ==========================================
+           INPUT & LABEL
+           ========================================== */
+        .input-field {
+            width: 100%;
+            padding: 16px 48px 16px 16px;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-primary);
+            background: var(--bg-input);
+            border: 2px solid var(--border-input);
+            border-radius: 14px;
+            outline: none;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            transition: border-color 0.2s ease, 
+                        background-color var(--t-theme) ease, 
+                        color var(--t-theme) ease,
+                        box-shadow 0.2s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        textarea.input-field {
+            height: 160px; 
+            resize: none;
+            line-height: 1.5;
+            padding-top: 24px;
+            padding-bottom: 12px;
+        }
+
+        /* Border saat di-klik / diisi */
+        .input-field:focus,
+        .input-field:not(:placeholder-shown) {
+            border: 1px solid var(--text-muted); 
+            background: var(--bg-input-focus);
+            padding: 15px 47px 15px 15px; 
+        }
+
+        textarea.input-field:focus,
+        textarea.input-field:not(:placeholder-shown) {
+            padding-top: 23px;
+            padding-bottom: 11px;
+        }
+
+        /* Label melayang */
+        .input-label {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+            pointer-events: none;
+            padding: 0 6px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            background-color: transparent;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .input-label .text-short { display: none; }
+
+        textarea.input-field ~ .input-label {
+            top: 24px;
+        }
+
+        .input-field:focus ~ .input-label,
+        .input-field:not(:placeholder-shown) ~ .input-label {
+            top: 0;
+            transform: translateY(-50%) scale(0.85);
+            transform-origin: left center;
+            color: var(--text-muted); 
+            font-weight: 600;
+            background-color: var(--bg-card); 
+        }
+
+        .input-field:focus ~ .input-label .text-full,
+        .input-field:not(:placeholder-shown) ~ .input-label .text-full {
+            display: none;
+        }
+        .input-field:focus ~ .input-label .text-short,
+        .input-field:not(:placeholder-shown) ~ .input-label .text-short {
+            display: inline;
+        }
+
+        /* Tombol Clear (X) */
+        .btn-clear-input {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%) scale(0.85);
+            width: 24px;
+            height: 24px;
+            padding: 0;
+            background: #eef2f7;
+            color: #64748b;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: background-color var(--t-theme) ease, 
+                        color var(--t-theme) ease,
+                        transform 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
+            z-index: 5;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        textarea.input-field ~ .btn-clear-input {
+            top: 24px;
+        }
+
+        body.dark-mode .btn-clear-input {
+            background: #334155;
+            color: #94a3b8;
+        }
+
+        .input-group.has-value .btn-clear-input {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(-50%) scale(1);
+        }
+
+        .btn-clear-input:hover {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        body.dark-mode .btn-clear-input:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .btn-clear-input:active {
+            transform: translateY(-50%) scale(0.88);
+        }
+
+        .btn-clear-input svg {
+            width: 12px;
+            height: 12px;
+            stroke-width: 2.8;
+        }
+
+        /* Tombol Cari */
+        .btn-cari {
+            width: 100%;
+            background: var(--blue); 
+            color: white;
+            border: none;
+            border-radius: 14px;
+            padding: 15px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(7, 86, 168, 0.2);
+            transition: transform 0.2s ease, 
+                        box-shadow 0.2s ease, 
+                        background-color var(--t-theme) ease;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .btn-cari:hover { background: var(--blue-dark); }
+        .btn-cari:active { transform: scale(0.97); }
+
+        /* ==========================================
+           8. PREVIEW CARD (STRUK)
+           ========================================== */
+        .preview-card-wrapper {
+            display: block;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            margin: 20px 12px 0;
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+            animation: fadeInUp 0.4s ease forwards;
+            transition: background-color var(--t-theme) ease, 
+                        box-shadow var(--t-theme) ease, 
+                        border-color var(--t-theme) ease;
+        }
+
+        .preview-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: border-color var(--t-theme) ease;
+        }
+
+        .preview-header-icon {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 11px;
+            background: var(--blue-light); 
+            color: var(--blue); 
+            transition: background-color var(--t-theme) ease, 
+                        color var(--t-theme) ease, 
+                        transform 0.2s ease;
+        }
+
+        body.dark-mode .preview-header-icon {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+        }
+
+        .preview-header-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.2;
+        }
+
+        .preview-header-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .preview-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            line-height: 1.2;
+            margin-bottom: 2px;
+            transition: color var(--t-theme) ease;
+        }
+
+        .preview-subtitle {
+            font-size: 10.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            line-height: 1.3;
+            transition: color var(--t-theme) ease;
+        }
+
+        .preview-body {
+            background: var(--bg-preview);
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column; 
+            gap: 20px; 
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color var(--t-theme) ease, 
+                        border-color var(--t-theme) ease,
+                        padding 0.3s ease, gap 0.3s ease;
+        }
+
+        .preview-body.is-capturing-wrapper {
+            background: transparent !important;
+            padding: 15px !important; 
+            gap: 15px !important;
+            border: none !important;
+        }
+
+        .preview-actions {
+            padding: 20px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-action-main {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Nunito Sans', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: transform 0.2s ease, 
+                        box-shadow 0.2s ease, 
+                        background-color var(--t-theme) ease;
+            color: white;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .btn-action-main svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            stroke-width: 2.2;
+        }
+
+        /* Tombol Download (HIJAU) */
+        .btn-download {
+            background: var(--green);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
+        }
+        .btn-download:hover { background: var(--green-dark); }
+        .btn-download:active { transform: scale(0.98); }
+
+        /* Tombol Cetak (BIRU) */
+        .btn-print {
+            background: var(--blue);
+            box-shadow: 0 4px 15px rgba(7, 86, 168, 0.2);
+        }
+        .btn-print:hover { background: var(--blue-dark); }
+        .btn-print:active { transform: scale(0.98); }
+
+        .preview-note {
+            padding: 0 20px 16px;
+            font-size: 11px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            transition: color var(--t-theme) ease;
+        }
+
+        /* ==========================================
+           9. STRUK (COURIER NEW)
            ========================================== */
         .struk-container {
-            background: white; width: 100%; max-width: 320px; padding: 15px;
-            font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.3;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); display: none;
-            border-radius: 5px; color: #000; margin-top: 10px;
-            overflow: hidden; 
+            background: white !important;
+            width: 100%;
+            max-width: 300px;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            line-height: 1.3;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            color: #000 !important;
+            border: 1px solid #e2e8f0;
+            position: relative;
         }
 
-        .struk-header { text-align: left; margin-bottom: 10px; }
-        .garis { border-top: 1px dashed #000; margin: 8px 0; }
-        .title-struk { text-align: center; margin: 8px 0; font-size: 11.5px; white-space: nowrap; font-weight: bold; }
-
-        /* PERBAIKAN TABEL AGAR SEJAJAR KIRI */
-        .data-table, .footer-table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            table-layout: fixed; 
+        .struk-header {
+            text-align: left;
+            margin-bottom: 10px;
         }
-        .data-table td, .footer-table td { 
-            padding: 3px 0; 
-            vertical-align: top; 
-            overflow-wrap: break-word; 
+
+        .garis {
+            border-top: 1px dashed #000;
+            margin: 8px 0;
+        }
+
+        .title-struk {
+            text-align: center;
+            margin: 8px 0;
+            font-size: 11.5px;
+            white-space: nowrap;
+            font-weight: normal;
+        }
+
+        .data-table,
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        .data-table td,
+        .footer-table td {
+            padding: 3px 0;
+            vertical-align: middle;
+            overflow-wrap: break-word;
             word-wrap: break-word;
         }
-        
-        /* Pengaturan Lebar Kolom */
-        .data-table td:nth-child(1), .footer-table td:nth-child(1) { width: 35%; white-space: nowrap; }
-        .data-table td:nth-child(2), .footer-table td:nth-child(2) { width: 5%; text-align: left; padding-right: 2px; }
-        .data-table td:nth-child(3), .footer-table td:nth-child(3) { width: 60%; text-align: left; } /* Rata Kiri */
 
-        /* Wadah Input Harga */
+        .data-table td:nth-child(1),
+        .footer-table td:nth-child(1) {
+            width: 38%;
+            white-space: nowrap;
+        }
+
+        .data-table td:nth-child(2),
+        .footer-table td:nth-child(2) {
+            width: 4%;
+            text-align: left;
+            padding-right: 2px;
+        }
+
+        .data-table td:nth-child(3),
+        .footer-table td:nth-child(3) {
+            width: 58%;
+            text-align: left;
+        }
+
+        .footer-table { margin-top: 10px; }
+
         .val-container {
-            display: flex; 
-            align-items: baseline; 
-            justify-content: space-between; 
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
             width: 100%;
+            gap: 4px;
         }
 
-        .val-container .rp-label {
-            flex-shrink: 0; 
-            margin-right: 4px;
+        .editable-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 100%;
+            background-color: var(--blue-light) !important;
+            border-radius: 4px;
+            padding: 2px 5px;
+            border: 1px solid var(--blue-light) !important;
+            box-sizing: border-box;
         }
 
-        /* Input harga dengan garis putus-putus di bawahnya */
         .edit-input {
-            border: none; 
-            border-bottom: 1px dashed #000; /* Garis putus-putus di sini */
-            background: transparent; 
-            font-family: inherit; 
+            border: none;
+            border-bottom: 1px dashed #000 !important;
+            background: transparent !important;
+            font-family: inherit;
             font-size: inherit;
-            color: blue; 
-            outline: none; 
-            width: 100%; 
-            max-width: 110px; /* Batasi lebar garis */
-            text-align: right; 
+            color: var(--blue) !important;
+            outline: none;
+            width: 100%;
+            text-align: left;
             padding: 0 0 1px 0;
-            margin-left: auto; /* Dorong ke kanan */
+            line-height: 1.3;
         }
-        .edit-input:focus { background: #eef; }
+
+        .edit-input:focus { background: var(--blue-light) !important; }
 
         .total-amount {
-            flex-grow: 1;
-            text-align: right;
-            border-bottom: 1px dashed #000;
-            margin-left: 4px;
-            display: block;
+            text-align: left;
+            border-bottom: 1px dashed #000 !important;
+            display: inline-block;
             padding-bottom: 1px;
-            width: 100%;
-            max-width: 110px;
+            line-height: 1.3;
+            color: #000 !important;
         }
 
-        .disclaimer { text-align: center; margin: 12px 0; font-size: 12px; }
-        .footer-table { margin-top: 10px; }
-        .closing-text { text-align: center; margin-top: 15px; font-size: 12px; line-height: 1.4; }
+        .edit-icon {
+            width: 12px;
+            height: 12px;
+            margin-left: 5px;
+            fill: var(--blue) !important;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+
+        .edit-icon:hover { fill: var(--blue-dark) !important; }
+
+        .disclaimer {
+            text-align: center;
+            margin: 12px 0;
+            font-size: 12px;
+            color: #000 !important;
+        }
+
+        .closing-text {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            line-height: 1.4;
+            color: #000 !important;
+        }
+
+        .is-capturing .editable-wrapper {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            display: inline-block !important;
+        }
+
+        .is-capturing .edit-icon { display: none !important; }
+
+        .is-capturing .edit-input,
+        .is-capturing .total-amount {
+            border-bottom: none !important;
+            color: #000 !important;
+        }
 
         /* ==========================================
-           PENGATURAN SAAT DI-PRINT MANUAL (Ctrl+P)
+           10. MODAL
+           ========================================== */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .custom-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .custom-modal-box {
+            background: var(--bg-card);
+            width: 85%;
+            max-width: 320px;
+            border-radius: var(--radius);
+            padding: 25px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-modal);
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        background-color var(--t-theme) ease;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+
+        .custom-modal-overlay.active .custom-modal-box {
+            transform: translateY(0) scale(1);
+        }
+
+        /* Ikon Modal (Warna Merah) */
+        .modal-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: #fef2f2; 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            transition: background-color var(--t-theme) ease;
+        }
+
+        body.dark-mode .modal-icon-wrapper {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .modal-icon-wrapper svg {
+            width: 30px;
+            height: 30px;
+            stroke: #ef4444; 
+            stroke-width: 2.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            transition: color var(--t-theme) ease;
+        }
+
+        .modal-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            transition: color var(--t-theme) ease;
+        }
+
+        .btn-modal-ok {
+            width: 100%;
+            background: var(--green); 
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+            font-family: inherit;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .btn-modal-ok:hover { background: var(--green-dark); }
+        .btn-modal-ok:active { transform: scale(0.97); }
+
+        /* ==========================================
+           11. PRINT STYLES
            ========================================== */
         @media print {
             @page { margin: 0; size: 58mm auto; }
+
             html, body {
-                margin: 0 !important; padding: 0 !important; height: auto !important;
-                min-height: auto !important; background: white !important;
-                background-image: none !important; overflow: hidden !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                height: auto !important;
+                min-height: auto !important;
+                background: white !important;
+                background-image: none !important;
+                overflow: hidden !important;
             }
-            .input-panel, #panelPrint, .btn { display: none !important; }
+
+            body::before { display: none !important; }
+
+            .top-bar,
+            .hero-header,
+            .panel-card,
+            .preview-header,
+            .preview-actions,
+            .preview-note,
+            .custom-modal-overlay {
+                display: none !important;
+            }
+
+            .app-container {
+                max-width: 100%;
+                box-shadow: none;
+                background: white;
+            }
+
+            .preview-card-wrapper {
+                display: block !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                border: none !important;
+            }
+
+            .preview-body {
+                background: white !important;
+                padding: 0 !important;
+                border: none !important;
+                display: block !important; 
+            }
 
             .struk-container {
-                box-shadow: none !important; width: 58mm !important; max-width: 58mm !important;
-                padding: 2mm 2mm 10mm 2mm !important; margin: 0 !important; border-radius: 0 !important;
-                display: block !important; font-size: 10.5px !important; line-height: 1.15 !important;
-                page-break-inside: avoid !important; page-break-after: avoid !important;
+                box-shadow: none !important;
+                width: 58mm !important;
+                max-width: 58mm !important;
+                padding: 2mm 2mm 10mm 2mm !important;
+                margin: 0 auto !important;
+                border-radius: 0 !important;
+                display: block !important;
+                font-size: 10.5px !important;
+                line-height: 1.15 !important;
+                page-break-inside: avoid !important;
+                page-break-after: always !important; 
+                border: none !important;
             }
+            .struk-container:last-child {
+                page-break-after: auto !important; 
+            }
+
             .struk-container > div:last-child { margin-bottom: 0 !important; }
             .garis { margin: 5px 0 !important; }
             .title-struk { font-size: 9.5px !important; letter-spacing: -0.2px !important; }
             .disclaimer { font-size: 9.5px !important; margin: 8px 0 !important; }
             .closing-text { font-size: 9.5px !important; margin-top: 10px !important; }
-            .edit-input, .total-amount {
-                border-bottom: none !important; color: black !important;
+
+            .editable-wrapper {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
             }
+
+            .edit-icon { display: none !important; }
+            .edit-input,
+            .total-amount {
+                border-bottom: none !important;
+                color: black !important;
+            }
+        }
+
+        /* ==========================================
+           12. ANIMATIONS
+           ========================================== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="input-panel">
-        <h3>STRUK TAGIHAN LISTRIK</h3>
-        <div class="form-group">
-            <label>IDPEL</label>
-            <input type="text" id="inputIdpel" placeholder="Masukkan ID Pelanggan">
+    <div class="app-container">
+
+        <!-- TOP BAR -->
+        <div class="top-bar" id="topBar">
+            <!-- Toggle Theme (Kiri) -->
+            <label class="theme-toggle-mini" title="Ubah Tema">
+                <span class="switch-mini">
+                    <input type="checkbox" id="themeToggleSwitch" onchange="toggleTheme()">
+                    <span class="slider-mini">
+                        <span class="thumb-mini">
+                            <svg class="icon-sun-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                            <svg class="icon-moon-mini" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                        </span>
+                    </span>
+                </span>
+            </label>
+
+            <!-- Profil (Kanan) -->
+            <div class="top-bar-profile">
+                <div class="top-bar-text">
+                    <div class="top-bar-role">Created By</div>
+                    <div class="top-bar-name">ASEP SAEPUDIN</div>
+                </div>
+                <img src="https://i.postimg.cc/R0YMVxZK/IMG-20261018-003418.png" alt="Asep" class="top-bar-avatar">
+            </div>
         </div>
-        <button class="btn" onclick="cariData()">Tampilkan</button>
+
+        <!-- HERO HEADER -->
+        <header class="hero-header">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    CETAK STRUK<br>
+                    <span class="gradient">TAGIHAN LISTRIK PLN</span>
+                </h1>
+                <p class="hero-subtitle">Kini buat struk tagihan dengan mudah dan praktis, siap cetak atau download.</p>
+            </div>
+        </header>
+
+        <!-- PANEL INPUT -->
+        <div class="panel-card" id="panelSwipeArea">
+            
+            <!-- Toggle Mode -->
+            <div class="mode-tabs" id="modeToggle" data-mode="single">
+                <button type="button" class="mode-tab-btn active" id="modeSingleBtn" onclick="setMode('single')">Personal</button>
+                <button type="button" class="mode-tab-btn" id="modeMultiBtn" onclick="setMode('multi')">Kolektif</button>
+            </div>
+
+            <!-- Input Tunggal -->
+            <div class="input-group" id="singleInputGroup">
+                <input type="tel" id="inputIdpelSingle" class="input-field" placeholder=" " inputmode="numeric" maxlength="12" autocomplete="off">
+                <label for="inputIdpelSingle" class="input-label">
+                    <span class="text-full">Masukkan ID Pelanggan / No. Meter</span>
+                    <span class="text-short">ID Pelanggan / No. Meter</span>
+                </label>
+                <button type="button" class="btn-clear-input" onclick="resetForm()" aria-label="Hapus" title="Hapus">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Hint Kolektif -->
+            <div class="input-hint hidden" id="multiHint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <span>Kamu bisa masukkan hingga <strong>25 nomor meter</strong>, pisahkan tiap nomor di baris yang berbeda.</span>
+            </div>
+
+            <!-- Input Multi -->
+            <div class="input-group hidden" id="multiInputGroup">
+                <textarea id="inputIdpelMulti" class="input-field" placeholder=" " 
+                  inputmode="numeric" autocomplete="off"></textarea>
+                <label for="inputIdpelMulti" class="input-label">
+                    <span class="text-full"></span>
+                    <span class="text-short">ID Pelanggan / No. Meter</span>
+                </label>
+                <button type="button" class="btn-clear-input" onclick="resetForm()" aria-label="Hapus" title="Hapus">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <button class="btn-cari" id="btnCari" onclick="cariData()">Cek Tagihan</button>
+        </div>
+
+        <!-- PREVIEW CARD -->
+        <div class="preview-card-wrapper" id="previewWrapper">
+            <div class="preview-header">
+                <div class="preview-header-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <div class="preview-header-text">
+                    <div class="preview-title">LIHAT STRUK TAGIHAN</div>
+                    <div class="preview-subtitle">Silahkan atur nominal bila ingin di sesuaikan.</div>
+                </div>
+            </div>
+
+            <!-- CONTAINER STRUK MULTI -->
+            <div class="preview-body" id="multiStrukContainer">
+                <div style="text-align:center; color:#94a3b8; font-size:12px; padding:20px;" id="emptyState">
+                    Masukkan ID Pelanggan terlebih dahulu.
+                </div>
+            </div>
+
+            <div class="preview-actions">
+                <button class="btn-action-main btn-download" id="btnDownloadJpg" onclick="downloadJPG()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span class="btn-text" id="btnTextDownload">Download</span>
+                </button>
+                <button class="btn-action-main btn-print" id="btnCetakRawBT" onclick="cetakInstanRawBT()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+                        <rect x="6" y="14" width="12" height="8"></rect>
+                    </svg>
+                    <span class="btn-text" id="btnTextCetak">Cetak</span>
+                </button>
+            </div>
+
+            <div class="preview-note">
+                Periksa kembali semua data, pastikan sudah sesuai sebelum mencetak atau download..
+            </div>
+        </div>
+
     </div>
 
-    <!-- Area Struk -->
-    <div class="struk-container" id="strukArea">
-        <div class="struk-header">
-            m-Payment<br>
-            <span id="outDate">#date#</span> <span id="outTime">#time#</span><br>
-            CKG_53704.PLN LEMAHABANG
+    <!-- MODAL -->
+    <div class="custom-modal-overlay" id="customAlert">
+        <div class="custom-modal-box">
+            <div class="modal-icon-wrapper">
+                <svg viewBox="0 0 24 24">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <div class="modal-title">Informasi</div>
+            <div class="modal-desc" id="modalMessage">Pesan...</div>
+            <button class="btn-modal-ok" onclick="closeCustomAlert()">Mengerti</button>
         </div>
-
-        <div class="garis"></div>
-        <div class="title-struk">STRUK PEMBAYARAN TAGIHAN LISTRIK</div>
-        <div class="garis"></div>
-
-        <table class="data-table">
-            <tr><td>IDPEL</td><td>:</td><td id="outIdpel">-</td></tr>
-            <tr><td>NAMA</td><td>:</td><td id="outNama">-</td></tr>
-            <tr><td>TARIF/DAYA</td><td>:</td><td id="outTarif">-</td></tr>
-            <tr><td>BL/TH</td><td>:</td><td id="outBlTh">-</td></tr>
-
-            <tr>
-                <td>RP TAG PLN</td><td>:</td>
-                <td>
-                    <div class="val-container">
-                        <span class="rp-label">Rp</span>
-                        <input type="text" id="inputTagihanStruk" class="edit-input" value="0" oninput="hitungTotal()" title="Klik untuk mengedit nominal">
-                    </div>
-                </td>
-            </tr>
-
-            <tr><td>NO REF</td><td>:</td><td id="outRef1" style="text-align:left;">-</td></tr>
-            <tr><td></td><td></td><td id="outRef2" style="text-align:left;">-</td></tr>
-        </table>
-
-        <div class="disclaimer">
-            PLN menyatakan struk ini sebagai<br>
-            bukti pembayaran yang sah.
-        </div>
-
-        <table class="footer-table">
-            <tr>
-                <td>ADMIN BANK</td><td>:</td>
-                <td>
-                    <div class="val-container">
-                        <span class="rp-label">Rp</span>
-                        <input type="text" id="inputAdmin" class="edit-input" value="3.000" oninput="hitungTotal()">
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>TOTAL BAYAR</td><td>:</td>
-                <td>
-                    <div class="val-container">
-                        <span class="rp-label">Rp</span>
-                        <span id="outTotal" class="total-amount">0</span>
-                    </div>
-                </td>
-            </tr>
-        </table>
-
-        <div class="closing-text">
-            Terima Kasih<br>
-            "Informasi Hubungi Call Center<br>
-            123 atau PLN Terdekat:"
-        </div>
-        <div style="text-align: center; margin-top: 10px;">---</div>
-    </div>
-
-    <!-- Panel Tombol Cetak -->
-    <div style="margin-top: 20px; text-align: center; display:none; width: 100%; max-width: 320px;" id="panelPrint">
-        <button class="btn btn-instan" onclick="cetakInstanRawBT()">CETAK STRUK</button>
     </div>
 
     <script>
-        let dataMentah = `
-537210239375	LANDI IRIANDI            	R1	1300	1	-Rp 77,378-
-537212624288	UDIN S B DESIN           	R1	450	1	-Rp 194,794-
-537210096638	AHMAD B DESIN            	R1	900	1	-Rp 79,758-
-537612793710	H E R M A W A N	R1	450	1	-Rp 111,178-
-537212624184	ACUH B MIIN              	R1	450	1	-Rp 110,159-
-537612078017	ARWAT BIN ANIM           	R1	450	1	-Rp 93,333-
-537612427174	JUKI                     	R1	450	1	-Rp 29,092-
-537214446986	INAN                     	R1	450	1	-Rp 108,119-
-537210100927	MIAN SAMSUDIN            	R1	900	3	-Rp 822,982-
-537612514677	NEMAN BIN ATA            	R1	450	1	-Rp 56,624-
-537612475245	AMAN BIN DASIM           	R1	450	1	-Rp 39,289-
-537212624143	JISIN B MUIN             	R1	450	1	-Rp 29,602-
-537612346553	ASHNAR AHMADI BIN JINSIN 	R1	450	1	-Rp 107,609-
-537212624119	TUTUN                    	R1	450	1	-Rp 53,565-
-537212624205	AMAN NARSIH              	R1	450	1	-Rp 48,467-
-537210118670	ANTA BIN AYIM            	R1M	900	1	-Rp 50,132-
-537612160472	SITI HODIJAH SAG         	R1M	900	1	-Rp 185,210-
-537612411305	MARHALI BIN MANAP        	R1	450	2	-Rp 230,396-
-537212623938	P OTONG                  	R1	450	1	-Rp 71,410-
-537612170280	AAM BIN ASAN             	R1	450	1	-Rp 37,760-
-537212624006	ENYIN                    	R1	450	1	-Rp 69,371-
-537612481373	UCI SANUSI BIN CIIN      	R1	450	1	-Rp 71,920-
-537612212350	SANIN                    	R1	450	1	-Rp 108,629-
-537612381438	ILAN BIN ILUT            	R1	450	1	-Rp 71,410-
-537212623468	ABAS                     	R1	450	1	-Rp 87,725-
-537212624101	NASIM                    	R1	450	1	-Rp 39,289-
-537212623683	MUSLIM                   	R1	450	1	-Rp 31,642-
-537212623514	SAEPUDIN B SAJU          	R1	450	1	-Rp 44,898-
-537614459469	SUSI	R1	450	1	-Rp 52,036-
-537210089669	ANANG                    	R1	900	1	-Rp 81,288-
-537212624270	KANIH RENDAN             	R1	450	1	-Rp 156,327-
-537212623747	KAJAN                    	R1	450	1	-Rp 56,624-
-537212624014	MA UBIH                  	R1M	900	1	-Rp 487,396-
-537612875220	ANING BIN SARDI	R1	450	1	-Rp 92,824-
-537212624055	ALING                    	R1	450	1	-Rp 52,036-
-537612269249	SARTA B MISKA            	R1	900	1	-Rp 28,789-
-537212581532	MIMI BT SAIN             	R1	450	1	-Rp 21,954-
-537612150503	AI BT ENIN               	R1	450	1	-Rp 95,883-
-537612217847	ELA BT ENING             	R1M	900	1	-Rp 139,256-
-537212623809	MA ICAH                  	R1	450	1	-Rp 74,469-
-537612398466	LIAN BIN LASAN           	R1	450	1	-Rp 121,885-
-537612391723	UPIT BT DAMO             	R1	450	1	-Rp 64,272-
-537612437210	ROSIDIN BA               	R1	450	1	-Rp 58,154-
-537212623380	ANWAR B H SUHADA         	R1	450	1	-Rp 37,250-
-537212623796	SOTON                    	R1	900	1	-Rp 162,354-
-537212589419	SAMAT                    	R1	450	1	-Rp 51,016-
-537612506529	ITI BT SOTON             	R1	450	1	-Rp 73,449-
-537612283857	SYAHROJA BIN UJUD        	R1	450	1	-Rp 96,902-
-537612058944	SUIMAN BIN YADI          	R1	450	1	-Rp 74,979-
-537212623011	MAD SUPI                 	R1	450	1	-Rp 86,705-
-537612825793	USNA SUTISNA	R1	450	1	-Rp 81,607-
-537210335175	PENA                     	R1	450	1	-Rp 68,351-
-537210335167	MARIN                    	R1	450	1	-Rp 73,449-
-537612443028	NANA B USUP              	R1	450	1	-Rp 28,073-
-537212622794	A M A T                  	R1	450	1	-Rp 119,846-
-537212622849	RACHMAT                  	R1	450	1	-Rp 31,642-
-537212623060	MISAN                    	R1	450	1	-Rp 5,099-
-537212623349	IRSAN                    	R1	450	1	-Rp 56,114-
-537612063613	DAYING BIN ABUN          	R1	450	1	-Rp 36,230-
-537612614401	NANDIN                   	R1	450	1	-Rp 64,272-
-537212626241	ROSID                    	R1	450	1	-Rp 54,075-
-537210184330	MUSHOLA ATTAIDIN         	S1	450	1	-Rp 53,940-
-537612412626	SARIPUDIN BIN KANUNG     	R1	450	1	-Rp 70,900-
-537612591217	EDI SURYADI              	R1	450	1	-Rp 9,798-
-537612222375	PATIMAH BT U ASAN        	R1	450	1	-Rp 123,415-
-537612159849	ENDANG BIN ARNAN         	R1	450	1	-Rp 76,508-
-537212623427	ENDAH                    	R1	450	1	-Rp 96,393-
-537210049456	ROHMAN B REMBING         	R1	900	1	-Rp 100,152-
-537612119772	AISAH BINTI CIMING       	R1	450	1	-Rp 136,161-
-537210335096	NEIN                     	R1	900	1	-Rp 167,962-
-537210335126	OMANM                    	R1	450	1	-Rp 44,898-
-537210335159	WAKIL ININ               	R1	450	1	-Rp 10,691-
-537210335118	NAJI                     	R1	450	1	-Rp 47,447-
-537612819785	KARMA BIN ENCEP	R1	450	1	-Rp 194,794-
-537612283994	KAYO BIN MIDIN           	R1	450	1	-Rp 84,156-
-537612361145	KARMA BIN ENCEP          	R1	450	1	-Rp 46,937-
-537612486054	AGUS HARIANTO BIN TARIM  	R1	900	2	-Rp 224,149-
-537612948078	KARMIN BIN SULAEMAN	R1	450	2	-Rp 182,470-
-537210111753	INA BT INEN              	R1	900	1	-Rp 90,465-
-537612225874	SALIP BIN SAAT           	R1	450	1	-Rp 94,863-
-537212623244	EMPUH                    	R1M	900	1	-Rp 140,649-
-537612824846	PENDI BIN ENCEP	R1	450	1	-Rp 71,410-
-537612478752	KASINO                   	R1	450	1	-Rp 5,099-
-537212623199	ENCUNG                   	R1	450	1	-Rp 92,314-
-537210048973	MAD ARIP                 	R1	900	1	-Rp 165,923-
-537612280429	IYAR BIN NASIP           	R1	450	1	-Rp 26,033-
-537614477137	ROHATI	R1	450	1	-Rp 103,530-
-537612432259	OTIH BT KOTOT            	B1	900	1	-Rp 204,913-
-537212623825	GOJALI                   	R1	450	1	-Rp 182,047-
-537214446978	SABAN                    	R1	450	1	-Rp 84,666-
-537212623866	M ASUR                   	R1	900	1	-Rp 90,465-
-537612593260	BURHANI BIN ESIM         	R1	450	1	-Rp 40,309-
-537210100935	DARYO                    	R1	900	1	-Rp 22,506-
-537212623817	MAHMUD B                 	R1	900	1	-Rp 292,366-
-537212622673	SAMAD                    	R1M	900	1	-Rp 50,132-
-537612171977	ATIP BIN JALI            	R1	450	1	-Rp 78,548-
-537210335220	EMBUK                    	R1	450	1	-Rp 40,819-
-537211584726	MARYATI BINTI MIING      	R1	450	1	-Rp 17,737-
-537212654667	UTAY                     	R1	450	1	-Rp 89,255-
-537612405458	RACIM BIN GANDA          	R1	450	1	-Rp 63,762-
-537212626503	GANDA                    	R1	450	1	-Rp 66,311-
-537210335309	YUSUP B SAAN             	R1	450	1	-Rp 196,095-
-537612168414	NURYAMI BT KIAN          	R1	450	1	-Rp 82,627-
-537612287682	ENGKUS                   	R1	450	1	-Rp 112,708-
-537612138106	NEMAN BIN RADIN          	R1	450	1	-Rp 95,373-
-537612454117	RASIM NURHASAN BIN RAHMAT	R1	450	1	-Rp 56,114-
-537612638656	RAHMATULLOH              	R1	450	1	-Rp 32,661-
-537612381923	HASAN BASRI B M YUSUP    	R1	450	1	-Rp 60,703-
-537210103741	IBRAHIM MUNADI           	R1	900	1	-Rp 91,994-
-537612083487	ESAN BIN SAIN            	R1	450	1	-Rp 29,092-
-537612160232	H SAMIN BIN AMIN         	R1	450	1	-Rp 69,880-
-537612802884	RAHMAN PAHRUDIN	R1M	900	1	-Rp 50,132-
-537612791590	SITI HAJAR BTH.M.RUSYIDI	R1	900	1	-Rp 65,482-
-537612346050	EDOM                     	R1	450	1	-Rp 135,141-
-537212624732	SAKIR                    	R1	450	1	-Rp 61,723-
-537210241837	UUN BT UJANG             	R1	900	1	-Rp 25,580-
-537614465436	AMELI	R1M	900	1	-Rp 105,835-
-537212625448	ATIM SUHERMAN            	R1	450	1	-Rp 126,984-
-537212617875	ERSIH                    	R1	450	1	-Rp 87,725-
-537212625887	SUROM                    	R1	450	1	-Rp 23,994-
-537212625933	TUMPEL                   	R1	450	1	-Rp 90,274-
-537212623323	AMAN                     	R1	450	1	-Rp 40,819-
-537212624487	TAPIAN NURDIN            	R1M	900	1	-Rp 161,782-
-537212626083	KARTAWI                  	R1	450	1	-Rp 18,849-
-537212626855	AMSIR                    	R1	450	1	-Rp 94,353-
-537614447068	LIA TRESNAWATI	R1	900	1	-Rp 67,012-
-537212626188	AMAN BIN JALI            	R1	450	1	-Rp 97,922-
-537612512664	INUN BIN JAISIN          	R1	450	1	-Rp 19,961-
-537612424612	MANTA                    	R1	450	1	-Rp 83,646-
-537612381509	SAMIH                    	R1	450	1	-Rp 52,036-
-537612381495	KARYAT KARYANI           	R1	450	1	-Rp 39,799-
-537212626395	KARMALI                  	R1	450	1	-Rp 104,550-
-537612442901	SUHARA BIN H BOTIN       	R1M	900	1	-Rp 264,586-
-537212626018	AWANG                    	R1	450	1	-Rp 111,688-
-537612379516	KADA BIN NAMIT           	R1	450	1	-Rp 33,681-
-537612436631	ASMAN                    	R1	450	1	-Rp 181,538-
-537212625853	JUNAEDI                  	R1	450	1	-Rp 61,213-
-537612089935	SAREM BT MAAN            	R1	450	1	-Rp 129,533-
-537214457627	NEMBON                   	R1	450	1	-Rp 83,136-
-537612437419	NIJA B ISNA              	R1	450	1	-Rp 87,215-
-537210080564	ASRI B SAINAN            	R1	450	1	-Rp 219,548-
-537612001059	UDIN                     	R1	900	1	-Rp 146,548-
-537212624781	NASAN                    	R1	450	1	-Rp 41,839-
-537612181312	UNAH BT UKI              	R1	450	1	-Rp 5,099-
-537612405490	NUNUNG                   	R1	450	1	-Rp 113,218-
-537212625639	BOSI                     	R1	450	1	-Rp 31,132-
-537211624547	SARMAN B KAWIR           	R1M	900	1	-Rp 185,210-
-537212626769	SARBINI B SARWALA        	R1	450	1	-Rp 66,821-
-537212625820	PARMAN                   	R1	450	1	-Rp 5,099-
-537612207457	SDN KERTA JAYA 04        	S1	900	1	-Rp 40,100-
-537210335279	JAMSIR                   	R1	450	1	-Rp 151,966-
-537612150162	ARMAT BIN MARTU          	R1	450	1	-Rp 72,939-
-537612109334	TIRMANSYAH               	R1	450	1	-Rp 114,237-
-537210335287	ISAR                     	R1	450	1	-Rp 169,301-
-537612085504	SUEIB BIN MADIH          	R1	450	1	-Rp 128,513-
-537212624708	ASDEN BIN RENDAN         	R1	450	1	-Rp 103,021-
-537212626026	ECIN                     	R1	450	1	-Rp 88,235-
-537212626312	ONYIN                    	R1	450	1	-Rp 71,410-
-537614300744	ANDA	R1	450	1	-Rp 113,218-
-537212626822	D A B E H                	R1	900	1	-Rp 18,540-
-537212625812	OYIM                     	R1	450	1	-Rp 91,294-
-537612255042	OCEN                     	R1	450	1	-Rp 35,720-
-537212626147	NURI                     	R1	450	1	-Rp 62,742-
-537612485597	SYAMSUDIN                	R1	450	1	-Rp 58,154-
-537612266050	ISANUDIN                 	R1	900	1	-Rp 62,423-
-537612816904	SARLOJI	R1	450	1	-Rp 58,154-
-537212626000	LONJI B ENEN             	R1	450	1	-Rp 31,642-
-537212628183	DONENG                   	R1	450	1	-Rp 46,937-
-537612377910	DARSIH BT SAPNA          	R1	450	1	-Rp 41,839-
-537612819777	IMUN BIN SAINAN	R1	450	1	-Rp 21,954-
-537212627398	KENENG                   	R1	450	1	-Rp 60,193-
-537210043204	JALIL                    	B1	450	1	-Rp 41,236-
-537612436806	MISNAH BT KINUNG         	R1	450	1	-Rp 79,568-
-537212628175	SIMIT                    	R1	450	1	-Rp 74,979-
-537612546724	SAIM                     	R1	450	1	-Rp 73,449-
-537612356855	NALIM BIN NOIN           	R1	450	1	-Rp 25,014-
-537212626075	ANDI                     	R1	450	1	-Rp 98,942-
-537612168160	ARDI BIN KENJIM          	R1	450	1	-Rp 135,141-
-537210275946	KANA                     	R1	900	1	-Rp 69,051-
-537612323022	ENJU JUNAEDI             	R1	450	1	-Rp 150,437-
-537212626968	KUWAT                    	R1	450	1	-Rp 81,097-
-537212626919	YONO                     	R1	450	1	-Rp 89,255-
-537612234968	ACIH BINTI AMAD          	R1	900	1	-Rp 109,839-
-537212627841	MESJID AL HIDAYAH 1      	S1	900	1	-Rp 232,577-
-537612062479	ENTIN B NEMAN            	R1	450	1	-Rp 71,410-
-537614452527	IWAN	R1	450	2	-Rp 7.150.864-
-537612464754	H TABAN THOIBILLAH       	R1	450	1	-Rp 75,999-
-537612169113	KARMA BIN AGIS           	R1	450	2	-Rp 208,473-
-537612236053	EYOT BIN ILAN            	R1	900	1	-Rp 79,248-
-537612891891	NAIN	R1	450	1	-Rp 102,001-
-537040982697	RYCA PRIYANI	B1	900	1	-Rp 124,450-
-537212628437	GANANG                   	R1	450	1	-Rp 65,802-
-537212066918	UNIN                     	R1	450	1	-Rp 36,230-
-537212628403	ANDUN                    	R1	450	1	-Rp 16,253-
-537212620611	TALEN                    	R1	450	1	-Rp 15,141-
-537212628366	AMIN                     	R1	450	1	-Rp 66,821-
-537212732256	IYA                      	R1	450	1	-Rp 62,742-
-537612058267	JUNIN                    	R1	450	1	-Rp 139,730-
-537212622490	DALU B                   	R1	450	1	-Rp 101,491-
-537612426321	TENAH BT SIONG           	R1	450	1	-Rp 94,353-
-537612295221	ANTONG                   	R1	450	1	-Rp 84,666-
-537612436578	SUHENDA                  	R1	450	1	-Rp 84,156-
-537212621104	UNIN                     	R1	450	1	-Rp 25,014-
-537612356607	ROJAK BIN UNIN           	R1	450	1	-Rp 73,959-
-537612170838	KARTO                    	R1	450	1	-Rp 33,681-
-537212621153	NIMAN                    	R1	450	1	-Rp 63,762-
-537612437011	IMAN                     	R1	450	1	-Rp 39,799-
-537612159520	AJUM BIN MISA            	R1	450	1	-Rp 60,703-
-537612228170	ANING BIN TAMBUR         	R1	450	1	-Rp 36,740-
-537612144752	ACUM BT ASUR             	R1	450	1	-Rp 46,937-
-537612436649	ATIM                     	R1	450	2	-Rp 67,753-
-537210334920	ISIN BIN JUMIN           	R1	450	1	-Rp 22,464-
-537212621299	ISIN                     	R1	450	1	-Rp 60,193-
-537612324805	ASEN                     	R1	450	1	-Rp 38,270-
-537212628508	ACIM                     	R1	450	1	-Rp 46,937-
-537612168280	SOBARI                   	R1	450	1	-Rp 45,408-
-537612325608	SANEN BIN ALIH           	R1	450	1	-Rp 70,390-
-537211575218	IJAN BIN KARIN           	R1	450	1	-Rp 122,771-
-537612592028	PARDI                    	R1	450	1	-Rp 15,512-
-537612150147	AMINAH                   	R1	450	1	-Rp 43,878-
-537614466391	NOVIA FITRIANA	R1	900	1	-Rp 74,150-
-537212620541	HAMDAN B TUMING          	B1	900	1	-Rp 76,555-
-537212620525	RANIM                    	R1	450	1	-Rp 19,220-
-537210053061	TIBO B SUKAR             	R1	900	1	-Rp 79,248-
-537210024976	DALIM B KURU             	B1	450	1	-Rp 102,233-
-537212628906	ENCIM B ANIM             	R1	450	1	-Rp 79,568-
-537210334882	AMONG                    	R1M	900	1	-Rp 289,652-
-537612475004	UKI BIN NATA             	R1	450	1	-Rp 27,563-
-537612429099	KANTA B NAMAN S          	R1	450	1	-Rp 73,959-
-537612816659	KALIM	R1	450	1	-Rp 193,264-
-537212625775	ROHIM BINTI ANGIN        	R1	450	1	-Rp 77,528-
-537212628341	T A S U M                	R1	450	1	-Rp 80,587-
-537212628756	KASIP                    	R1	450	1	-Rp 58,154-
-537212628801	IRMAN BIN MACEN          	R1	450	1	-Rp 88,745-
-537212628644	RADI B BIDONG            	R1	450	1	-Rp 68,861-
-537212628557	ACIM                     	R1	450	1	-Rp 42,858-
-537212066991	KAMIN                    	R1	450	1	-Rp 73,959-
-537612436680	KAMAL B WARLI            	R1	450	1	-Rp 49,486-
-537212621934	AMUNG	R1	450	1	-Rp 50,506-
-537212620686	YANSUN                   	R1	450	1	-Rp 87,725-
-537612171944	ENGKAN                   	R1	450	2	-Rp 108,542-
-537212066959	LIM NEM BIH              	R1	450	1	-Rp 72,430-
-537612112033	ERNIH                    	R1	450	1	-Rp 13,658-
-537614468458	KATIRI	R1	900	1	-Rp 205,837-
-537212620799	ENGLIN                   	R1M	900	2	-Rp 753,805-
-537212620802	ENCENG                   	R1	2200	1	-Rp 132,219-
-537212621456	ININ                     	R1	450	1	-Rp 68,351-
-537612544873	MINI                     	R1	450	1	-Rp 55,095-
-537612178064	WARNATA                  	R1	450	1	-Rp 33,171-
-537612486403	MEDIH                    	R1	450	1	-Rp 43,878-
-537210017974	MASRAN MUNAWAR H         	R1M	900	1	-Rp 540,313-
-537612428326	LILIS                    	R1	450	1	-Rp 95,373-
-537210084020	ENCA B BOIH              	R1	900	1	-Rp 179,179-
-537212621536	IKAN                     	R1	450	1	-Rp 69,880-
-537612372299	SATI BT IKAM             	R1	450	1	-Rp 92,824-
-537211609636	CICIH BT SOLEH           	R1	900	1	-Rp 244,949-
-537614240280	MANTA	R1	450	1	-Rp 67,331-
-537040686174	TAUFAN AKBARI AL ARIF	B1	900	1	-Rp 95,713-
-537212628599	OWEH SOPANDI	R1	450	1	-Rp 54,585-
-537212620558	OTONG                    	R1	450	1	-Rp 76,508-
-537212620629	AAN B                    	R1	1300	1	-Rp 189,028-
-537212620590	SUWANDI                  	R1M	900	1	-Rp 50,132-
-537212620637	ICAN                     	R1	450	1	-Rp 56,624-
-537612479675	ALBERT TIO BASKORO       	R1	450	1	-Rp 5,447-
-537214447047	YOE SUIH                 	R1	450	2	-Rp 311,462-
-537210222608	ENCONG A                 	R1	900	1	-Rp 127,684-
-537612803965	YANTI ISWATI	R1	450	1	-Rp 21,074-
-537212620509	INAN                     	R1	450	2	-Rp 141,682-
-537612274318	WICAN TRISTIAWAN         	R1	450	1	-Rp 78,038-
-537210334866	THENG TALEN              	R1	450	1	-Rp 52,036-
-537612242771	DEDI                     	R1	900	1	-Rp 260,755-
-537210334904	DEDI S B ANO             	R1	450	1	-Rp 257,277-
-537212621926	KOSIM                    	R1	450	1	-Rp 66,821-
-537612168152	YANAH BT KOSIM           	R1	450	1	-Rp 49,996-
-537212629214	ADE M BIN ADIS           	R1	450	1	-Rp 49,486-
-537212628731	TAMANG BIN MUTA          	R1	450	1	-Rp 56,624-
-537210276524	KAKA BIN EMPUT           	R1	900	1	-Rp 80,778-
-537612436560	BUANG                    	R1	450	1	-Rp 129,533-
-537212621821	AMIL SAIRAN              	R1	450	1	-Rp 68,351-
-537212621663	ENDAH BIN TUTIT          	R1	450	1	-Rp 79,058-
-537212620453	RISIN                    	R1	450	1	-Rp 97,412-
-537212621161	IING                     	R1	450	1	-Rp 73,449-
-537212621743	ROHAMAN                  	R1	450	1	-Rp 117,548-
-537212621854	WADI                     	R1	450	1	-Rp 117,548-
-537212621689	UMING                    	R1	450	1	-Rp 82,117-
-537212620383	ENDAH                    	R1M	900	1	-Rp 101,657-
-537612134164	OCIN BIN SERUN           	R1	450	1	-Rp 135,141-
-537212628651	ABDUL YOSEP              	R1	450	1	-Rp 117,548-
-537612493023	NEAN                     	R1	450	1	-Rp 36,230-
-537612224823	SARMAT                   	R1	900	1	-Rp 18,540-
-537210118783	AHMAD EPENDI             	R1	900	1	-Rp 252,662-
-537212709837	SANUSI	R1M	900	1	-Rp 334,214-
-537612514445	ENI BT SAIM              	R1	450	1	-Rp 91,804-
-537212622050	KARTA                    	R1	450	1	-Rp 52,036-
-537212622068	TUTIT                    	R1	450	1	-Rp 31,132-
-537212621630	SAKUM S                  	R1	450	1	-Rp 120,356-
-537612186504	NEMIN B AJUK             	R1	450	1	-Rp 45,408-
-537212629177	ACIP BIN IMIN            	R1	450	1	-Rp 72,939-
-537614470831	JUJU	R1	450	1	-Rp 52,036-
-537210071647	AMIN SANEN               	R1	900	1	-Rp 134,822-
-537612437003	WATI BT MATA             	R1	450	1	-Rp 116,787-
-537212622106	JUMBIH                   	R1	450	1	-Rp 8,406-
-537211539174	YANI BT UTAS             	R1	900	1	-Rp 78,738-
-537212621942	ANIM B RUMIN             	R1	450	1	-Rp 43,878-
-537212621805	MIAN                     	R1	450	1	-Rp 79,568-
-537212624611	MEDI B MAJAN             	R1	450	1	-Rp 244,343-
-537212622001	KUMIN                    	R1	450	1	-Rp 139,730-
-537612447123	JUMAN                    	R1	450	1	-Rp 19,220-
-537612468418	ADI                      	R1	450	2	-Rp 196,235-
-537210120194	ALIN B EMBEN             	R1	900	1	-Rp 58,344-
-537212621784	MUSAN                    	R1	450	1	-Rp 54,075-
-537212621768	SERUN                    	R1	450	1	-Rp 51,526-
-537612380858	ROHIM                    	R1	450	1	-Rp 23,994-
-537612157526	NATA                     	R1	450	1	-Rp 56,114-
-537612514142	ASIH RATNASIH            	B1	900	1	-Rp 181,445-
-537212620461	ABONG PRAWORO            	R1	1300	1	-Rp 157,732-
-537212622155	H KESIN                  	R1	450	1	-Rp 128,003-
-537612228075	ELLSE CRISTIAN           	R1M	900	1	-Rp 50,132-
-537212628892	RUMAN BIN DARKI          	R1	450	1	-Rp 53,055-
-537212629015	ADANG ASMAWIJAYA         	R1	900	1	-Rp 316,939-
-537210076622	ALI B TUTI               	R1	450	1	-Rp 52,036-
-537212629151	ODI BIN EMPUT            	R1	450	2	-Rp 182,470-
-537212629056	M ARIFIN BIN JININ       	R1	450	1	-Rp 117,548-
-537212622409	DAUD                     	R1	450	1	-Rp 48,977-
-537212622370	UMI                      	R1	450	1	-Rp 102,511-
-537212628930	ADITIA BIN AMANG         	R1	450	1	-Rp 22,464-
-537212629098	SOHIB                    	R1	450	1	-Rp 70,900-
-537612178695	ENDA BIN OLI             	R1	450	1	-Rp 42,858-
-537211515845	JALI BIN TAIH            	R1	900	1	-Rp 195,494-
-537612827366	BIRNES SILITONGA	R1	450	1	-Rp 14,029-
-537612235881	M.SAWI                   	R1M	900	1	-Rp 296,615-
-537612381956	MASNI                    	R1	450	1	-Rp 118,826-
-537212628749	SANUN BIN SUGIH          	R1	450	1	-Rp 186,126-
-537612148361	NASEP                    	R1	450	1	-Rp 121,375-
-537612191273	ENCIN                    	R1	450	1	-Rp 73,959-
-537612589232	WARJA BIN NAKIM          	R1	450	1	-Rp 100,471-
-537212622538	UNIN                     	R1	450	1	-Rp 136,161-
-537212629031	ADI BIN SAEMAN           	R1	450	1	-Rp 68,351-
-537212622546	SAPE I                   	R1	450	1	-Rp 125,964-
-537212629301	NARISAN                  	R1	450	1	-Rp 64,272-
-537210335021	UMAR                     	R1	450	1	-Rp 55,095-
-537212628971	SAUN                     	R1	450	1	-Rp 26,543-
-537212629206	TAMAN BIN IBIH           	R1	450	1	-Rp 84,156-
-537212622595	ENDING ENDAS             	R1	450	1	-Rp 91,804-
-537210024919	RASIM                    	R1	450	1	-Rp 91,294-
-537210276540	UJANG B H ARIN           	R1M	900	1	-Rp 196,351-
-537212622553	TIAH                     	R1	450	1	-Rp 47,957-
-537212585125	RANIN                    	R1	450	1	-Rp 73,449-
-537612211532	ALIN BIN KOIH            	R1	450	1	-Rp 100,471-
-537212590969	TATANG S                 	R1	450	1	-Rp 55,095-
-537612437116	ASAN                     	R1	450	1	-Rp 53,565-
-537212558237	MADU BIN MISTAP          	R1	450	1	-Rp 65,802-
-537612377807	NEING                    	R1	450	1	-Rp 115,257-
-537612623195	IMAN                     	R1	900	1	-Rp 337,333-
-537612002276	IMAS SITI MASITOH        	R1	900	1	-Rp 104,231-
-537612591018	TATANG TIRTANA           	R1	450	1	-Rp 100,981-
-537612619012	OMAN BIN ESTIM           	R1	450	1	-Rp 89,765-
-537212091100	ENCUNG                   	R1	450	1	-Rp 95,883-
-537211848382	MASAN                    	R1	450	1	-Rp 140,240-
-537212558203	MOH AKID JAELANI         	R1	450	1	-Rp 68,351-
-537612593294	NEMAN BIN KAMIN          	R1	450	1	-Rp 88,235-
-537212091159	UAR                      	R1	450	1	-Rp 75,999-
-537211848516	ANDI                     	R1	450	1	-Rp 100,471-
-537212544907	SUDARMO                  	R1	450	1	-Rp 55,605-
-537212558308	ABUDIN AB                	R1	450	1	-Rp 14,770-
-537211848494	UJI                      	R1	450	1	-Rp 64,272-
-537612098144	SAHIM                    	R1M	900	1	-Rp 50,132-
-537212650882	KAMIN BIN NASAN          	R1	450	1	-Rp 58,154-
-537211848460	SUPRI                    	R1	450	1	-Rp 20,703-
-537612033409	ETI                      	R1	900	1	-Rp 161,844-
-537612097780	SAHIR                    	R1	450	2	-Rp 285,648-
-537612404896	NOLIN BIN ACIH           	R1	450	1	-Rp 62,233-
-537210041433	SAKINAN BIN NALIM        	R1	900	1	-Rp 78,229-
-537612097756	YAYAN                    	R1M	900	1	-Rp 108,620-
-537041014524	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 419,627-
-537041014540	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 348,202-
-537041014557	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 482,125-
-537041014599	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014636	PT PRIMA STEADY DEVELOPME	R1	2200	1	-Rp 616,020-
-537041014764	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 130,948-
-537041014780	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 379,451-
-537041014798	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014843	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 787,173-
-537041047847	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 217,254-
-537041047862	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 230,647-
-537041047900	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041047926	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 453,853-
-537041047959	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014039	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257,134-
-537041014054	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 379,451-
-537041014088	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 717,235-
-537041014191	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 373,499-
-537041014204	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 339,274-
-537041014220	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 165,173-
-537041014238	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 291,240-
-537041014246	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 141,364-
-537041014261	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 302,072-
-537041014279	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014325	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 174,101-
-537041048657	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 4,356,687-
-537041048313	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-537041048441	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-537041048347	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 516,350-
-537041048339	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 438,973-
-537041048433	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 278,264-
-537041048665	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 251,479-
-537041048259	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 349,812-
-537041048711	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 126,484-
-537041014341	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048703	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048417	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048458	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014382	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 311,000-
-537041048218	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-537041048561	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 427,068-
-537041048608	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 345,225-
-537041048226	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 90,771-
-537041014452	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041014478	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 558,016-
-537041048050	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 354,154-
-537041048106	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048786	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048807	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 77,378-
-537041048898	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 316,953-
-537041048928	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 366,058-
-537041048951	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 232,134-
-537041049124	PT PRIMA STEADY DEVELOPME	R1	1300	1	-Rp 290,169-
-537041049157	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257,134-
-537041049236	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164,756-
-        537612587382	YANIH BINTI ASAN         	R1	450	2	-Rp 273.223-
-537612411305	MARHALI BIN MANAP        	R1	450	2	-Rp 230.396-
-537612035221	LEMAN BIN DESIN          	R1	900	2	-Rp 365.887-
-537210335142	OMING                    	R1M	900	2	-Rp 304.008-
-537211638105	ASEP SUBARI B ACANG      	R1	900	2	-Rp 468.877-
-537211561251	SUBHI B ASID             	R1	900	2	-Rp 228.737-
-537612186197	ESTIM                    	R1	450	2	-Rp 388.449-
-537612377001	BANIH BT BAKRI           	R1	450	2	-Rp 144.231-
-537612486054	AGUS HARIANTO BIN TARIM  	R1	900	2	-Rp 224.149-
-537210117566	ELANG BIN KOIN           	R1	900	2	-Rp 173.164-
-537612948078	KARMIN BIN SULAEMAN	R1	450	2	-Rp 182.470-
-537210196047	DARUS A                  	R1	900	2	-Rp 472.079-
-537212623882	MAHMUD A                 	R1	450	2	-Rp 177.881-
-537212622699	AMAN B ERUS              	R1	450	2	-Rp 181.960-
-537212626121	RASIM A                  	R1	450	2	-Rp 163.606-
-537212623293	KOTOT                    	R1	450	2	-Rp 225.807-
-537612391715	YUL JANIN                	R1	450	2	-Rp 262.517-
-537212760560	H SAONAH                 	R1	900	2	-Rp 382.712-
-537212627817	NAIMIN                   	R1	450	2	-Rp 260.477-
-537612168298	SOMARNA BIN SOLEH        	R1	450	2	-Rp 241.096-
-537614452527	IWAN	R1	450	2	-Rp 7.150.864-
-537612169113	KARMA BIN AGIS           	R1	450	2	-Rp 208.473-
-537612436649	ATIM                     	R1	450	2	-Rp 67.753-
-537612286161	ECIN BIN DARIM           	R1	900	2	-Rp 347.023-
-537612171944	ENGKAN                   	R1	450	2	-Rp 108.542-
-537212620799	ENGLIN                   	R1M	900	2	-Rp 753.805-
-537212628445	RANDO BIN ISAK           	R1	450	2	-Rp 241.096-
-537214447047	YOE SUIH                 	R1	450	2	-Rp 311.462-
-537212620509	INAN                     	R1	450	2	-Rp 141.682-
-537612468418	ADI                      	R1	450	2	-Rp 196.235-
-537614480919	WAWAN KOMARUDIN	R1	900	2	-Rp 461.739-
-537212629151	ODI BIN EMPUT            	R1	450	2	-Rp 182.470-
-537212624221	SD MEKAR SARI	S1	450	2	-Rp 369.398-
-537212621544	DARMAN B BARLI           	R1	450	2	-Rp 176.861-
-537212629049	OMEM B USAN              	R1	450	2	-Rp 163.096-
-537612798945	ENUNG S	R1	450	2	-Rp 356.353-
-537612231003	UJANG BIN RANIN          	R1M	900	2	-Rp 106.264-
-537612121487	ICIH BT ICING            	R1	450	2	-Rp 183.999-
-537041014238	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 291.240-
-537041048313	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
-537041048441	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
-537041048218	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
-537041049236	PT PRIMA STEADY DEVELOPME	R1	1300	2	-Rp 164.756-
-537210100927	MIAN SAMSUDIN            	R1	900	3	-Rp 822.982-
-537612423598	MANSUR SUAIB             	R1	450	3	-Rp 480.585-
-537211608202	PISIN SONJAYA B ELIH     	R1	900	3	-Rp 464.333-
-537040857391	AMUNG SANATIN	R1M	900	3	-Rp 739.584-
-537612429057	ROMANAH                  	R1	450	3	-Rp 410.736-
-537612436440	NANI SUMARNI             	R1M	900	3	-Rp 839.395-
-537041014039	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257.134-
-537041048657	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 4.356.687-
-537041049157	PT PRIMA STEADY DEVELOPME	R1	1300	3	-Rp 257.134-`;
+        /* ==========================================
+           1. THEME MANAGEMENT
+           ========================================== */
+        function getAutoTheme() {
+            const hour = new Date().getHours();
+            return (hour >= 18 || hour < 6) ? 'dark' : 'light';
+        }
+
+        function getPreferredTheme() {
+            const saved = localStorage.getItem('themeMode');
+            if (saved === 'dark' || saved === 'light') return saved;
+            return getAutoTheme();
+        }
+
+        function applyTheme(theme) {
+            const isDark = theme === 'dark';
+            const toggleSwitch = document.getElementById('themeToggleSwitch');
+
+            if (isDark) {
+                document.body.classList.add('dark-mode');
+                if (toggleSwitch) toggleSwitch.checked = true;
+            } else {
+                document.body.classList.remove('dark-mode');
+                if (toggleSwitch) toggleSwitch.checked = false;
+            }
+        }
+
+        function initTheme() { applyTheme(getPreferredTheme()); }
+
+        function toggleTheme() {
+            const isDark = document.getElementById('themeToggleSwitch').checked;
+            const newTheme = isDark ? 'dark' : 'light';
+            localStorage.setItem('themeMode', newTheme);
+            applyTheme(newTheme);
+        }
+
+        /* ==========================================
+           2. STICKY TOP BAR
+           ========================================== */
+        const topBarEl = document.getElementById('topBar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) topBarEl.classList.add('is-stuck');
+            else topBarEl.classList.remove('is-stuck');
+        }, { passive: true });
+
+        /* ==========================================
+           3. POPUP & HELPERS
+           ========================================== */
+        function showCustomAlert(message) {
+            document.getElementById('modalMessage').innerHTML = message; 
+            document.getElementById('customAlert').classList.add('active');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('customAlert').classList.remove('active');
+        }
+
+        function focusInput(el) {
+            if (el) {
+                el.focus();
+                const val = el.value;
+                el.value = '';
+                el.value = val;
+            }
+        }
+
+        /* ==========================================
+           4. FORMAT RIBUAN & TOTAL
+           ========================================== */
+        function formatRibuanInput(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value === '') { input.value = ''; return; }
+
+            const selectionStart = input.selectionStart;
+            const digitsBeforeCursor = input.value.slice(0, selectionStart).replace(/[^0-9]/g, '').length;
+            const formatted = new Intl.NumberFormat('id-ID').format(parseInt(value, 10));
+            input.value = formatted;
+
+            let newCursorPos = 0, digitCount = 0;
+            for (let i = 0; i < formatted.length; i++) {
+                if (digitCount === digitsBeforeCursor) break;
+                if (formatted[i] !== '.') digitCount++;
+                newCursorPos = i + 1;
+            }
+            input.setSelectionRange(newCursorPos, newCursorPos);
+        }
+
+        function formatRupiah(angka) {
+            return new Intl.NumberFormat('id-ID').format(angka);
+        }
+
+        function hitungTotalElement(el) {
+            const strukContainer = el.closest('.struk-container');
+            if (!strukContainer) return;
+            
+            const tagihanStr = strukContainer.querySelector('.input-tagihan').value.replace(/[^0-9]/g, '');
+            const adminStr = strukContainer.querySelector('.input-admin').value.replace(/[^0-9]/g, '');
+            const tagihan = parseInt(tagihanStr) || 0;
+            const admin = parseInt(adminStr) || 0;
+            
+            strukContainer.querySelector('.out-total').innerText = formatRupiah(tagihan + admin);
+        }
+
+        /* ==========================================
+           5. DATA PELANGGAN
+           ========================================== */
+        let dataMentah = `537210239375	LANDI IRIANDI	R1	1300	1	82.378
+537212624288	UDIN S B DESIN	R1	450	1	197.794
+537210096638	AHMAD B DESIN	R1	900	1	82.758
+537612793710	H E R M A W A N	R1	450	1	114.178
+537212624184	ACUH B MIIN	R1	450	1	113.159
+537612078017	ARWAT BIN ANIM	R1	450	1	96.333
+537210100927	MIAN SAMSUDIN	R1	900	3	825.982
+537612514677	NEMAN BIN ATA	R1	450	1	59.624
+537612475245	AMAN BIN DASIM	R1	450	1	42.289
+537212624119	TUTUN	R1	450	1	56.565
+537212624205	AMAN NARSIH	R1	450	1	51.467
+537210118670	ANTA BIN AYIM	R1M	900	1	53.132
+537612160472	SITI HODIJAH SAG	R1M	900	1	188.210
+537612411305	MARHALI BIN MANAP	R1	450	2	233.396
+537212623938	P OTONG	R1	450	1	74.410
+537212624006	ENYIN	R1	450	1	72.371
+537612481373	UCI SANUSI BIN CIIN	R1	450	1	74.920
+537612212350	SANIN	R1	450	1	111.629
+537612381438	ILAN BIN ILUT	R1	450	1	74.410
+537212623468	ABAS	R1	450	1	90.725
+537212624101	NASIM	R1	450	1	42.289
+537212623683	MUSLIM	R1	450	1	34.642
+537212623514	SAEPUDIN B SAJU	R1	450	1	47.898
+537614459469	SUSI	R1	450	1	55.036
+537210089669	ANANG	R1	900	1	84.288
+537212624270	KANIH RENDAN	R1	450	1	159.327
+537212623747	KAJAN	R1	450	1	59.624
+537212624014	MA UBIH	R1M	900	1	490.396
+537612875220	ANING BIN SARDI	R1	450	1	95.824
+537212624055	ALING	R1	450	1	55.036
+537612269249	SARTA B MISKA	R1	900	1	31.789
+537212581532	MIMI BT SAIN	R1	450	1	24.954
+537612398466	LIAN BIN LASAN	R1	450	1	124.885
+537612391723	UPIT BT DAMO	R1	450	1	67.272
+537612437210	ROSIDIN BA	R1	450	1	61.154
+537212623796	SOTON	R1	900	1	165.354
+537212589419	SAMAT	R1	450	1	54.016
+537612506529	ITI BT SOTON	R1	450	1	76.449
+537612283857	SYAHROJA BIN UJUD	R1	450	1	99.902
+537612058944	SUIMAN BIN YADI	R1	450	1	77.979
+537212623011	MAD SUPI	R1	450	1	89.705
+537612825793	USNA SUTISNA	R1	450	1	84.607
+537210335175	PENA	R1	450	1	71.351
+537212622794	A M A T	R1	450	1	122.846
+537212622849	RACHMAT	R1	450	1	34.642
+537612614401	NANDIN	R1	450	1	67.272
+537612412626	SARIPUDIN BIN KANUNG	R1	450	1	73.900
+537612222375	PATIMAH BT U ASAN	R1	450	1	126.415
+537612159849	ENDANG BIN ARNAN	R1	450	1	79.508
+537212623427	ENDAH	R1	450	1	99.393
+537612119772	AISAH BINTI CIMING	R1	450	1	139.161
+537210335096	NEIN	R1	900	1	170.962
+537210335126	OMANM	R1	450	1	47.898
+537210335118	NAJI	R1	450	1	50.447
+537612283994	KAYO BIN MIDIN	R1	450	1	87.156
+537612361145	KARMA BIN ENCEP	R1	450	1	49.937
+537612486054	AGUS HARIANTO BIN TARIM	R1	900	2	227.149
+537612948078	KARMIN BIN SULAEMAN	R1	450	2	185.470
+537210111753	INA BT INEN	R1	900	1	93.465
+537612225874	SALIP BIN SAAT	R1	450	1	97.863
+537612824846	PENDI BIN ENCEP	R1	450	1	74.410
+537612478752	KASINO	R1	450	1	8.099
+537212623199	ENCUNG	R1	450	1	95.314
+537210048973	MAD ARIP	R1	900	1	168.923
+537612280429	IYAR BIN NASIP	R1	450	1	29.033
+537614477137	ROHATI	R1	450	1	106.530
+537612432259	OTIH BT KOTOT	B1	900	1	207.913
+537212623825	GOJALI	R1	450	1	185.047
+537214446978	SABAN	R1	450	1	87.666
+537212623866	M ASUR	R1	900	1	93.465
+537612593260	BURHANI BIN ESIM	R1	450	1	43.309
+537210100935	DARYO	R1	900	1	25.506
+537212623817	MAHMUD B	R1	900	1	295.366
+537212622673	SAMAD	R1M	900	1	53.132
+537612171977	ATIP BIN JALI	R1	450	1	81.548
+537210335220	EMBUK	R1	450	1	43.819
+537212654667	UTAY	R1	450	1	92.255
+537612405458	RACIM BIN GANDA	R1	450	1	66.762
+537212626503	GANDA	R1	450	1	69.311
+537210335309	YUSUP B SAAN	R1	450	1	199.095
+537612168414	NURYAMI BT KIAN	R1	450	1	85.627
+537612287682	ENGKUS	R1	450	1	115.708
+537612138106	NEMAN BIN RADIN	R1	450	1	98.373
+537612638656	RAHMATULLOH	R1	450	1	35.661
+537612381923	HASAN BASRI B M YUSUP	R1	450	1	63.703
+537210103741	IBRAHIM MUNADI	R1	900	1	94.994
+537612083487	ESAN BIN SAIN	R1	450	1	32.092
+537612160232	H SAMIN BIN AMIN	R1	450	1	72.880
+537612791590	SITI HAJAR BTH.M.RUSYIDI	R1	900	1	68.482
+537612346050	EDOM	R1	450	1	138.141
+537212624732	SAKIR	R1	450	1	64.723
+537614465436	AMELI	R1M	900	1	108.835
+537212625448	ATIM SUHERMAN	R1	450	1	129.984
+537212617875	ERSIH	R1	450	1	90.725
+537212625887	SUROM	R1	450	1	26.994
+537212625933	TUMPEL	R1	450	1	93.274
+537212623323	AMAN	R1	450	1	43.819
+537212624487	TAPIAN NURDIN	R1M	900	1	164.782
+537212626855	AMSIR	R1	450	1	97.353
+537614447068	LIA TRESNAWATI	R1	900	1	70.012
+537212626188	AMAN BIN JALI	R1	450	1	100.922
+537612424612	MANTA	R1	450	1	86.646
+537612381509	SAMIH	R1	450	1	55.036
+537612381495	KARYAT KARYANI	R1	450	1	42.799
+537212626395	KARMALI	R1	450	1	107.550
+537612442901	SUHARA BIN H BOTIN	R1M	900	1	267.586
+537212626018	AWANG	R1	450	1	114.688
+537612379516	KADA BIN NAMIT	R1	450	1	36.681
+537612436631	ASMAN	R1	450	1	184.538
+537212625853	JUNAEDI	R1	450	1	64.213
+537612437419	NIJA B ISNA	R1	450	1	90.215
+537210080564	ASRI B SAINAN	R1	450	1	222.548
+537612001059	UDIN	R1	900	1	149.548
+537212624781	NASAN	R1	450	1	44.839
+537612405490	NUNUNG	R1	450	1	116.218
+537211624547	SARMAN B KAWIR	R1M	900	1	188.210
+537212626769	SARBINI B SARWALA	R1	450	1	69.821
+537212625820	PARMAN	R1	450	1	8.099
+537612207457	SDN KERTA JAYA 04	S1	900	1	43.100
+537210335279	JAMSIR	R1	450	1	154.966
+537612150162	ARMAT BIN MARTU	R1	450	1	75.939
+537612109334	TIRMANSYAH	R1	450	1	117.237
+537612085504	SUEIB BIN MADIH	R1	450	1	131.513
+537212624708	ASDEN BIN RENDAN	R1	450	1	106.021
+537212626026	ECIN	R1	450	1	91.235
+537212626312	ONYIN	R1	450	1	74.410
+537614300744	ANDA	R1	450	1	116.218
+537212625812	OYIM	R1	450	1	94.294
+537612255042	OCEN	R1	450	1	38.720
+537212626147	NURI	R1	450	1	65.742
+537612266050	ISANUDIN	R1	900	1	65.423
+537612816904	SARLOJI	R1	450	1	61.154
+537212628183	DONENG	R1	450	1	49.937
+537612377910	DARSIH BT SAPNA	R1	450	1	44.839
+537612819777	IMUN BIN SAINAN	R1	450	1	24.954
+537210043204	JALIL	B1	450	1	44.236
+537612436806	MISNAH BT KINUNG	R1	450	1	82.568
+537212628175	SIMIT	R1	450	1	77.979
+537612546724	SAIM	R1	450	1	76.449
+537212626075	ANDI	R1	450	1	101.942
+537612168160	ARDI BIN KENJIM	R1	450	1	138.141
+537210275946	KANA	R1	900	1	72.051
+537612323022	ENJU JUNAEDI	R1	450	1	153.437
+537212626968	KUWAT	R1	450	1	84.097
+537212626919	YONO	R1	450	1	92.255
+537612234968	ACIH BINTI AMAD	R1	900	1	112.839
+537212627841	MESJID AL HIDAYAH 1	S1	900	1	235.577
+537612062479	ENTIN B NEMAN	R1	450	1	74.410
+537614452527	IWAN	R1	450	2	7.153.864
+537612464754	H TABAN THOIBILLAH	R1	450	1	78.999
+537612169113	KARMA BIN AGIS	R1	450	2	211.473
+537612236053	EYOT BIN ILAN	R1	900	1	82.248
+537612891891	NAIN	R1	450	1	105.001
+537040982697	RYCA PRIYANI	B1	900	1	127.450
+537212628437	GANANG	R1	450	1	68.802
+537212066918	UNIN	R1	450	1	39.230
+537212628403	ANDUN	R1	450	1	19.253
+537212628366	AMIN	R1	450	1	69.821
+537612058267	JUNIN	R1	450	1	142.730
+537212622490	DALU B	R1	450	1	104.491
+537612426321	TENAH BT SIONG	R1	450	1	97.353
+537612295221	ANTONG	R1	450	1	87.666
+537612436578	SUHENDA	R1	450	1	87.156
+537212621104	UNIN	R1	450	1	28.014
+537612356607	ROJAK BIN UNIN	R1	450	1	76.959
+537212621153	NIMAN	R1	450	1	66.762
+537612437011	IMAN	R1	450	1	42.799
+537612228170	ANING BIN TAMBUR	R1	450	1	39.740
+537612144752	ACUM BT ASUR	R1	450	1	49.937
+537612436649	ATIM	R1	450	2	70.753
+537612168280	SOBARI	R1	450	1	48.408
+537612325608	SANEN BIN ALIH	R1	450	1	73.390
+537211575218	IJAN BIN KARIN	R1	450	1	125.771
+537612150147	AMINAH	R1	450	1	46.878
+537614466391	NOVIA FITRIANA	R1	900	1	77.150
+537212620541	HAMDAN B TUMING	B1	900	1	79.555
+537210024976	DALIM B KURU	B1	450	1	105.233
+537212628906	ENCIM B ANIM	R1	450	1	82.568
+537210334882	AMONG	R1M	900	1	292.652
+537612475004	UKI BIN NATA	R1	450	1	30.563
+537612429099	KANTA B NAMAN S	R1	450	1	76.959
+537612816659	KALIM	R1	450	1	196.264
+537212625775	ROHIM BINTI ANGIN	R1	450	1	80.528
+537212628756	KASIP	R1	450	1	61.154
+537212628801	IRMAN BIN MACEN	R1	450	1	91.745
+537212628644	RADI B BIDONG	R1	450	1	71.861
+537212628557	ACIM	R1	450	1	45.858
+537212066991	KAMIN	R1	450	1	76.959
+537212621934	AMUNG	R1	450	1	53.506
+537212620686	YANSUN	R1	450	1	90.725
+537612171944	ENGKAN	R1	450	2	111.542
+537212620799	ENGLIN	R1M	900	2	756.805
+537212620802	ENCENG	R1	2200	1	142.219
+537212621456	ININ	R1	450	1	71.351
+537612544873	MINI	R1	450	1	58.095
+537612178064	WARNATA	R1	450	1	36.171
+537612486403	MEDIH	R1	450	1	46.878
+537210017974	MASRAN MUNAWAR H	R1M	900	1	543.313
+537612428326	LILIS	R1	450	1	98.373
+537210084020	ENCA B BOIH	R1	900	1	182.179
+537212621536	IKAN	R1	450	1	72.880
+537612372299	SATI BT IKAM	R1	450	1	95.824
+537614240280	MANTA	R1	450	1	70.331
+537040686174	TAUFAN AKBARI AL ARIF	B1	900	1	98.713
+537212620590	SUWANDI	R1M	900	1	53.132
+537212620637	ICAN	R1	450	1	59.624
+537214447047	YOE SUIH	R1	450	2	314.462
+537210222608	ENCONG A	R1	900	1	130.684
+537212620509	INAN	R1	450	2	144.682
+537210334866	THENG TALEN	R1	450	1	55.036
+537612242771	DEDI	R1	900	1	263.755
+537210334904	DEDI S B ANO	R1	450	1	260.277
+537212621926	KOSIM	R1	450	1	69.821
+537612168152	YANAH BT KOSIM	R1	450	1	52.996
+537212629214	ADE M BIN ADIS	R1	450	1	52.486
+537212628731	TAMANG BIN MUTA	R1	450	1	59.624
+537210276524	KAKA BIN EMPUT	R1	900	1	83.778
+537212621821	AMIL SAIRAN	R1	450	1	71.351
+537212621663	ENDAH BIN TUTIT	R1	450	1	82.058
+537212620453	RISIN	R1	450	1	100.412
+537212621161	IING	R1	450	1	76.449
+537212621743	ROHAMAN	R1	450	1	120.548
+537212621854	WADI	R1	450	1	120.548
+537212621689	UMING	R1	450	1	85.117
+537612134164	OCIN BIN SERUN	R1	450	1	138.141
+537212628651	ABDUL YOSEP	R1	450	1	120.548
+537612493023	NEAN	R1	450	1	39.230
+537612224823	SARMAT	R1	900	1	21.540
+537210118783	AHMAD EPENDI	R1	900	1	255.662
+537212709837	SANUSI	R1M	900	1	337.214
+537612514445	ENI BT SAIM	R1	450	1	94.804
+537212622050	KARTA	R1	450	1	55.036
+537212622068	TUTIT	R1	450	1	34.132
+537614470831	JUJU	R1	450	1	55.036
+537210071647	AMIN SANEN	R1	900	1	137.822
+537612437003	WATI BT MATA	R1	450	1	119.787
+537212622106	JUMBIH	R1	450	1	11.406
+537211539174	YANI BT UTAS	R1	900	1	81.738
+537212621942	ANIM B RUMIN	R1	450	1	46.878
+537212621805	MIAN	R1	450	1	82.568
+537212624611	MEDI B MAJAN	R1	450	1	247.343
+537212622001	KUMIN	R1	450	1	142.730
+537612447123	JUMAN	R1	450	1	22.220
+537612468418	ADI	R1	450	2	199.235
+537210120194	ALIN B EMBEN	R1	900	1	61.344
+537212621784	MUSAN	R1	450	1	57.075
+537212621768	SERUN	R1	450	1	54.526
+537612157526	NATA	R1	450	1	59.114
+537612514142	ASIH RATNASIH	B1	900	1	184.445
+537212620461	ABONG PRAWORO	R1	1300	1	162.732
+537212622155	H KESIN	R1	450	1	131.003
+537612228075	ELLSE CRISTIAN	R1M	900	1	53.132
+537212628892	RUMAN BIN DARKI	R1	450	1	56.055
+537212629015	ADANG ASMAWIJAYA	R1	900	1	319.939
+537210076622	ALI B TUTI	R1	450	1	55.036
+537212629151	ODI BIN EMPUT	R1	450	2	185.470
+537212622409	DAUD	R1	450	1	51.977
+537212622370	UMI	R1	450	1	105.511
+537212629098	SOHIB	R1	450	1	73.900
+537612178695	ENDA BIN OLI	R1	450	1	45.858
+537612235881	M.SAWI	R1M	900	1	299.615
+537212628749	SANUN BIN SUGIH	R1	450	1	189.126
+537612191273	ENCIN	R1	450	1	76.959
+537612589232	WARJA BIN NAKIM	R1	450	1	103.471
+537212622538	UNIN	R1	450	1	139.161
+537212629031	ADI BIN SAEMAN	R1	450	1	71.351
+537212622546	SAPE I	R1	450	1	128.964
+537212629301	NARISAN	R1	450	1	67.272
+537212629206	TAMAN BIN IBIH	R1	450	1	87.156
+537212622595	ENDING ENDAS	R1	450	1	94.804
+537210024919	RASIM	R1	450	1	94.294
+537212622553	TIAH	R1	450	1	50.957
+537212585125	RANIN	R1	450	1	76.449
+537612211532	ALIN BIN KOIH	R1	450	1	103.471
+537612437116	ASAN	R1	450	1	56.565
+537212558237	MADU BIN MISTAP	R1	450	1	68.802
+537612377807	NEING	R1	450	1	118.257
+537612623195	IMAN	R1	900	1	340.333
+537612002276	IMAS SITI MASITOH	R1	900	1	107.231
+537612619012	OMAN BIN ESTIM	R1	450	1	92.765
+537212091100	ENCUNG	R1	450	1	98.883
+537211848382	MASAN	R1	450	1	143.240
+537212558203	MOH AKID JAELANI	R1	450	1	71.351
+537612593294	NEMAN BIN KAMIN	R1	450	1	91.235
+537212091159	UAR	R1	450	1	78.999
+537211848516	ANDI	R1	450	1	103.471
+537212544907	SUDARMO	R1	450	1	58.605
+537212558308	ABUDIN AB	R1	450	1	17.770
+537211848494	UJI	R1	450	1	67.272
+537612098144	SAHIM	R1M	900	1	53.132
+537212650882	KAMIN BIN NASAN	R1	450	1	61.154
+537612033409	ETI	R1	900	1	164.844
+537612097780	SAHIR	R1	450	2	288.648
+537612097756	YAYAN	R1M	900	1	111.620
+537041014540	PT PRIMA STEADY DEVELOPME	R1	1300	1	353.202
+537041014557	PT PRIMA STEADY DEVELOPME	R1	1300	1	487.125
+537041014599	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041014636	PT PRIMA STEADY DEVELOPME	R1	2200	1	626.020
+537041014764	PT PRIMA STEADY DEVELOPME	R1	1300	1	135.948
+537041014780	PT PRIMA STEADY DEVELOPME	R1	1300	1	384.451
+537041014798	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041014843	PT PRIMA STEADY DEVELOPME	R1	1300	1	792.173
+537041047847	PT PRIMA STEADY DEVELOPME	R1	1300	1	222.254
+537041047862	PT PRIMA STEADY DEVELOPME	R1	1300	1	235.647
+537041047926	PT PRIMA STEADY DEVELOPME	R1	1300	1	458.853
+537041047959	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041014039	PT PRIMA STEADY DEVELOPME	R1	1300	3	262.134
+537041014054	PT PRIMA STEADY DEVELOPME	R1	1300	1	384.451
+537041014088	PT PRIMA STEADY DEVELOPME	R1	1300	1	722.235
+537041014191	PT PRIMA STEADY DEVELOPME	R1	1300	1	378.499
+537041014204	PT PRIMA STEADY DEVELOPME	R1	1300	1	344.274
+537041014220	PT PRIMA STEADY DEVELOPME	R1	1300	1	170.173
+537041014238	PT PRIMA STEADY DEVELOPME	R1	1300	2	296.240
+537041014246	PT PRIMA STEADY DEVELOPME	R1	1300	1	146.364
+537041014261	PT PRIMA STEADY DEVELOPME	R1	1300	1	307.072
+537041014279	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048657	PT PRIMA STEADY DEVELOPME	R1	1300	3	4.361.687
+537041048313	PT PRIMA STEADY DEVELOPME	R1	1300	2	169.756
+537041048441	PT PRIMA STEADY DEVELOPME	R1	1300	2	169.756
+537041048259	PT PRIMA STEADY DEVELOPME	R1	1300	1	521.350
+537041048347	PT PRIMA STEADY DEVELOPME	R1	1300	1	508.910
+537041048339	PT PRIMA STEADY DEVELOPME	R1	1300	1	443.973
+537041048665	PT PRIMA STEADY DEVELOPME	R1	1300	1	283.264
+537041014341	PT PRIMA STEADY DEVELOPME	R1	1300	1	131.484
+537041048711	PT PRIMA STEADY DEVELOPME	R1	1300	1	119.043
+537041048703	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048458	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014382	PT PRIMA STEADY DEVELOPME	R1	1300	1	316.000
+537041048218	PT PRIMA STEADY DEVELOPME	R1	1300	2	524.863
+537041048608	PT PRIMA STEADY DEVELOPME	R1	1300	1	432.068
+537041048561	PT PRIMA STEADY DEVELOPME	R1	1300	1	350.225
+537041048226	PT PRIMA STEADY DEVELOPME	R1	1300	1	95.771
+537041014478	PT PRIMA STEADY DEVELOPME	R1	1300	1	563.016
+537041048050	PT PRIMA STEADY DEVELOPME	R1	1300	1	359.154
+537041048106	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048786	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048807	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048898	PT PRIMA STEADY DEVELOPME	R1	1300	1	321.953
+537041048928	PT PRIMA STEADY DEVELOPME	R1	1300	1	371.058
+537041048951	PT PRIMA STEADY DEVELOPME	R1	1300	1	237.134
+537041049124	PT PRIMA STEADY DEVELOPME	R1	1300	1	295.169
+537041049157	PT PRIMA STEADY DEVELOPME	R1	1300	3	262.134
+537612239388	ATANG BIN JAMRI	R1	450	1	5.099
+537212757032	DANA	R1	450	1	81.607
+537212623634	ACUM	R1	450	1	154.515
+537212617842	MAMAN AL ZUFRI	R1	450	1	41.839
+537212624247	JAMAN	R1	450	1	5.099
+537212623506	NEAN	R1	450	1	5.099
+537212624318	U D I	R1	450	1	22.974
+537212624239	DAMAN	R1M	900	1	206.099
+537612453076	SUTRISNO	R1	900	2	255.250
+537210335253	WANDI HERMAWAN	R1	450	2	130.465
+537612405163	ARIPIN SPDI	R1	450	2	98.344
+537212623476	HORAN IRAWAN	R1	450	1	25.014
+537212593272	MARDANI	R1	450	1	78.038
+537212624063	MIIN	R1	450	1	123.415
+537212623563	ESIN	R1	450	2	141.172
+537612587382	YANIH BINTI ASAN	R1	450	2	307.383
+537612168489	NAMI B AMAN	R1	450	1	101.491
+537612427174	JUKI	R1	450	1	32.092
+537214446986	INAN	R1	450	1	111.119
+537612143298	LAMAN BIN SILANG	R1	450	1	25.523
+537212627912	BUANG	R1	450	1	100.471
+537612374109	KOMARUDIN	R1	450	1	74.469
+537212624143	JISIN B MUIN	R1	450	1	32.602
+537612346553	ASHNAR AHMADI BIN JINSIN	R1	450	1	110.609
+537212624089	ENCA	R1	450	1	8.406
+537211531893	NARIS BT AMAN	R1M	900	1	307.756
+537212624135	ASDEN	R1	450	1	121.885
+537612168351	ACA B MUNIN	R1	450	1	54.585
+537212624150	ADI	R1	450	1	110.159
+537212623372	MUS AL IKHWAN	S1	450	1	210.259
+537612329656	IJA BIN JANIN	R1	450	1	128.003
+537212623589	MUSLIH B H SOLEH	R1	1300	1	648.786
+537212624192	TUIN	R1	450	2	239.064
+537612168344	SOPIAH BT AJA	R1M	900	1	52.917
+537612173997	MOCH ASIKIN	R1	450	3	561.652
+537612309596	HJ HERLANI	R2	5500	1	4.943.083
+537612564304	SHOLEH	R1	450	1	128.003
+537212590657	SAIH	R1	900	3	538.771
+537612876965	SUYANTO	R1	450	1	80.587
+537212622681	WK OJAN	R1	450	1	17.366
+537612621374	ADI SUKARDI	R1	450	1	48.977
+537210059982	ENCUN	R1M	900	1	130.901
+537212622711	ENDI	R1	450	1	61.213
+537612170280	AAM BIN ASAN	R1	450	1	40.760
+537612520117	YONO BIN IJAN	R1M	900	1	640.578
+537212787685	MUSHOLA	S1	450	1	191.484
+537212623364	KAYAH	R1	450	1	104.040
+537212623987	SILANG	R1	450	1	9.450
+537612619826	FERY SANDRIA	R1	450	1	16.995
+537212623946	DASA	R1	450	1	21.445
+537612016457	ACE BIN SAIN	R1	900	2	258.309
+537212623667	ASEP	R1	450	2	161.566
+537212623675	AHMAD	R1	450	1	9.276
+537212414596	ACHMAD HASYIM	R1	450	1	51.526
+537612035221	LEMAN BIN DESIN	R1	900	2	365.887
+537612828999	SAMAN B AMIN	R1	450	1	23.994
+537612423598	MANSUR SUAIB	R1	450	3	480.585
+537612076921	NIA BINTI NAWI	R1	900	1	127.174
+537212623571	PARMAN B ENCEP	R1	450	1	6.491
+537212623443	ENTONG B SAJAN	R1	450	1	80.077
+537212623953	ENTIN	R1	450	1	117.548
+537212037204	NEAN B NAIRIN	R1	900	1	177.649
+537211608202	PISIN SONJAYA B ELIH	R1	900	3	464.333
+537612059530	JAKA LAMUN BIN SILANG	R1	450	1	82.117
+537212623530	MISAN	R1	450	1	39.799
+537212623450	TARJI B SENAN	R1	450	1	56.114
+537212624022	AMIR	R1	450	1	66.821
+537212623398	ARIP B NAMAN	R1	450	1	111.178
+537212623961	RAKIMAN	R1	450	1	18.849
+537212624048	UDIN	R1	450	1	76.508
+537212624030	SARBA	R1	450	1	56.624
+537210276599	DASA BIN EMON	R1	900	1	98.623
+537210252111	M ENUR B H GONEL	R1M	900	1	222.810
+537212623979	MAD AMING	R1	450	1	117.548
+537612608210	OMAN BIN MADAMIN	R1	450	1	5.099
+537612150503	AI BT ENIN	R1	450	1	98.883
+537212624326	SANAH BINTI SALIH	R1	450	1	46.937
+537612217847	ELA BT ENING	R1M	900	1	142.256
+537212623809	MA ICAH	R1	450	1	77.469
+537212623380	ANWAR B H SUHADA	R1	450	1	40.250
+537612442848	KESIH BT KOSIN	R1	450	1	92.824
+537612093540	HJ SAENIH BT BLORONG	R1	450	1	64.782
+537212622872	ARMA	R1	450	1	18.478
+537210089644	SAMIN	R1	900	1	262.794
+537612886006	EMAS	R1	450	1	65.802
+537212622729	MAMING	R1	450	1	10.321
+537212622944	OLING	R1	450	1	53.565
+537040857391	AMUNG SANATIN	R1M	900	3	739.584
+537210335167	MARIN	R1	450	1	76.449
+537210335212	RUHYAT B ARIP	R1	450	1	55.095
+537210101987	SANAH B SAAT	R1M	900	1	125.330
+537212623713	AMIT B ABIH	R1	450	1	14.770
+537612443028	NANA B USUP	R1	450	1	31.073
+537210335062	ARYA	R1	900	1	83.837
+537212622969	NARIN	R1	450	1	110.668
+537210219463	NASIN	R1	900	1	94.544
+537612406323	MIRJA	R1	450	1	142.279
+537214446945	WANDIH	R1	450	1	16.624
+537041008175	HASAN BASRI	B1	900	1	103.376
+537214446952	KARMIN	R1	450	1	60.703
+537612379644	KARDI BIN MASLAN	R1	450	1	22.974
+537212623052	WALIS	R1	450	1	108.629
+537612508088	AMIN	R1	450	2	155.448
+537212623045	CIWUNG	R1	450	2	337.974
+537212622936	MISAN	R1	450	1	41.839
+537212623078	RIMAN	R1	450	1	66.821
+537612447459	SAMAN BIN ANTUN	R1	450	2	227.337
+537212623060	MISAN	R1	450	1	8.099
+537210335142	OMING	R1M	900	2	304.008
+537212623349	IRSAN	R1	450	1	59.114
+537612063613	DAYING BIN ABUN	R1	450	1	39.230
+537211638105	ASEP SUBARI B ACANG	R1	900	2	468.877
+537212622823	MANSUR B ACAN	R1	450	1	20.703
+537212623086	SENIN	R1	450	1	40.309
+537212622815	SALIM BIN SAMRIN	R1	450	1	43.878
+537612229779	KARNAWAN B CARIM	R1	900	1	90.975
+537212623094	HALIM	R1	450	1	13.287
+537212626241	ROSID	R1	450	1	57.075
+537612510963	KARTIAH BINTI ADEN	R1	450	1	64.782
+537210184330	MUSHOLA ATTAIDIN	S1	450	1	56.940
+537210093710	JURIAH	R1	900	1	20.240
+537612591217	EDI SURYADI	R1	450	1	12.798
+537211561251	SUBHI B ASID	R1	900	2	228.737
+537612785660	UJANG SAEPUDIN	R1	450	1	58.154
+537612824568	DIANA LESTARI	R1	450	1	107.609
+537212412128	TAMIN B MALIH	B1	450	1	57.675
+537212622993	WARYO B SAENI	R1	450	1	5.099
+537612348893	PENDI B SALAM	R1	450	1	75.999
+537612179854	MIDI BIN SALAM	R1	450	1	48.467
+537212622898	ILYAS BIN AMSIR	R1	450	1	104.550
+537612173756	KEMAN B SANTA	R1	450	1	52.545
+537612640863	MASIDI MULYADI	R1	450	1	12.175
+537210049456	ROHMAN B REMBING	R1	900	1	103.152
+537612186197	ESTIM	R1	450	2	388.449
+537212622807	IDI IRAWAN BIN RAMIN	R1	450	1	61.723
+537210335100	KARNALI	R1	450	1	5.099
+537212622737	OYAH	R1	450	1	21.074
+537210335159	WAKIL ININ	R1	450	1	13.691
+537612377001	BANIH BT BAKRI	R1	450	2	144.231
+537612829025	ASAN BIN TARJANI	R1	450	1	84.666
+537612819785	KARMA BIN ENCEP	R1	450	1	197.794
+537210038700	KARMI BINTI KAIMAN	R1	900	1	217.927
+537612382032	KEMAN BIN KAIMAN	R1	450	1	91.294
+537612948713	MANSUR BIN AMIN	R1	450	1	85.176
+537212624541	ICANG SANAUSI	R1	450	1	56.114
+537614478769	SUMIYATI BT SURYADI	R1	450	1	53.565
+537210117566	ELANG BIN KOIN	R1	900	2	173.164
+537612377880	MUHIDIN	R1	450	2	209.492
+537612379669	HERMAN BIN UTAN	R1	450	1	10.147
+537212622778	SARBINIH	R1	450	1	27.563
+537612436607	HERNAWAN B SARBINI	R1	450	1	86.705
+537212622951	IING	R1	450	1	65.802
+537612144130	IJAH BT ESIN	R1	450	1	72.430
+537210109520	ROSID BIN BAKRI	R1	450	1	38.270
+537212622928	SAMAN	R1	450	2	216.630
+537212623244	EMPUH	R1M	900	1	143.649
+537612291542	RODIN BIN EMPU SARIPUDIN	R1	900	2	764.772
+537212623874	UST SHOLEH	R1	450	1	62.233
+537212623210	SUMARNO	R1	450	1	37.760
+537212623228	I WAHIDIN	R1	450	1	81.097
+537212623356	N I J A N	R1	450	1	114.237
+537210053800	P A R T I	R1	900	1	44.578
+537612416945	HAMZAH	R1M	900	1	296.615
+537612315625	UWAR  BT KAMIT	R1	900	1	152.667
+537212623173	KATOT	R1	450	1	194.794
+537210196047	DARUS A	R1	900	2	472.079
+537212623165	ENCEP B MASRUP	R1	900	1	91.994
+537212623419	KAMAN B SANTA	R1	450	1	8.058
+537612791048	A C I H	R1	450	2	111.600
+537612104573	MAHPUDIN BIN H SUJAI	R1	450	1	34.701
+537212622985	IMUN B ASADIH	R1	450	1	35.720
+537212623626	NASAH	R1	450	1	59.683
+537210035504	AM ABAS B AMSIR	R1M	900	1	151.789
+537212623401	SOPIAN B ATAM	R1	900	1	89.445
+537612155881	ADING	R1	450	1	96.902
+537614473249	SRI MARYATI	R1	450	1	77.018
+537614471079	ROSID	R1	450	1	54.075
+537212623597	JUMA BIN BUANG	R1	450	1	90.784
+537612321355	EYAT BIN IMAN	R1M	900	1	50.132
+537614473231	HAMDAN	R1	450	1	86.196
+537212591867	MASNI	R1	450	1	66.311
+537210010910	PENGOBATAN LISA MEDIKA	S1	3500	1	1.327.500
+537212623858	MOLIS	R1	450	1	6.665
+537214457619	ABDULLAH B MAHMUD	R1	450	1	86.705
+537212623659	RAKUM	R1	450	1	5.099
+537612794003	ADIH SUPRIADI BIN MARJA	R1	450	1	18.478
+537212623890	MESJID AL IFTAH	S1	450	1	168.539
+537612018707	SELEH SOLEHUDIN SE	R1M	900	3	165.396
+537212623882	MAHMUD A	R1	450	2	177.881
+537612326419	TONO BIN KOSIM	R1M	900	1	111.405
+537212622699	AMAN B ERUS	R1	450	2	181.960
+537212622703	NYAI B TIAN	R1	450	1	118.316
+537211584726	MARYATI BINTI MIING	R1	450	1	20.737
+537212623920	SHOBARI	R1M	900	1	364.851
+537612406597	SAEFUDIN	R1M	900	1	71.021
+537212624383	MIRJA ARTALINIA	R1	450	2	192.666
+537212626162	ASAN B AMAT	R1	450	1	7.535
+537614483023	MIRAN	R1	450	1	50.506
+537612209692	CANIH BIN ICA	R1	900	2	252.664
+537212626154	SUHARDI BIN AMAN	R1	450	1	98.432
+537212626586	ENDUN	R1	450	1	126.474
+537210048999	MENDI B BELEM	R1	900	1	51.206
+537612137138	ALIM BIN ILAN	R1	450	1	34.191
+537212561177	JOJO BIN UCA	R1	450	1	61.213
+537612801228	ENCAR BIN ILIS	R1	450	1	42.348
+537212626511	NAIM	R1	450	1	28.073
+537210335325	A C I P	R1	450	1	46.937
+537212626209	SANAN BIN SANIN	R1	450	1	15.141
+537612406349	DIDI FERMANA	R1	450	1	69.371
+537612406450	ISRO	R1	450	1	66.821
+537210335317	L I L I	R1	450	1	12.916
+537212625909	ENGKI	R1	450	1	37.250
+537612197269	ACAM BIN SARIN	R1	450	1	13.658
+537612454117	RASIM NURHASAN BIN RAHMAT	R1	450	1	59.114
+537212626121	RASIM A	R1	450	2	163.606
+537612203751	ONYIH BT ASMAT	R1	450	1	92.824
+537210076606	IPING B NAAMIN	R1	900	1	72.620
+537212626529	M YUSUF	R1	450	1	107.099
+537612631627	MUSHOLAH NURUL FALAH H	S1	450	1	195.859
+537212625430	SAMAN B ACAN	R1	450	1	60.193
+537212626594	KANDUNG	R1	450	1	10.691
+537212625941	ACIM	R1M	900	1	147.611
+537212626113	BOSIN	R1	450	1	30.112
+537212626457	KAWIR	R1	450	1	19.591
+537212626274	MUNIN	R1	450	1	5.099
+537212626361	SAMAN	R1	450	2	120.269
+537614465211	ABDUL MAJID	R1	450	1	5.099
+537212626416	ENCIT	R1	450	1	97.922
+537212623293	KOTOT	R1	450	2	225.807
+537612390115	CUCUN ADE RASO	R1	450	1	75.489
+537612802884	RAHMAN PAHRUDIN	R1M	900	1	53.132
+537612888553	KUSMIRAH	R1	450	3	317.434
+537212626702	ENGKIN	R1	450	1	77.018
+537212348034	RAMBRI	R1	900	1	96.073
+537212623315	USUP	R1	450	1	82.627
+537612162308	IIS LIDIYAWATI	R1	450	1	9.624
+537212625718	SUPANDI	R1	450	1	32.151
+537612168535	INUN BIN ENING	R1	450	1	99.452
+537612170422	UCI SAPUTRA BIN BENUK	R1	450	1	128.003
+537212626744	TIYAN	R1	450	1	78.038
+537212625137	INTA	R1	450	1	96.393
+537210241837	UUN BT UJANG	R1	900	1	28.580
+537612391715	YUL JANIN	R1	450	2	262.517
+537612500205	PARTA	R1	450	1	31.132
+537212623331	HOLIK BIN CECEP M	R1	450	1	10.321
+537612353199	RIDA MARYADI	R1	450	1	145.848
+537212624334	SUYOTO	R1	450	1	39.289
+537612200600	HJ HERLANI IV	R1	2200	1	132.219
+537211621731	HERLANI	R1	900	1	266.853
+537612480699	TEDI	B1	900	1	240.356
+537612120841	E INTANG	R1	450	1	119.846
+537612186226	ANTA	R1	450	1	96.393
+537212622665	TAMIN	R1	450	1	110.159
+537212624931	KIM YOK	R1	450	1	6.665
+537612413524	ENDANG ZAINUDIN	R1	450	1	114.237
+537612436481	ARTAMAN B RIBAN	R1	450	1	86.705
+537612356830	DEDE SULAEMAN	R1	450	1	63.762
+537212627052	YADI BIN BUANG	R1	450	1	68.861
+537212626083	KARTAWI	R1	450	1	21.849
+537612519453	RAHAYU	R1	450	1	12.545
+537612118597	SHINTA	R1	900	1	164.393
+537612417054	ARTINI BT ARKA	R1	450	1	76.508
+537212626848	ALAMSYAH	R1	900	1	197.024
+537612477423	UUN ULIYAH	R1	2200	1	1.015.682
+537612210483	ARYANI BT H SALAM	R1	1300	1	586.288
+537612578861	SANTI SUSILAWATI	R1	900	1	18.540
+537612156939	UJANG B RUMIN	R1	450	1	17.366
+537612518278	IIS NAWATI BT RAIN	R1	450	1	5.099
+537612200938	SUJAI	R1	450	1	100.471
+537612781392	SAMAN	R1	450	1	15.141
+537210023860	TISIN B KECANG	B1	900	1	116.308
+537614449749	CAKUR	R1	450	1	94.863
+537612036328	KARSIH BT AYO	R1	450	1	5.099
+537612512664	INUN BIN JAISIN	R1	450	1	22.961
+537612168302	ANA B NAMIN	R1	450	1	69.371
+537612086244	IDAM DAMIRI BIN NOIN	R1	450	1	11.804
+537210276516	SUNARTI	R1	900	1	246.989
+537212624765	ASIM	R1	900	1	214.358
+537212624844	EMAY	R1	450	1	156.045
+537212624391	SARWALI B BOTIN	R1	450	2	132.505
+537212624869	SAMAN	R1	450	1	121.885
+537212627938	MUSHOLLA AL ISTIQOMA	S1	450	1	28.380
+537614482253	AWIN	R1	450	2	102.424
+537612436814	ARMI BT NESAN	R1	450	1	66.821
+537614450052	ARSIH	R1	450	1	129.023
+537212626170	DANA BIN SERUN	R1	450	2	70.782
+537212625129	JASA B NEMAN	R1	450	2	182.980
+537612513397	ISMAIL	R1	450	1	61.723
+537612089935	SAREM BT MAAN	R1	450	1	132.533
+537612161292	RANTA SANJAYA	R1	450	1	75.489
+537212626042	AMAN B LEOS	R1	450	1	8.406
+537612403359	MUKTAR BIN H NAMIN	R1	450	1	20.703
+537212624972	KARTA	R1	450	1	5.099
+537214457627	NEMBON	R1	450	1	86.136
+537612437522	MUHAMAD MULHIM	R1	450	1	5.099
+537612454125	AMIR BIN NIMUN	R1	450	1	38.270
+537212625008	NIMAN	R1	450	1	58.664
+537212625734	NANANG	R1	450	1	80.077
+537211561277	OMAT TAUPIK ANWAR	R1	900	1	23.072
+537212624998	ARSAN	R1	450	1	14.770
+537612377872	ARDI BIN KARJA	R1	450	1	11.062
+537212626233	SURYA	R1	450	2	166.664
+537612181312	UNAH BT UKI	R1	450	1	8.099
+537612379557	NAMAN	R1	450	1	12.175
+537212625804	ABUDIN	R1	450	1	13.658
+537612224815	KANIN	R1	900	1	66.502
+537212626785	OMAN B OTON	R1	450	1	7.013
+537212625639	BOSI	R1	450	1	34.132
+537212626034	ENKI	R1	450	1	9.972
+537614470441	LIA LIANA	R1	900	1	70.071
+537612170718	ASNAH BT KIWANG	R1	450	1	101.491
+537212625974	KARYA	R1	450	1	34.701
+537612437571	WANDI	R1	450	1	21.954
+537612376298	SARLOJI BIN H SUBOTIN	R1	450	1	12.175
+537212625879	HASAN	R1	450	3	300.108
+537212626346	AMIN	R1	450	1	81.097
+537612168550	ASIH BT KADUT	R1	450	1	5.447
+537210056778	ABDULLAH	R1M	900	1	187.996
+537212740051	SITI AISYAH	R1	450	1	87.725
+537212626282	KAINAN	R1	450	1	5.099
+537212625846	AHMAD	R1	450	1	6.491
+537212624893	IRSAD	R1	450	1	36.230
+537212625982	SAUM	R1	450	1	60.703
+537212624851	BOTEN	R1	450	1	11.062
+537210335287	ISAR	R1	450	1	172.301
+537612629667	WARSIH	R1	450	1	45.408
+537212626432	KANAR	R1	450	1	82.627
+537212626822	D A B E H	R1	900	1	21.540
+537212626320	MAET	R1	450	1	96.902
+537212624694	MUSHOLAH ANNUR	S1	450	3	274.200
+537210335088	ANIH B MAET	R1	450	1	118.316
+537612326443	YENI HERYANI	R1	450	1	75.489
+537212625654	MIRJA	R1	900	1	52.226
+537212622864	RIMAN	R1	450	1	51.016
+537212760560	H SAONAH	R1	900	2	382.712
+537212626777	LANJIN	R1M	900	1	289.376
+537212626578	REMBING	R1	450	1	43.368
+537211538235	OYAN FATURAHMAN	R1	900	1	191.925
+537212628126	WARNA	R1	450	1	156.045
+537612170535	CACAH BT ARDI	R1	450	1	16.253
+537612485597	SYAMSUDIN	R1	450	1	61.154
+537612477918	RUSNAENI BINTI A FIRDAUS	B1	450	1	62.866
+537612787831	WIWIN BT IRIH	R1	450	1	14.770
+537612077999	DOMO BIN SAJIM	R1	450	1	5.099
+537212625861	WASAM BIN RANIM	R1	450	1	10.147
+537212628246	SAMID B BUANG	R1	450	1	156.045
+537210022914	ESAN B ITA	B1	450	2	201.814
+537040103438	SUSAN PRIYANTI	R1	900	1	174.590
+537212627721	KONIN	R1	450	1	156.045
+537212627401	BUDI	R1	450	1	72.939
+537212627705	ADE	R1	450	1	44.898
+537212627754	AYENG	R1	450	1	133.102
+537212627691	MARWAN	R1	450	1	156.045
+537612358167	EMAN S	R1	450	1	86.196
+537212627713	ENDIL SUKANDI	R1	900	1	115.957
+537212627210	BOYONG	R1	450	1	88.745
+537212627890	KONIN	R1	450	1	97.412
+537612376264	RIMUN	R1	450	1	72.939
+537212627165	UGIH B EMUS	R1	450	1	155.025
+537212628100	MISNAN	R1	450	1	93.333
+537612370730	ISANNUDIN A	R1	450	1	12.175
+537212628118	MAKMUR	R1	450	1	69.371
+537612556142	SUTRIADI	R1	450	1	13.287
+537612429057	ROMANAH	R1	450	3	410.736
+537212626000	LONJI B ENEN	R1	450	1	34.642
+537612580966	JALIL BIN ONONG	R1	450	1	58.664
+537212627882	RISAN	R1	450	1	70.900
+537612269377	BAMBANG	R1	450	1	14.770
+537212627132	I N A N	R1	450	1	80.077
+537212627866	NEMAN	R1	450	1	48.977
+537612357506	IPING BIN MEIN	R1	450	1	196.095
+537612406285	JARI	R1	450	1	64.272
+537612178072	EDAH BIN UDIN	R1	450	1	67.841
+537212626091	JAMIS	R1	450	1	84.666
+537212628142	UWAR	R1	450	1	63.762
+537212628070	SARMIN	R1	450	1	117.548
+537212628062	SININ	R1	450	1	42.348
+537612326435	SAMSUDIN	R1	450	1	43.368
+537214480381	SARIN BIN EMIN	R1	900	1	28.789
+537212628054	DAYAT	R1	450	1	49.996
+537612084776	KOPRA BIN NASIR	R1	450	1	57.134
+537212628191	SAKIM B EMAD	R1	450	1	102.511
+537212627995	DAMO	R1	450	1	73.959
+537612139401	TUMING BIN SANEN	R1	450	1	106.080
+537612437228	DA'I B ERTIM	R1	450	1	77.528
+537212628039	EMIN	R1	450	1	36.230
+537612201022	MINI BINTI MITRA	R1	450	1	21.954
+537612376186	SUKANTA B	R1	450	1	25.014
+537212628047	ABEN	R1	450	1	52.545
+537212627398	KENENG	R1	450	1	63.193
+537212628204	SANUN BIN AMAT	R1	450	1	30.112
+537612405114	NEMAH	R1	450	1	71.920
+537612168406	SAMAN BIN KENIN	R1	450	1	66.311
+537612529366	MARGANI BIN IMANG	R1	450	1	61.723
+537212628159	IMANG	R1	450	1	18.107
+537212628167	PENDI	R1	450	1	98.432
+537612168328	ENCIH	R1	450	1	90.784
+537612429103	MUSLIM	R1	450	1	12.545
+537612442702	ENDU	R1	450	2	104.463
+537212626950	NEIH	R1	450	1	16.253
+537212628096	AJA	R1	450	1	9.450
+537212627563	ACIM	R1	450	1	114.747
+537612356855	NALIM BIN NOIN	R1	450	1	28.014
+537612356499	SUKANTA BIN NASAR	R1	450	1	67.841
+537612428915	YANAH BT MURDI	R1	450	1	76.508
+537612376207	INEN BIN JANUR	R1	450	1	28.073
+537212628088	EMUK	R1	450	1	30.622
+537212627683	AMUNG	R1	450	1	55.095
+537212626984	NEMAN	R1	450	1	23.484
+537212614439	AKUM	R1	450	1	87.725
+537212627739	ALIH	R1	450	1	103.021
+537612594177	MANAH	R1	450	1	70.900
+537212627419	CASMUN	R1	450	1	61.723
+537212624810	OYIB	R1	450	1	156.045
+537612390131	IYANG BIN AMAT	R1	450	1	7.361
+537612521559	NURMAH	R1	450	1	52.036
+537612436793	TENIH	R1	450	1	38.270
+537212627817	NAIMIN	R1	450	2	260.477
+537212628134	REMIN	R1	450	2	241.097
+537612609948	RINI BINTI SADI	R1	900	1	132.273
+537212627571	KOIH B AMIN	R1	450	1	98.942
+537612232212	NESIH BT KAIH	R1	1300	1	1.190.433
+537212627987	MADI	R1	450	1	76.508
+537612368125	JUMAT BIN KOIH	R1	450	1	66.311
+537612469730	RAMI BIN RASI	R1	450	1	61.213
+537212627796	JUMIN	R1	450	1	127.493
+537212627809	IMAN	R1	450	1	89.765
+537612428956	ENTIN B ISAP	R1	450	1	25.014
+537212624404	ONYA	R1	450	1	146.868
+537612355152	YENIH	R1	450	1	60.193
+537612168298	SOMARNA BIN SOLEH	R1	450	2	241.096
+537612368692	ANANG BIN MUAN	R1	450	1	131.572
+537612354254	TUIN	R1	450	1	121.375
+537212627634	NEMIN	R1	450	2	153.409
+537212627600	ENDANG MOMOH	R1	450	1	9.276
+537612168194	ENDANG B SARMIN	R1	450	1	46.427
+537614460348	HASAN CANLE	R1	450	1	90.784
+537210335333	PEIH B MININ	R1	450	1	34.191
+537210335341	MUHAMAD	R1	450	1	9.102
+537612319786	LILIS RATNA DEWI BT H R	R2	3500	1	249.831
+537612120833	H RASIM B TAIBIH	R1	450	1	268.494
+537212627788	H TAIBIH	R1	450	2	192.158
+537614481307	ANTON	R1	450	1	64.782
+537212626992	MIAH	R1	450	2	226.827
+537212627904	BUDUG	R1	450	1	50.506
+537212625463	UJANG B KOIH	R1	450	1	87.725
+537212627003	USIN	R1	450	1	113.218
+537612150499	IMANUDDIN SAEPUL	R1	450	1	115.767
+537612403342	AMAD BIN ASIP	R1	450	1	59.683
+537612373864	UWAR BIN ASNADI	R1	450	1	84.666
+537612171466	MISAN BIN ASNADI	R1	450	1	53.055
+537614466479	OMANDA	R1	450	1	214.962
+537612831751	SARIH	R1	450	1	64.782
+537210248236	KOMAR EMKA BIN TOSIN	R1	900	1	257.186
+537612150139	ADANG BIN ANIM	R1	450	1	52.036
+537612154935	RT BUANG	R1	450	1	22.464
+537212627979	TUIN	R1	450	1	112.198
+537612400870	SUPRIHATINO	R1	450	1	156.045
+537212628212	UNIN	R1	450	1	35.720
+537612625182	CIO LILIH	R1	450	1	16.253
+537212628220	UDIN	R1	450	3	428.542
+537212627961	RATIM	R1	450	1	83.646
+537612638586	NURMALASARI	R1M	900	1	203.314
+537612168073	ATUN	R1	450	1	48.467
+537212627618	RUSDI BIN NUSI	R1	450	1	80.077
+537612376231	KAMIN	R1	450	1	27.563
+537040778008	ODIH	R1	450	1	62.742
+537612446991	EDI B IMIN	R1	450	1	32.151
+537040939503	BANI ISMAIL	R1	450	1	94.863
+537614450659	ONDAY	R1	450	2	223.768
+537614448904	AMAT BIN CINER	R1	450	1	17.366
+537614195687	DEDE RUKMAN	R1M	900	2	106.264
+537612635202	ANDUN BIN SATIP	R1	450	2	63.165
+537212628390	SARDIN	R1	450	1	18.849
+537612381869	EMIN BIN UDI	R1	450	1	33.171
+537212628382	AMIR BIN BIIN	R1	450	1	37.250
+537210334841	ANDA	R1	450	1	11.433
+537212620611	TALEN	R1	450	1	18.141
+537612486390	NURYANI	R1	450	1	9.798
+537212066967	AMAR	R1	450	2	76.901
+537212732256	IYA	R1	450	1	65.742
+537212620980	IPANG	R1	450	1	47.447
+537612181806	SAMIN BIN ISAM	R1	450	1	91.294
+537210096646	MUSHOLLA NURROCHMAN	S1	900	1	202.337
+537212620931	ENJUM	R1	450	1	47.957
+537612079275	SRI SUPARTI BI SODIKIN	R1	450	2	70.813
+537212621360	AMIN	R1	450	1	27.053
+537212626623	SADA	R1	450	1	61.213
+537212620972	ENJAM	R1	450	1	91.804
+537212620964	EYOT	R1	450	1	53.055
+537212622466	SABI	R1	450	1	131.062
+537212628685	ARTO B IPIT	R1	450	1	53.565
+537212620956	BUDI	R1	450	1	29.092
+537212621082	JASUM	R1	450	1	25.014
+537212628764	SODIKIN	R1	450	2	103.953
+537212621352	KEMBAR	R1	450	2	107.013
+537212066983	AJAM	R1	450	1	51.016
+537612515758	MISJA BIN RANIM	R1	450	1	71.920
+537212621329	KACUNG	R1	450	1	9.276
+537212621407	SAMUN B JAMAN	R1	450	1	52.545
+537212621311	ENCU	R1	450	1	35.211
+537214447013	MESJID ALHIDAYAH 3	S1	900	1	189.293
+537212621112	BOIH	R1	450	1	58.664
+537212621120	ANDA	R1	450	1	65.802
+537212621138	ECIN	R1	450	1	30.622
+537612170838	KARTO	R1	450	1	36.681
+537212621146	JIUN	R1	450	1	16.624
+537212621224	SAWIN	R1	450	1	9.450
+537612159520	AJUM BIN MISA	R1	450	1	63.703
+537212621216	IBIK	R1	450	1	46.937
+537612437124	TAMA	R1	450	1	89.255
+537612255889	MANTIR	R1	900	1	49.167
+537212620438	ANTONG B AJI	R1	450	1	9.276
+537212621232	RT ASAN	R1	450	1	18.478
+537210334946	YANIN	R1	450	1	16.253
+537210334920	ISIN BIN JUMIN	R1	450	1	25.464
+537212628602	ASIM BIN JUMIN	R1	450	1	24.504
+537212621299	ISIN	R1	450	1	63.193
+537612324805	ASEN	R1	450	1	41.270
+537212619670	HAMDAN	R1	450	2	174.822
+537612029383	NUR SALIM BIN CEMIN	R1	450	1	63.252
+537212621273	SUING	R1	450	1	22.464
+537214447021	IJAH B AMUN	R1	450	1	16.624
+537212732145	JAJANG	R1	450	2	147.800
+537212620533	OSEN B ENCIT	R1	450	1	12.545
+537212628508	ACIM	R1	450	1	49.937
+537212628827	USEN	R1	450	2	101.447
+537210118804	DEIN H ENGKAR	R1M	900	2	139.686
+537212628540	PIIN	R1	450	1	15.883
+537212621074	IJO	R1	450	1	41.839
+537212621337	ADES	R1	450	1	117.550
+537612518676	DENI RAMDANI	R1	450	1	9.276
+537612066557	IJAM	R1	450	2	135.054
+537612099896	E KOSASIH B ARDI	R1	450	1	12.545
+537212628565	MANIH	R1	450	1	71.410
+537212626672	NINTA	R1	450	1	69.880
+537212621017	KODRAT ALALAM	R1	450	1	95.373
+537210221727	JUNAEDI	R1M	900	1	96.087
+537612592028	PARDI	R1	450	1	18.512
+537612477431	JUNAEDI	R1	450	1	65.292
+537612429081	NEIH SYAHRONI	R1	450	1	113.218
+537212620525	RANIM	R1	450	1	22.220
+537210053061	TIBO B SUKAR	R1	900	1	82.248
+537612548362	MAMAT	R1	450	1	49.486
+537612271839	NANA	R1M	900	1	73.806
+537612357492	RASAM SAMSUDIN	R1	450	1	23.994
+537212624533	MISAR BIN MISAN	R1	450	1	98.942
+537612437293	SAAM BIN IRIN	R1	450	1	41.329
+537612326468	ENVAN	R1	450	1	9.276
+537612286161	ECIN BIN DARIM	R1	900	2	347.023
+537212621257	OSEN	R1	450	1	49.486
+537612644233	ROHIM	R1	450	1	57.644
+537612247694	ENGKUY	R1	450	1	39.799
+537212625990	AMING B RUSUN	R1	450	1	25.014
+537612178056	NASAN BIN MUSTIR	R1	450	1	9.450
+537612615159	YANA BIN MININ	R1	450	1	25.523
+537612164648	UANG BIN BONA	R1	900	1	298.994
+537212620844	LAU ONYAN	R1	450	1	167.034
+537212620836	WARDI	R1	450	1	80.077
+537612628084	TRISNA	R1	450	1	49.486
+537212628819	ELLAM B ININ	R1	450	1	29.602
+537212066942	IDONG	R1	450	1	14.029
+537612816770	JARONAH	R1	450	1	42.858
+537212066934	BOIH	R1	450	1	76.508
+537212066870	BORIN BIN UNEN	R1	450	1	54.075
+537212628341	T A S U M	R1	450	1	83.587
+537212628628	TALIM BIN ENJAM	R1	450	1	21.074
+537210197448	AMINAH	R1	900	1	64.972
+537210055536	ABDUL ROHIM	R1	900	1	18.540
+537212628295	GANDA B DOLE	R1	450	1	22.464
+537612326548	AMAN BIN ADANG	R1	450	1	40.819
+537212628573	ROSIP	R1	450	1	55.605
+537612124484	UDIN ARIPUTRA	R1	450	1	63.252
+537212628780	MUSOLA NURUL IHWAN	S1	450	1	21.900
+537211611851	LIMAN B ROANIN	R1	900	1	30.622
+537212621449	MAJAN	R1	450	1	44.388
+537210334890	ASIP	R1	450	1	99.452
+537212628460	BALUT MARBUN LB	R1	450	1	65.292
+537210251288	ENCONG A	R1	900	1	23.355
+537212625742	YOK EK YANG	R1	450	1	15.883
+537212625791	PONGSIN	R1	450	1	74.469
+537612436680	KAMAL B WARLI	R1	450	1	52.486
+537612036430	KHOTIB BIN KOMARUDIN	R1	900	1	82.817
+537612168568	ENCONG	R1	450	1	156.045
+537212625783	E L I H	R1	450	1	63.762
+537212626631	EPONG	R1M	900	1	50.132
+537212066975	JOLLY MUNDUNG	R1	450	1	10.321
+537612506537	WATI	R1	2200	1	716.687
+537612377737	MIKA WINATA	R1	1300	1	77.378
+537212621033	NOLIH	R1	1300	1	318.441
+537212621423	EDI	R1	450	1	9.450
+537214447039	HERI B AGUS	R1	450	1	5.099
+537212628707	JACK SULAEMAN	R1	450	1	39.289
+537212620877	EMBIH	R1M	900	1	370.421
+537212620885	WINATA	R1M	900	1	174.070
+537212628669	AA B KIDAN	R1	450	1	66.821
+537212620949	ISAONG	R1	450	2	233.455
+537212621386	LAN ING BUDIANI	R1	450	1	8.058
+537212621345	EMPEK	R1M	900	1	50.132
+537212066959	LIM NEM BIH	R1	450	1	75.430
+537212067002	LIM COANIN	R1	450	1	33.171
+537212628494	NURLININ	R1	450	1	67.331
+537612112033	ERNIH	R1	450	1	16.658
+537212620732	KINYAN	R1	450	1	61.723
+537612146850	AMAT SUNGKAWA CB	R1	900	1	159.805
+537614468458	KATIRI	R1	900	1	208.837
+537614443993	SUGIYANTO	R1	450	1	61.213
+537212620781	AAN	R1	450	1	6.491
+537212620765	NIWAH SUSANTI	R1M	900	1	284.082
+537212624724	KIKI TOBING	R1	2200	1	315.522
+537612171595	ENG KENG	R1M	900	1	243.698
+537612275111	ISIN	R1M	900	1	50.132
+537212628445	RANDO BIN ISAK	R1	450	2	241.096
+537212621187	WITENG	R1	450	1	15.141
+537612143726	SURYANTO	R1M	900	1	484.611
+537212620828	ACING	R1	450	1	151.966
+537210334953	TUSIN	R1	450	1	155.535
+537612171760	ENGKYANG	R1	450	1	125.454
+537614459485	GAYUS YONATHAN	R1	450	1	80.587
+537212628452	J U M H A R I	R1	450	1	68.351
+537212628486	SLAMET	R1	450	1	80.077
+537212066593	TJIO TJIN LAY	R1	900	1	189.886
+537210037404	ERAS BIN WASPAN	R1M	900	1	211.669
+537613789000	MISKA APBD 1 BEKASI	R1	450	1	137.181
+537212622856	IMAN B MAIN	R1	450	1	8.232
+537212628358	THENG GUDANG	R1	450	1	96.902
+537612934212	ARTA	R1	450	1	40.309
+537612586314	WALDY BUDIANSYAH	R1	450	1	69.880
+537212621510	NYOAN	R1	450	1	29.602
+537612378060	YANTO	R1	450	1	45.917
+537212621498	GONI	R1	450	1	16.995
+537212621480	OOM	R1	450	1	58.664
+537212621502	ARIS	R1	450	2	214.590
+537211609636	CICIH BT SOLEH	R1	900	1	247.949
+537212628317	SUKIAH	R1	450	1	51.016
+537210334938	OLAN	R1	450	1	20.703
+537612264646	EMAY	R1	1300	1	197.909
+537040567632	ARIS	B1	450	1	10.892
+537613177680	HENDRIK	R1	450	1	83.646
+537614350508	ADE SRI LESTARI	R1	450	1	12.545
+537212628599	OWEH SOPANDI	R1	450	1	57.585
+537612428300	PAUD SEDAP MALAM	R1M	900	2	581.128
+537612086555	SUKIYEM	R1	450	1	39.799
+537612076428	ANGGIH BIN DAHLAN	R1	1300	1	77.378
+537212620558	OTONG	R1	450	1	79.508
+537212620574	KINAN	R1	450	1	58.664
+537212620582	EI	R1M	900	1	442.834
+537212620391	YELIH B CENDONCENG	R1M	900	1	551.454
+537612129286	ABDUL HAMID	R1M	900	2	106.264
+537212620629	AAN B	R1	1300	1	194.028
+537212620603	NY LEIM NIO	R1	450	1	44.898
+537612310736	SURYANTO WIJAYA	R1	900	1	77.209
+537212628429	NIO KIM HOAT	R1	450	1	8.754
+537212620660	HERMAN	R1M	900	1	171.285
+537210162614	AMOS	R1	900	1	104.231
+537212628715	YOHAN	R1	450	1	68.351
+537612479675	ALBERT TIO BASKORO	R1	450	1	8.447
+537212620495	GEREJA KRISTEN P	S1	11000	1	405.000
+537212620487	JOKSIH	R1	1300	1	742.532
+537210027559	JOKSIH AB	R2	3500	1	1.493.632
+537212628581	BUDI SURYANA	R1	1300	1	77.378
+537212620479	SOANI	R1	450	1	78.038
+537212628411	KWE SIN NYAH	R1	450	1	5.099
+537612803965	YANTI ISWATI	R1	450	1	24.074
+537212620724	KIM CAE	R1	450	1	51.016
+537612274318	WICAN TRISTIAWAN	R1	450	1	81.038
+537212620678	USEN	R1	450	1	5.099
+537212620517	NURHASAN	R1	450	1	20.703
+537212628516	THENG WEE THENG	R1	450	1	93.843
+537210219489	YUNUS	R1	900	1	80.268
+537210096421	OLEH	R1	900	1	70.581
+537212628325	AJUM B BUANG	R1	450	1	33.171
+537212621701	UTAS	R1	450	1	49.996
+537210275809	UANG BIN LETENG	R1	900	1	106.780
+537212628333	AWING	R1	450	1	65.292
+537612161306	UANG/DOKU	R1	450	1	13.287
+537212559757	DATENG	R1	450	1	5.099
+537212623157	SAMI B JAIMUN	R1	450	1	5.099
+537212628636	RANTA BIN AMAD	R1	450	1	5.099
+537212622512	BONIH B KANCIL	R1	450	1	52.036
+537212628309	M A R T A	R1	450	1	47.447
+537212628610	SUBUR BIN AMBRANG	R1	450	1	50.506
+537612443123	ACIM	R1	450	1	5.795
+537612436560	BUANG	R1	450	1	132.533
+537212621847	CIMONG	R1	450	1	117.548
+537210086662	AGUS	R1	900	1	77.719
+537212628922	RIDA B BORIN	R1	450	1	114.237
+537612628786	WANIH	R1	450	1	7.710
+537612447172	BONIH	R1	450	1	13.287
+537212621655	TEKEL B OSEN	R1	450	1	42.348
+537212621896	KADI	R1	450	1	12.545
+537212621551	SUPANDI MANTA	R1	450	2	145.761
+537212628798	LINAH	R1	450	1	56.114
+537212621967	HADI	R1	450	1	101.491
+537212621606	NEDI	R1	450	1	22.464
+537212621671	NY IDI	R1	450	1	9.624
+537212620383	ENDAH	R1M	900	1	104.657
+537212629007	AAT SUHENDRA	R1	450	1	162.673
+537614243183	NASIH	R1	450	1	47.957
+537612093382	JUNAEDI	R1	900	1	21.939
+537210334995	SANIN	R1	450	1	5.099
+537210335047	TONGWIH	R1	450	1	30.112
+537613120550	Y A N A H	R1M	900	2	139.686
+537212626889	SOLEH	R1	450	1	88.745
+537211637861	TUTI ALAWIYAH BT PIAN	R1	900	1	120.546
+537612168422	M KARSUM	R1	450	2	148.820
+537612272218	SUHARDI BIN ABDUL RAHMAN	R1	450	2	113.130
+537612287787	WINDA	R1M	900	1	480.433
+537212625024	MAMIN	R1	450	1	68.351
+537612236444	SANAN BIN ISAP	R1	900	1	68.541
+537212621959	SAEM	R1	450	1	103.021
+537212622035	OLIS B	R1	450	1	73.449
+537212622019	EDI	R1	450	1	86.705
+537210130206	ANENG BIN H ARIN	R1	900	1	101.682
+537612486997	UJANG SUPRIYADI	R1	450	1	64.272
+537612002306	JONIH	R1	900	1	85.876
+537212621862	MAMID	R1	450	1	85.176
+537212621630	SAKUM S	R1	450	1	123.356
+537211564162	WARNIH SUHARTINI	R1M	900	1	360.673
+537210087050	ASEP SAEPUDIN	R1	900	1	63.443
+537212622076	UJEN	R1	450	1	46.937
+537212629230	ENDIN	R1	450	2	241.096
+537212622084	AJUK	R1	450	1	7.187
+537212067044	EMAN BIN KARTA	R1	450	1	88.235
+537612186504	NEMIN B AJUK	R1	450	1	48.408
+537212629177	ACIP BIN IMIN	R1	450	1	75.939
+537612245985	KARYA BIN AMAN	R1	900	1	76.699
+537212621577	TASIM B USUH	R1	450	2	236.514
+537212621281	YAMIN	R1	450	1	39.799
+537212621983	ANSUR	R1	450	1	45.917
+537212621991	ENCEP	R1	450	1	81.607
+537212621750	ONIN B	R1	450	1	125.454
+537614465229	MAROH	R1	450	1	99.452
+537614465237	EKO BUDIATNA	R1	450	1	109.139
+537614472030	ARMAN WIGANDA	R1	450	1	86.705
+537212621727	BORIN	R1	450	1	55.605
+537212621792	INGKIN	R1	450	1	44.898
+537210099635	SITI RUKIAH	R1M	900	1	171.530
+537212628884	DALIMI BIN SUKI	R1	450	1	111.178
+537212066862	IPAN	R1	450	1	44.898
+537612170990	ELI	R1	450	1	55.605
+537612286153	MARIAM BT NEMAN	R1	450	2	156.467
+537212629110	NEMAN B LAUD	R1	450	1	173.380
+537212627555	MISKA MUSTOPA	R1	450	1	103.021
+537612409233	WALIM	R1	450	1	82.117
+537612380858	ROHIM	R1	450	1	26.994
+537212629193	TISIN NASIRUN	R1	900	1	282.169
+537212621975	EMAN	R1	450	1	47.957
+537212622043	GONANGSIH	R1	450	1	5.099
+537612627311	KURAESIH	R1	450	2	64.695
+537612816874	SAIDI LASMANA	R1	450	2	100.894
+537212622148	APONG	R1	1300	1	930.026
+537212622130	MASJID AL HIDAYAH 2	S1	900	1	349.577
+537212622218	OLIN	R1	450	2	204.394
+537212628948	M IDRIS	R1	450	1	29.092
+537212622189	NESIN	R1	450	3	318.963
+537614480919	WAWAN KOMARUDIN	R1	900	2	461.739
+537613273256	ADE JARKASIH	R1	900	1	281.149
+537212629144	AGUS LESMANA	R1	450	2	128.649
+537212622242	ODIM	R1	450	1	54.075
+537210219471	CARKIM	R1	900	1	57.835
+537212629136	SAMIN	R1	450	3	402.069
+537210334961	M OLIN B GOLEK	R1	450	1	116.277
+537212622347	APANG	R1	450	1	77.528
+537612404918	HASAN BASRI	R1	450	1	251.669
+537212621622	UCA B INKRIH	R1	450	2	241.096
+537212067051	NALAM BIN NAAMAN	R1	450	1	34.191
+537212622339	UCA	R1	450	1	78.548
+537212622362	NAMAN	R1	450	1	112.708
+537212622305	ANDA	R1	450	1	43.878
+537612269471	DEDE GUNAWAN	R1	450	1	156.045
+537212067010	NANANG KOSIM	R1	450	1	18.107
+537212629056	M ARIFIN BIN JININ	R1	450	1	120.548
+537212624221	SD MEKAR SARI	S1	450	2	369.398
+537212621303	RT ASMAN	R1	450	1	92.314
+537212628843	INAN	R1	450	1	152.986
+537212622417	DARMAN	R1	450	1	72.939
+537212629072	TUMING	R1	450	1	83.136
+537212621544	DARMAN B BARLI	R1	450	2	176.861
+537212067069	M KARYA BIN MAJAN	R1	450	1	55.605
+537612149816	BAKOH	R1	450	1	48.467
+537212628930	ADITIA BIN AMANG	R1	450	1	25.464
+537612885834	IBUN ZAELANI	R1	450	1	58.664
+537212622388	OSEN	R1	450	1	107.609
+537212629049	OMEM B USAN	R1	450	2	163.096
+537612176044	SARNI	R1	450	1	29.092
+537212621394	KUSIN B NYIDI	R1	450	1	107.099
+537612322676	ENDA BIN TEIN	R1	450	1	7.710
+537211571865	ISIN	R1	900	1	59.874
+537212659278	YPPMPBB (YAYASAN	S1	450	1	37.380
+537212622354	PARUT	R1	450	1	36.740
+537212628876	JUMSI BIN PARUT	R1	450	1	68.351
+537211515845	JALI BIN TAIH	R1	900	1	198.494
+537612097764	SANAN	R1	450	1	130.553
+537212622433	ANAT	R1	450	1	256.767
+537212622441	ATIM	R1	450	1	94.353
+537612423867	HASAN BASRI	R1	450	1	151.456
+537612176051	SARDI BIN MUIN	R1	450	1	67.841
+537612798945	ENUNG S	R1	450	2	356.353
+537212067036	ASDI B TOHIB	R1	450	1	21.445
+537612827366	BIRNES SILITONGA	R1	450	1	17.029
+537214447054	SUKAR B KURDI	R1M	900	1	128.116
+537041002197	LALAN	B1	900	1	94.276
+537614444947	CANANG	R1	450	2	62.499
+537612381956	MASNI	R1	450	1	121.826
+537612141507	ARIM	R1	450	1	104.040
+537612000151	RATNA WIBOWO B WIRSA	R1	900	1	169.492
+537041041906	RATIH SULISTIA BARKAH	B1	1300	1	170.142
+537212622504	KACUNG	R1	450	1	115.767
+537212732853	HALIM BIN ENJAM	R1	450	1	88.745
+537612148361	NASEP	R1	450	1	124.375
+537212621585	I S A	R1	450	1	124.944
+537212622520	TONGKIN	R1	450	1	7.187
+537212622579	BAPAK GEDE	R1	450	1	82.117
+537210335021	UMAR	R1	450	1	58.095
+537212628868	SANAN	R1	450	1	89.765
+537212628971	SAUN	R1	450	1	29.543
+537212628850	ADON B MADUN	R1	450	1	75.489
+537041002729	DODI	B1	900	1	49.656
+537612178837	LAMON	R1	450	2	114.151
+537610280168	JASRI	R1	900	2	160.928
+537212622608	WIRSA	R1	450	1	128.281
+537041054106	SUMIRAT	B1	900	1	56.114
+537210276540	UJANG B H ARIN	R1M	900	1	199.351
+537212622616	JAMA	R1	450	1	31.132
+537612512976	M MIJA MUSTOPA	R1	450	1	52.036
+537612377794	AMIR	R1	450	1	70.390
+537612099386	ROSADI	R1	450	1	91.804
+537212651127	WARYO	R1	450	1	62.233
+537210278710	EAH BT RIIN	R1	900	1	26.955
+537612140354	ACEM SUARNI	R1	450	1	47.447
+537210196341	ENDANG BR	R1	900	1	90.975
+537212558190	SANAN BIN SAKRI	R1	450	1	78.038
+537612310623	LIEM TJU ING	R1	1300	1	224.695
+537212590969	TATANG S	R1	450	1	58.095
+537212617365	WAKIM	R1	450	1	39.289
+537612106528	MISAN J	R1	450	1	53.565
+537612379677	NENTI BT AHMAD SUBUR	R1	450	1	62.233
+537212091088	GONO BIN MADI	R1	450	1	80.587
+537212594242	SANTA WIJAYA	R1	450	1	63.762
+537212739469	DIDI BIN MIUN	R1	450	1	64.782
+537612221627	SDN KERTA JAYA 02	S1	900	1	58.820
+537612579416	MASTUM	R1	450	2	178.391
+537612168767	UKIM	R1	450	1	100.471
+537212091062	UJANG BIN NESAN	R1	450	1	68.351
+537612591018	TATANG TIRTANA	R1	450	1	103.981
+537612211524	SAKIM BIN KUBIL	R1	450	1	97.922
+537212558174	SARIM	R1	450	1	88.235
+537612231003	UJANG BIN RANIN	R1M	900	2	106.264
+537612437244	SUKI B IBIK	R1	450	1	191.735
+537212558211	RINAN BIN RANEN	R1	450	1	14.399
+537211848325	ANI	R1	450	1	124.434
+537211609644	SUKRI B SIMAD	R1	900	1	233.223
+537212558229	ENCEP	R1	450	1	19.591
+537612593012	UDI RUSDI	R1	450	1	76.508
+537212091054	SANIM B ONIM	R1	450	1	95.883
+537210109321	IDA BT ADUNG	R1	900	1	91.485
+537212091096	SAKUM	R1	450	1	91.804
+537612436440	NANI SUMARNI	R1M	900	3	839.395
+537612594007	MASJID JAMI NURUL ISLAM	S1	900	1	196.078
+537212091126	TASEM	R1	450	1	85.686
+537612049166	NANDANG BIN ONIN	B1	900	1	120.618
+537612121487	ICIH BT ICING	R1	450	2	183.999
+537211848366	RK ICING	R1	450	1	53.055
+537612121495	EXSA BIN ACIM	R1	450	1	114.237
+537211848374	BU PENGKI	R1	450	1	103.021
+537211848317	SANEN	R1	450	1	27.053
+537211848429	BONI	R1	450	1	54.585
+537211848437	K SUHERMAN	R1	450	1	115.767
+537212558286	HAYATI SINAGA	R1	450	1	17.366
+537612097707	EDI	R1	450	2	90.187
+537212558324	KAMONG	R1	450	1	145.338
+537612169083	MULYADI BIN SUROH	R1	450	1	86.196
+537212650890	NAMIN	R1	450	1	41.839
+537612169026	ADE BIN AMING	R1	450	1	5.099
+537211848508	W ANTA MAULANA	R1	450	1	5.099
+537614471748	MILA	R1	1300	1	77.378
+537612029781	ICAN B MISNA	R1	900	1	81.797
+537612095170	EMIN	R1	900	1	24.205
+537210071605	YUSAK PANGSIH	R1	450	1	59.174
+537211848460	SUPRI	R1	450	1	23.703
+537212558340	SANJU	R1	450	1	21.954
+537612124506	EENG	R1	450	1	117.550
+537612404896	NOLIN BIN ACIH	R1	450	1	65.233
+537210041433	SAKINAN BIN NALIM	R1	900	1	81.229
+537040195899	ENDANG SETIAWAN, S.SOS.MM	B1	1300	1	557.189
+537612097749	MIRIN	R1	450	1	44.898
+537212091175	SANABONG	R1	450	1	59.174
+537612097731	K SUHERMAN	R1	450	1	56.624
+537612169042	MARI B SANIAN	R1	450	2	111.091
+537211848445	M ASIK	R1	450	1	116.787
+537212558252	SAMIN AL FAKIR	R1	450	1	70.900
+537211848411	EYOK	R1	450	2	167.685
+537212558332	PARNO	R1	450	1	37.760
+537211848403	KUBIL	R1	450	1	38.780
+537612373872	ETIK DWI LESTARI	R1M	900	1	257.624
+537612168974	JANUR KARYA	R1	450	1	70.900
+537612056998	SHERLY SELVIAH PELUPESSY	R1M	900	2	106.264
+537211848390	SURATMO	R1	450	1	182.557
+537613180513	RT KOBIN	R1	450	1	51.526
+537041014508	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014516	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014524	PT PRIMA STEADY DEVELOPME	R1	1300	1	424.627
+537041014565	PT PRIMA STEADY DEVELOPME	R1	1300	1	252.967
+537041014573	PT PRIMA STEADY DEVELOPME	R1	1300	1	139.876
+537041014581	PT PRIMA STEADY DEVELOPME	R1	1300	2	164.756
+537041014602	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014610	PT PRIMA STEADY DEVELOPME	R1	1300	1	306.536
+537041014669	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014685	PT PRIMA STEADY DEVELOPME	R1	1300	1	691.940
+537041014693	PT PRIMA STEADY DEVELOPME	R1	1300	1	547.600
+537041014715	PT PRIMA STEADY DEVELOPME	R1	1300	1	251.479
+537041014723	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014731	PT PRIMA STEADY DEVELOPME	R1	1300	1	433.020
+537041014749	PT PRIMA STEADY DEVELOPME	R1	1300	2	1.158.769
+537041014772	PT PRIMA STEADY DEVELOPME	R1	1300	1	226.182
+537041014827	PT PRIMA STEADY DEVELOPME	R1	1300	1	162.196
+537041047839	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041047854	PT PRIMA STEADY DEVELOPME	R1	1300	1	293.144
+537041047888	PT PRIMA STEADY DEVELOPME	R1	1300	1	339.274
+537041047900	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041047967	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041047983	PT PRIMA STEADY DEVELOPME	R1	1300	1	373.499
+537041048001	PT PRIMA STEADY DEVELOPME	R1	1300	1	428.556
+537041048019	PT PRIMA STEADY DEVELOPME	R1	1300	1	168.149
+537041013873	PT PRIMA STEADY DEVELOPME	R1	1300	1	151.780
+537041013881	PT PRIMA STEADY DEVELOPME	R1	1300	1	325.881
+537041013899	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041013945	PT PRIMA STEADY DEVELOPME	R1	1300	1	311.000
+537041013952	PT PRIMA STEADY DEVELOPME	R1	1300	1	369.035
+537041013978	PT PRIMA STEADY DEVELOPME	R1	1300	1	275.288
+537041013986	PT PRIMA STEADY DEVELOPME	R1	1300	1	116.068
+537041013994	PT PRIMA STEADY DEVELOPME	R1	1300	1	215.766
+537041014005	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014047	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014062	PT PRIMA STEADY DEVELOPME	R1	1300	1	379.451
+537041014070	PT PRIMA STEADY DEVELOPME	R1	1300	1	351.177
+537041014100	PT PRIMA STEADY DEVELOPME	R1	1300	1	239.575
+537041014118	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014134	PT PRIMA STEADY DEVELOPME	R1	1300	1	446.412
+537041014167	PT PRIMA STEADY DEVELOPME	R1	1300	1	494.029
+537041014175	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014212	PT PRIMA STEADY DEVELOPME	R1	1300	1	148.804
+537041014287	PT PRIMA STEADY DEVELOPME	R1	1300	1	226.182
+537041014295	PT PRIMA STEADY DEVELOPME	R1	2200	1	556.845
+537041014309	PT PRIMA STEADY DEVELOPME	R1	1300	1	714.260
+537041014317	PT PRIMA STEADY DEVELOPME	R1	1300	2	992.107
+537041014325	PT PRIMA STEADY DEVELOPME	R1	1300	1	179.101
+537041048362	PT PRIMA STEADY DEVELOPME	R1	1300	1	526.767
+537041048699	PT PRIMA STEADY DEVELOPME	R1	1300	1	500.328
+537041048242	PT PRIMA STEADY DEVELOPME	R1	1300	1	422.604
+537041048283	PT PRIMA STEADY DEVELOPME	R1	1300	1	355.641
+537041048729	PT PRIMA STEADY DEVELOPME	R1	1300	1	349.690
+537041048616	PT PRIMA STEADY DEVELOPME	R1	1300	1	331.833
+537041048267	PT PRIMA STEADY DEVELOPME	R1	1300	1	313.977
+537041048466	PT PRIMA STEADY DEVELOPME	R1	1300	1	276.775
+537041048275	PT PRIMA STEADY DEVELOPME	R1	1300	1	264.872
+537041048752	PT PRIMA STEADY DEVELOPME	R1	1300	1	256.479
+537041048433	PT PRIMA STEADY DEVELOPME	R1	1300	1	215.766
+537041048396	PT PRIMA STEADY DEVELOPME	R1	1300	1	202.373
+537041048745	PT PRIMA STEADY DEVELOPME	R1	1300	1	197.909
+537041048155	PT PRIMA STEADY DEVELOPME	R1	1300	1	354.812
+537041048520	PT PRIMA STEADY DEVELOPME	R1	1300	1	165.173
+537041048512	PT PRIMA STEADY DEVELOPME	R1	1300	1	157.732
+537041048737	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048417	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048388	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048673	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048189	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048291	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041048632	PT PRIMA STEADY DEVELOPME	R1	2200	1	77.378
+537041014333	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014374	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041014390	PT PRIMA STEADY DEVELOPME	R1	1300	1	319.929
+537041014403	PT PRIMA STEADY DEVELOPME	R1	1300	1	245.527
+537041014411	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048587	PT PRIMA STEADY DEVELOPME	R1	1300	2	169.756
+537041014452	PT PRIMA STEADY DEVELOPME	R1	1300	1	82.378
+537041014460	PT PRIMA STEADY DEVELOPME	R1	1300	3	600.872
+537041048035	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048043	PT PRIMA STEADY DEVELOPME	R1	1300	1	212.790
+537041048068	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048076	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048084	PT PRIMA STEADY DEVELOPME	R1	1300	2	164.756
+537041048114	PT PRIMA STEADY DEVELOPME	R1	1300	2	450.461
+537041048122	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048794	PT PRIMA STEADY DEVELOPME	R1	1300	1	389.866
+537041048815	PT PRIMA STEADY DEVELOPME	R1	1300	1	409.212
+537041048823	PT PRIMA STEADY DEVELOPME	R1	1300	1	337.785
+537041048831	PT PRIMA STEADY DEVELOPME	R1	2200	1	416.189
+537041048849	PT PRIMA STEADY DEVELOPME	R1	1300	1	190.470
+537041048856	PT PRIMA STEADY DEVELOPME	R1	1300	1	212.790
+537041048864	PT PRIMA STEADY DEVELOPME	R1	1300	1	230.647
+537041048872	PT PRIMA STEADY DEVELOPME	R1	1300	1	230.647
+537041048902	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048936	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041048969	PT PRIMA STEADY DEVELOPME	R1	1300	1	273.800
+537041048993	PT PRIMA STEADY DEVELOPME	R1	1300	1	636.882
+537041049003	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041049029	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041049037	PT PRIMA STEADY DEVELOPME	R1	1300	1	322.905
+537041049045	PT PRIMA STEADY DEVELOPME	R1	1300	1	336.297
+537041049052	PT PRIMA STEADY DEVELOPME	R1	1300	2	313.560
+537041049078	PT PRIMA STEADY DEVELOPME	R1	1300	1	488.078
+537041049086	PT PRIMA STEADY DEVELOPME	R1	1300	1	284.216
+537041049094	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041049116	PT PRIMA STEADY DEVELOPME	R2	3500	1	1.234.140
+537041049132	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041049140	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041049173	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378
+537041049202	PT PRIMA STEADY DEVELOPME	R1	1300	1	369.035
+537041049210	PT PRIMA STEADY DEVELOPME	R1	1300	1	349.690
+537041049228	PT PRIMA STEADY DEVELOPME	R1	1300	2	164.756
+537041049236	PT PRIMA STEADY DEVELOPME	R1	1300	2	169.756
+537041049244	PT PRIMA STEADY DEVELOPME	R1	1300	1	300.584
+537041049251	PT PRIMA STEADY DEVELOPME	R1	1300	3	257.134
+537041049269	PT PRIMA STEADY DEVELOPME	R1	1300	3	257.134
+537041049277	PT PRIMA STEADY DEVELOPME	R1	1300	1	151.780
+537041049293	PT PRIMA STEADY DEVELOPME	R1	1300	1	391.355
+537041049307	PT PRIMA STEADY DEVELOPME	R1	1300	1	77.378`;
 
         let databasePelanggan = [];
 
@@ -750,12 +2846,9 @@
             }
 
             let dataArr = dataPelangganBaru.trim().split('\n');
-
             dataArr.forEach(b => {
                 if (b.trim() === "") return;
-                
                 let match = b.match(/(\d{12})\s+(.*?)\s+([A-Z]\d[A-Z]*)\s+(\d+)\s+(\d+)\s+.*?([\d,\.]+)/);
-
                 if (match) {
                     databasePelanggan.push({
                         idpel: match[1].trim(),
@@ -769,10 +2862,11 @@
             });
         }
 
-        window.onload = prosesData;
-
+        /* ==========================================
+           6. HELPERS (BULAN & REF)
+           ========================================== */
         function getBulanTahun(offsetBulan) {
-            const namaBulan = ["JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGU", "SEP", "OKT", "NOV", "DES"];
+            const namaBulan = ["JAN","FEB","MAR","APR","MEI","JUN","JUL","AGU","SEP","OKT","NOV","DES"];
             let d = new Date();
             d.setMonth(d.getMonth() - offsetBulan);
             return namaBulan[d.getMonth()] + d.getFullYear().toString().slice(-2);
@@ -787,72 +2881,440 @@
             return result;
         }
 
-        function formatRupiah(angka) {
-            return new Intl.NumberFormat('id-ID').format(angka);
+        /* ==========================================
+           7. TEMPLATE STRUK (HTML)
+           ========================================== */
+        function generateStrukHTML(pelanggan) {
+            let blthTeks = "";
+            if (pelanggan.lembar === 1) blthTeks = getBulanTahun(0);
+            else if (pelanggan.lembar === 2) blthTeks = getBulanTahun(1) + ", " + getBulanTahun(0);
+            else if (pelanggan.lembar >= 3) blthTeks = getBulanTahun(2) + ", " + getBulanTahun(1) + ", " + getBulanTahun(0);
+
+            const now = new Date();
+            const tgl = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
+const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
+            const tagihanAwal = formatRupiah(pelanggan.tagihan);
+            const adminAwal = '3.000';
+            const totalAwal = formatRupiah(parseInt(pelanggan.tagihan) + 3000);
+            
+            const ref1 = generateRandomRef(18);
+            const ref2 = generateRandomRef(18);
+
+            return `
+            <div class="struk-container" data-idpel="${pelanggan.idpel}">
+                <div class="struk-header">
+                    m-Payment<br>
+                    <span class="out-date">${tgl}</span> <span class="out-time">${jam}</span><br>
+                    CKG_53704.PLN LEMAHABANG
+                </div>
+
+                <div class="garis"></div>
+                <div class="title-struk">STRUK PEMBAYARAN TAGIHAN LISTRIK</div>
+                <div class="garis"></div>
+
+                <table class="data-table">
+                    <tr><td>IDPEL</td><td>:</td><td class="out-idpel">${pelanggan.idpel}</td></tr>
+                    <tr><td>NAMA</td><td>:</td><td class="out-nama">${pelanggan.nama}</td></tr>
+                    <tr><td>TARIF/DAYA</td><td>:</td><td class="out-tarif">${pelanggan.tarif}/${pelanggan.daya}VA</td></tr>
+                    <tr>
+                        <td>BL/TH</td><td>:</td>
+                        <td>
+                            <div class="editable-wrapper">
+                                <input type="text" class="edit-input input-blth" value="${blthTeks}" title="Klik untuk mengedit BL/TH">
+                                <svg class="edit-icon" onclick="focusInput(this.previousElementSibling)" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RP TAG PLN</td><td>:</td>
+                        <td>
+                            <div class="val-container">
+                                <span class="rp-label">Rp</span>
+                                <div class="editable-wrapper">
+                                    <input type="text" class="edit-input input-tagihan" value="${tagihanAwal}" inputmode="numeric" title="Klik untuk mengedit nominal">
+                                    <svg class="edit-icon" onclick="focusInput(this.previousElementSibling)" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr><td>NO REF</td><td>:</td><td class="out-ref1" style="text-align:left;">${ref1}</td></tr>
+                    <tr><td></td><td></td><td class="out-ref2" style="text-align:left;">${ref2}</td></tr>
+                </table>
+
+                <div class="disclaimer">
+                    PLN menyatakan struk ini sebagai<br>
+                    bukti pembayaran yang sah.
+                </div>
+
+                <table class="footer-table">
+                    <tr>
+                        <td>ADMIN BANK</td><td>:</td>
+                        <td>
+                            <div class="val-container">
+                                <span class="rp-label">Rp</span>
+                                <div class="editable-wrapper">
+                                    <input type="text" class="edit-input input-admin" value="${adminAwal}" inputmode="numeric">
+                                    <svg class="edit-icon" onclick="focusInput(this.previousElementSibling)" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>TOTAL BAYAR</td><td>:</td>
+                        <td>
+                            <div class="val-container">
+                                <span class="rp-label">Rp</span>
+                                <span class="total-amount out-total">${totalAwal}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="closing-text">
+                    Terima Kasih<br>
+                    "Informasi Hubungi Call Center<br>
+                    123 atau PLN Terdekat:"
+                </div>
+                <div style="text-align: center; margin-top: 10px;">---</div>
+            </div>
+            `;
         }
 
-        function hitungTotal() {
-            let tagihanStr = document.getElementById('inputTagihanStruk').value.replace(/[^0-9]/g, '');
-            let adminStr = document.getElementById('inputAdmin').value.replace(/[^0-9]/g, '');
+        /* ==========================================
+           8. INIT & INTERVAL
+           ========================================== */
+        window.addEventListener('load', () => {
+            prosesData();
+            initTheme();
+        });
 
-            let tagihan = parseInt(tagihanStr) || 0;
-            let admin = parseInt(adminStr) || 0;
-            let total = tagihan + admin;
+        initTheme();
 
-            document.getElementById('outTotal').innerText = formatRupiah(total);
-        }
+        /* ==========================================
+           9. MODE TUNGGAL VS MULTI & SWIPE
+           ========================================== */
+        let currentMode = 'single'; 
+        let isDataLoaded = false;
 
-        function cariData() {
-            const idpelInput = document.getElementById('inputIdpel').value.trim();
-            const pelanggan = databasePelanggan.find(p => p.idpel === idpelInput);
+        const inputIdpelSingle = document.getElementById('inputIdpelSingle');
+        const inputIdpelMulti = document.getElementById('inputIdpelMulti');
+        const singleGroupEl = document.getElementById('singleInputGroup');
+        const multiGroupEl = document.getElementById('multiInputGroup');
+        const modeToggleEl = document.getElementById('modeToggle');
+        const multiHintEl = document.getElementById('multiHint');
 
-            if (pelanggan) {
-                document.getElementById('outIdpel').innerText = pelanggan.idpel;
-                document.getElementById('outNama').innerText = pelanggan.nama;
-                document.getElementById('outTarif').innerText = pelanggan.tarif + '/' + pelanggan.daya + 'VA';
+        function setMode(mode) {
+            if (currentMode === mode) return; 
 
-                let blthTeks = "";
-                if (pelanggan.lembar === 1) blthTeks = getBulanTahun(0);
-                else if (pelanggan.lembar === 2) blthTeks = getBulanTahun(1) + ", " + getBulanTahun(0);
-                else if (pelanggan.lembar >= 3) blthTeks = getBulanTahun(2) + ", " + getBulanTahun(1) + ", " + getBulanTahun(0);
-                document.getElementById('outBlTh').innerText = blthTeks;
+            currentMode = mode;
+            resetForm();
 
-                document.getElementById('inputTagihanStruk').value = formatRupiah(pelanggan.tagihan);
-                hitungTotal();
-
-                document.getElementById('outRef1').innerText = generateRandomRef(18);
-                document.getElementById('outRef2').innerText = generateRandomRef(18);
-
-                const now = new Date();
-                document.getElementById('outDate').innerText = now.toLocaleDateString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                document.getElementById('outTime').innerText = now.toLocaleTimeString('id-ID');
-
-                document.getElementById('strukArea').style.display = 'block';
-                document.getElementById('panelPrint').style.display = 'block';
+            if (mode === 'single') {
+                modeToggleEl.setAttribute('data-mode', 'single');
+                singleGroupEl.classList.remove('hidden');
+                multiGroupEl.classList.add('hidden');
+                multiHintEl.classList.add('hidden');
+                document.getElementById('modeSingleBtn').classList.add('active');
+                document.getElementById('modeMultiBtn').classList.remove('active');
+                
+                document.getElementById('btnCari').innerText = "Cek Tagihan";
+                document.getElementById('btnTextDownload').innerText = "Download";
+                document.getElementById('btnTextCetak').innerText = "Cetak";
             } else {
-                alert("IDPEL " + idpelInput + " tidak ditemukan!");
-                document.getElementById('strukArea').style.display = 'none';
-                document.getElementById('panelPrint').style.display = 'none';
+                modeToggleEl.setAttribute('data-mode', 'multi');
+                singleGroupEl.classList.add('hidden');
+                multiGroupEl.classList.remove('hidden');
+                multiHintEl.classList.remove('hidden');
+                document.getElementById('modeSingleBtn').classList.remove('active');
+                document.getElementById('modeMultiBtn').classList.add('active');
+                
+                document.getElementById('btnCari').innerText = "Cek Tagihan";
+                document.getElementById('btnTextDownload').innerText = "Download";
+                document.getElementById('btnTextCetak').innerText = "Cetak Semua";
             }
         }
 
-        // ========================================================
-        // FUNGSI CETAK INSTAN KE RAWBT
-        // ========================================================
-        function cetakInstanRawBT() {
-            let tgl = document.getElementById('outDate').innerText;
-            let jam = document.getElementById('outTime').innerText;
-            let idpel = document.getElementById('outIdpel').innerText;
-            let nama = document.getElementById('outNama').innerText;
-            let tarif = document.getElementById('outTarif').innerText;
-            let blth = document.getElementById('outBlTh').innerText;
-            let tagihan = document.getElementById('inputTagihanStruk').value;
-            let ref1 = document.getElementById('outRef1').innerText;
-            let ref2 = document.getElementById('outRef2').innerText;
-            let admin = document.getElementById('inputAdmin').value;
-            let total = document.getElementById('outTotal').innerText;
+        /* ====== FITUR SWIPE GESER ====== */
+        const swipeArea = document.getElementById('panelSwipeArea');
+        let touchStartX = 0;
+        let touchEndX = 0;
 
-            let strukTeks =
+        swipeArea.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        swipeArea.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50; 
+            const diff = touchStartX - touchEndX; 
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentMode === 'single') {
+                    setMode('multi');
+                } else if (diff < 0 && currentMode === 'multi') {
+                    setMode('single');
+                }
+            }
+        }
+
+        inputIdpelMulti.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9\n]/g, '');
+            const lines = this.value.split('\n').filter(v => v.trim() !== '');
+            if (lines.length > 25) {
+                showCustomAlert("Maksimal 25 nomor meter dalam sekali proses multi cetak.");
+                const allLines = this.value.split('\n');
+                let kept = [];
+                let count = 0;
+                for (let line of allLines) {
+                    if (line.trim() !== '') {
+                        if (count < 25) { kept.push(line); count++; }
+                        else { break; }
+                    } else {
+                        kept.push(line);
+                    }
+                }
+                this.value = kept.join('\n');
+            }
+            if (this.value.trim().length > 0) multiGroupEl.classList.add('has-value');
+            else multiGroupEl.classList.remove('has-value');
+        });
+
+        inputIdpelSingle.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 0) singleGroupEl.classList.add('has-value');
+            else singleGroupEl.classList.remove('has-value');
+        });
+
+        /* ==========================================
+           10. VALIDASI & CARI DATA
+           ========================================== */
+        function validasiDataLoaded() {
+            if (!isDataLoaded) {
+                showCustomAlert("Masukkan ID Pelanggan terlebih dulu !");
+                return false;
+            }
+            return true;
+        }
+
+        function cariData() {
+            let ids = [];
+            
+            if (currentMode === 'single') {
+                const val = inputIdpelSingle.value.trim();
+                if (val) ids.push(val);
+            } else {
+                const val = inputIdpelMulti.value;
+                const rawIds = [...new Set(val.split('\n').map(id => id.trim()).filter(id => id !== ''))];
+                if (rawIds.length > 25) {
+                    showCustomAlert("Maksimal 25 nomor meter dalam sekali proses multi cetak.");
+                    return;
+                }
+                ids = rawIds;
+            }
+
+            if (ids.length === 0) {
+                showCustomAlert("Masukkan ID Pelanggan terlebih dahulu !");
+                return;
+            }
+
+            const container = document.getElementById('multiStrukContainer');
+            container.innerHTML = ''; 
+
+            let foundCount = 0;
+            let notFoundIds = [];
+
+            ids.forEach(id => {
+                const pelanggan = databasePelanggan.find(p => p.idpel === id);
+                if (pelanggan) {
+                    const strukHTML = generateStrukHTML(pelanggan);
+                    container.insertAdjacentHTML('beforeend', strukHTML);
+                    foundCount++;
+                } else {
+                    notFoundIds.push(id);
+                }
+            });
+
+            if (foundCount === 0) {
+                container.innerHTML = `<div style="text-align:center; color:#94a3b8; font-size:12px; padding:20px;">Tidak ada data yang ditemukan.</div>`;
+                showCustomAlert("ID Pelanggan tidak ditemukan !");
+                isDataLoaded = false;
+                return;
+            }
+
+            if (notFoundIds.length > 0) {
+                showCustomAlert(`Berhasil diproses ${foundCount} ID Pelanggan.<br>Namun ID Pelanggan berikut tidak ditemukan:<br><b>${notFoundIds.join(', ')}</b>`);
+            }
+
+            container.querySelectorAll('.input-tagihan, .input-admin').forEach(input => {
+                input.addEventListener('input', function() {
+                    formatRibuanInput(this);
+                    hitungTotalElement(this);
+                });
+            });
+
+            isDataLoaded = true;
+            document.getElementById('previewWrapper').style.display = 'block';
+
+            setTimeout(() => {
+                document.getElementById('previewWrapper').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        /* ==========================================
+           11. RESET FORM
+           ========================================== */
+        function resetForm() {
+            inputIdpelSingle.value = '';
+            inputIdpelMulti.value = '';
+            singleGroupEl.classList.remove('has-value');
+            multiGroupEl.classList.remove('has-value');
+            isDataLoaded = false;
+            
+            const container = document.getElementById('multiStrukContainer');
+            container.innerHTML = `
+                <div style="text-align:center; color:#94a3b8; font-size:12px; padding:20px;" id="emptyState">
+                    Masukkan ID Pelanggan terlebih dahulu.
+                </div>`;
+
+            document.getElementById('previewWrapper').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* ==========================================
+           12. DOWNLOAD JPG (HANYA STRUK)
+           ========================================== */
+        async function downloadJPG() {
+            if (!validasiDataLoaded()) return;
+
+            const btn = document.getElementById('btnDownloadJpg');
+            const btnText = document.getElementById('btnTextDownload');
+            const container = document.getElementById('multiStrukContainer');
+            const originalText = btnText.textContent;
+            
+            btnText.textContent = "Memproses...";
+            btn.disabled = true;
+
+            const replacements = [];
+
+            try {
+                await document.fonts.ready;
+                
+                container.classList.add('is-capturing-wrapper');
+
+                container.querySelectorAll('.struk-container').forEach(struk => {
+                    struk.classList.add('is-capturing');
+                });
+
+                const inputs = container.querySelectorAll('input.edit-input');
+                inputs.forEach(input => {
+                    const span = document.createElement('span');
+                    span.textContent = input.value;
+                    span.style.fontFamily = 'inherit';
+                    span.style.fontSize = 'inherit';
+                    span.style.color = '#000';
+                    span.style.display = 'inline-block';
+                    span.style.width = '100%';
+                    span.style.lineHeight = '1.3';
+                    span.style.background = 'transparent';
+                    span.style.textAlign = 'left';
+                    input.style.display = 'none';
+                    input.parentNode.insertBefore(span, input.nextSibling);
+                    replacements.push({ input, span });
+                });
+
+                await new Promise(resolve => setTimeout(resolve, 100)); 
+
+                const struks = container.querySelectorAll('.struk-container');
+                const canvases = [];
+                for (const struk of struks) {
+                    const c = await html2canvas(struk, {
+                        scale: 3,
+                        backgroundColor: '#ffffff',
+                        useCORS: true,
+                        logging: false
+                    });
+                    canvases.push(c);
+                }
+
+                const gap = 20;
+                const maxW = Math.max(...canvases.map(c => c.width));
+                const totalH = canvases.reduce((s, c) => s + c.height, 0) + gap * (canvases.length - 1);
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = maxW;
+                finalCanvas.height = totalH;
+                const ctx = finalCanvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, maxW, totalH);
+
+                let y = 0;
+                canvases.forEach((c, i) => {
+                    const x = (maxW - c.width) / 2;
+                    ctx.drawImage(c, x, y);
+                    y += c.height;
+                    if (i < canvases.length - 1) y += gap;
+                });
+
+                const imgData = finalCanvas.toDataURL('image/jpeg', 0.95);
+                const link = document.createElement('a');
+                
+                if (currentMode === 'single' && struks.length === 1) {
+                    const idpel = document.querySelector('.out-idpel').innerText;
+                    link.download = `Struk_PLN_${idpel}.jpg`;
+                } else {
+                    const dateStr = new Date().toISOString().slice(0,10);
+                    link.download = `Struk_PLN_Multi_${dateStr}.jpg`;
+                }
+                
+                link.href = imgData;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+            } catch (error) {
+                console.error(error);
+                showCustomAlert("Maaf, terjadi kesalahan saat memproses gambar struk.");
+            } finally {
+                container.classList.remove('is-capturing-wrapper');
+
+                container.querySelectorAll('.struk-container').forEach(struk => {
+                    struk.classList.remove('is-capturing');
+                });
+                replacements.forEach(({ input, span }) => {
+                    input.style.display = '';
+                    span.remove();
+                });
+                btnText.textContent = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        /* ==========================================
+           13. CETAK RAW BT
+           ========================================== */
+        function cetakInstanRawBT() {
+            if (!validasiDataLoaded()) return;
+
+            let fullText = "";
+            const struks = document.querySelectorAll('#multiStrukContainer .struk-container');
+
+            struks.forEach((struk, index) => {
+                const tgl = struk.querySelector('.out-date').innerText;
+                const jam = struk.querySelector('.out-time').innerText;
+                const idpel = struk.querySelector('.out-idpel').innerText;
+                const nama = struk.querySelector('.out-nama').innerText;
+                const tarif = struk.querySelector('.out-tarif').innerText;
+                const blth = struk.querySelector('.input-blth').value;
+                const tagihan = struk.querySelector('.input-tagihan').value;
+                const ref1 = struk.querySelector('.out-ref1').innerText;
+                const ref2 = struk.querySelector('.out-ref2').innerText;
+                const admin = struk.querySelector('.input-admin').value;
+                const total = struk.querySelector('.out-total').innerText;
+
+                const strukTeks =
 `m-Payment
 ${tgl} ${jam}
 CKG_53704.PLN LEMAHABANG
@@ -878,24 +3340,28 @@ TOTAL BAYAR : Rp ${total}
      123 atau PLN Terdekat:"
 
               ---`;
+                
+                fullText += strukTeks;
+                
+                if (index < struks.length - 1) {
+                    fullText += "\n\n\n\n";
+                }
+            });
 
             if (navigator.share) {
-                navigator.share({
-                    title: 'Struk Tagihan PLN',
-                    text: strukTeks
-                }).then(() => {
-                    console.log('Berhasil dibagikan ke RawBT');
-                }).catch((error) => {
-                    console.log('Gagal membagikan', error);
-                });
+                navigator.share({ title: 'Struk Tagihan PLN', text: fullText })
+                    .then(() => console.log('Berhasil share/cetak'))
+                    .catch((error) => console.log('Gagal share', error));
             } else {
-                alert("HP Anda tidak mendukung fitur Share otomatis.");
+                navigator.clipboard.writeText(fullText).then(() => {
+                    showCustomAlert("Fitur share tidak didukung. Teks struk telah disalin ke clipboard, silakan paste ke aplikasi RawBT.");
+                }).catch(() => {
+                    showCustomAlert("Perangkat Anda tidak mendukung fitur cetak / share otomatis.");
+                });
             }
         }
-
-        document.getElementById('inputIdpel').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') { cariData(); }
-        });
     </script>
+
 </body>
 </html>
+```

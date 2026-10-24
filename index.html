@@ -28,12 +28,10 @@
            2. VARIABLES (HANYA 2 WARNA UTAMA)
            ========================================== */
         :root {
-            /* Warna Biru */
             --blue: #0756a8;
             --blue-dark: #06417e;
             --blue-light: #eaf4ff;
-            
-            /* Warna Hijau */
+
             --green: #10b981;
             --green-dark: #059669;
             --green-light: #ecfdf5;
@@ -47,10 +45,10 @@
 
             --bg-body: #f3f6fb;
             --bg-card: var(--white);
-            
+
             --bg-input: var(--white);
             --bg-input-focus: var(--white);
-            
+
             --bg-preview: #e6eef9;
 
             --text-primary: var(--text);
@@ -64,7 +62,7 @@
             --shadow-header: 0 4px 20px rgba(0,0,0,0.08);
             --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.15);
 
-            --accent: var(--blue); 
+            --accent: var(--blue);
             --accent-hover: var(--blue-dark);
             --accent-ring: rgba(7, 86, 168, 0.15);
 
@@ -74,10 +72,10 @@
         body.dark-mode {
             --bg-body: #0b1220;
             --bg-card: #1e293b;
-            
+
             --bg-input: #1e293b;
             --bg-input-focus: #1e293b;
-            
+
             --bg-preview: #0f172a;
 
             --text-primary: #f1f5f9;
@@ -91,7 +89,7 @@
             --shadow-header: 0 4px 20px rgba(0,0,0,0.4);
             --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.5);
 
-            --accent: #3b82f6; 
+            --accent: #3b82f6;
             --accent-hover: #2563eb;
             --accent-ring: rgba(59, 130, 246, 0.15);
         }
@@ -141,6 +139,7 @@
 
         /* ==========================================
            5. TOP BAR & TOGGLE DARK MODE & PROFIL
+           (DIUBAH: gradasi biru mengikuti hero)
            ========================================== */
         .top-bar {
             display: flex;
@@ -148,16 +147,20 @@
             justify-content: space-between;
             gap: 8px;
             padding: 10px 16px;
-            background: var(--bg-card);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.04);
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 55%, var(--blue) 100%);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.18);
             position: sticky;
             top: 0;
             z-index: 30;
             transition: background-color var(--t-theme) ease, box-shadow var(--t-theme) ease;
         }
 
-        .top-bar.is-stuck { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08); }
-        body.dark-mode .top-bar.is-stuck { box-shadow: 0 2px 14px rgba(0, 0, 0, 0.5); }
+        body.dark-mode .top-bar {
+            background: linear-gradient(135deg, #050a18 0%, #0f2557 55%, #084080 100%);
+        }
+
+        .top-bar.is-stuck { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22); }
+        body.dark-mode .top-bar.is-stuck { box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5); }
 
         /* Profil (Kanan) */
         .top-bar-profile {
@@ -165,7 +168,7 @@
             align-items: center;
             gap: 8px;
             flex-shrink: 0;
-            margin-left: auto; 
+            margin-left: auto;
         }
 
         .top-bar-text {
@@ -176,10 +179,11 @@
             line-height: 1.15;
         }
 
+        /* DIUBAH: teks topbar jadi terang agar kontras di background biru */
         .top-bar-role {
             font-size: 8px;
             font-weight: 600;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.65);
             letter-spacing: 0.5px;
             transition: color var(--t-theme) ease;
         }
@@ -187,7 +191,7 @@
         .top-bar-name {
             font-size: 11px;
             font-weight: 800;
-            color: var(--text-primary);
+            color: #ffffff;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -200,8 +204,8 @@
             height: 35px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #fff; 
-            box-shadow: var(--shadow-card);
+            border: 2px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
             flex-shrink: 0;
             transition: border-color var(--t-theme) ease;
         }
@@ -212,8 +216,8 @@
             align-items: center;
             justify-content: center;
             padding: 4px;
-            background: var(--bg-body);
-            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 50px;
             cursor: pointer;
             transition: background-color var(--t-theme) ease, border-color var(--t-theme) ease;
@@ -221,7 +225,7 @@
             user-select: none;
         }
 
-        .theme-toggle-mini:hover { border-color: var(--blue); }
+        .theme-toggle-mini:hover { border-color: rgba(255, 255, 255, 0.6); }
 
         .switch-mini {
             position: relative;
@@ -231,10 +235,10 @@
             flex-shrink: 0;
         }
 
-        .switch-mini input { 
-            opacity: 0; 
-            width: 0; 
-            height: 0; 
+        .switch-mini input {
+            opacity: 0;
+            width: 0;
+            height: 0;
             position: absolute;
             appearance: none;
             -webkit-appearance: none;
@@ -244,12 +248,12 @@
             position: absolute;
             cursor: pointer;
             top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #cbd5e1; 
+            background-color: rgba(255, 255, 255, 0.35);
             border-radius: 30px;
         }
 
-        .switch-mini input:checked + .slider-mini { 
-            background-color: var(--blue); 
+        .switch-mini input:checked + .slider-mini {
+            background-color: var(--blue);
         }
 
         .thumb-mini {
@@ -268,8 +272,8 @@
             will-change: transform;
         }
 
-        .switch-mini input:checked + .slider-mini .thumb-mini { 
-            transform: translateX(18px); 
+        .switch-mini input:checked + .slider-mini .thumb-mini {
+            transform: translateX(18px);
         }
 
         .thumb-mini svg {
@@ -402,7 +406,7 @@
         .mode-tab-btn::after {
             content: '';
             position: absolute;
-            bottom: -2px; 
+            bottom: -2px;
             left: 0;
             width: 100%;
             height: 2px;
@@ -431,9 +435,9 @@
             max-height: 220px;
             opacity: 1;
             transform: translateY(0);
-            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
-                        opacity 0.3s ease, 
-                        margin-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.3s ease,
+                        margin-bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1),
                         transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow: visible;
         }
@@ -507,8 +511,8 @@
             outline: none;
             font-family: inherit;
             letter-spacing: 0.5px;
-            transition: border-color 0.2s ease, 
-                        background-color var(--t-theme) ease, 
+            transition: border-color 0.2s ease,
+                        background-color var(--t-theme) ease,
                         color var(--t-theme) ease,
                         box-shadow 0.2s ease;
             position: relative;
@@ -516,19 +520,18 @@
         }
 
         textarea.input-field {
-            height: 160px; 
+            height: 160px;
             resize: none;
             line-height: 1.5;
             padding-top: 24px;
             padding-bottom: 12px;
         }
 
-        /* Border saat di-klik / diisi */
         .input-field:focus,
         .input-field:not(:placeholder-shown) {
-            border: 1px solid var(--text-muted); 
+            border: 1px solid var(--text-muted);
             background: var(--bg-input-focus);
-            padding: 15px 47px 15px 15px; 
+            padding: 15px 47px 15px 15px;
         }
 
         textarea.input-field:focus,
@@ -537,7 +540,6 @@
             padding-bottom: 11px;
         }
 
-        /* Label melayang */
         .input-label {
             position: absolute;
             left: 13px;
@@ -568,9 +570,9 @@
             top: 0;
             transform: translateY(-50%) scale(0.85);
             transform-origin: left center;
-            color: var(--text-muted); 
+            color: var(--text-muted);
             font-weight: 600;
-            background-color: var(--bg-card); 
+            background-color: var(--bg-card);
         }
 
         .input-field:focus ~ .input-label .text-full,
@@ -602,7 +604,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: background-color var(--t-theme) ease, 
+            transition: background-color var(--t-theme) ease,
                         color var(--t-theme) ease,
                         transform 0.2s ease, opacity 0.2s ease, visibility 0.2s ease;
             z-index: 5;
@@ -649,7 +651,7 @@
         /* Tombol Cari */
         .btn-cari {
             width: 100%;
-            background: var(--blue); 
+            background: var(--blue);
             color: white;
             border: none;
             border-radius: 14px;
@@ -659,8 +661,8 @@
             cursor: pointer;
             font-family: inherit;
             box-shadow: 0 4px 12px rgba(7, 86, 168, 0.2);
-            transition: transform 0.2s ease, 
-                        box-shadow 0.2s ease, 
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease,
                         background-color var(--t-theme) ease;
             -webkit-user-select: none;
             user-select: none;
@@ -682,8 +684,8 @@
             position: relative;
             z-index: 10;
             animation: fadeInUp 0.4s ease forwards;
-            transition: background-color var(--t-theme) ease, 
-                        box-shadow var(--t-theme) ease, 
+            transition: background-color var(--t-theme) ease,
+                        box-shadow var(--t-theme) ease,
                         border-color var(--t-theme) ease;
         }
 
@@ -704,10 +706,10 @@
             align-items: center;
             justify-content: center;
             border-radius: 11px;
-            background: var(--blue-light); 
-            color: var(--blue); 
-            transition: background-color var(--t-theme) ease, 
-                        color var(--t-theme) ease, 
+            background: var(--blue-light);
+            color: var(--blue);
+            transition: background-color var(--t-theme) ease,
+                        color var(--t-theme) ease,
                         transform 0.2s ease;
         }
 
@@ -752,18 +754,18 @@
             background: var(--bg-preview);
             padding: 25px 15px;
             display: flex;
-            flex-direction: column; 
-            gap: 20px; 
+            flex-direction: column;
+            gap: 20px;
             align-items: center;
             border-bottom: 1px solid var(--border-color);
-            transition: background-color var(--t-theme) ease, 
+            transition: background-color var(--t-theme) ease,
                         border-color var(--t-theme) ease,
                         padding 0.3s ease, gap 0.3s ease;
         }
 
         .preview-body.is-capturing-wrapper {
             background: transparent !important;
-            padding: 15px !important; 
+            padding: 15px !important;
             gap: 15px !important;
             border: none !important;
         }
@@ -788,8 +790,8 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            transition: transform 0.2s ease, 
-                        box-shadow 0.2s ease, 
+            transition: transform 0.2s ease,
+                        box-shadow 0.2s ease,
                         background-color var(--t-theme) ease;
             color: white;
             -webkit-user-select: none;
@@ -803,7 +805,6 @@
             stroke-width: 2.2;
         }
 
-        /* Tombol Download (HIJAU) */
         .btn-download {
             background: var(--green);
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.2);
@@ -811,7 +812,6 @@
         .btn-download:hover { background: var(--green-dark); }
         .btn-download:active { transform: scale(0.98); }
 
-        /* Tombol Cetak (BIRU) */
         .btn-print {
             background: var(--blue);
             box-shadow: 0 4px 15px rgba(7, 86, 168, 0.2);
@@ -1020,7 +1020,7 @@
             text-align: center;
             box-shadow: var(--shadow-modal);
             transform: translateY(20px) scale(0.95);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275),
                         background-color var(--t-theme) ease;
             font-family: 'Nunito Sans', sans-serif;
         }
@@ -1029,11 +1029,10 @@
             transform: translateY(0) scale(1);
         }
 
-        /* Ikon Modal (Warna Merah) */
         .modal-icon-wrapper {
             width: 60px;
             height: 60px;
-            background: #fef2f2; 
+            background: #fef2f2;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -1049,7 +1048,7 @@
         .modal-icon-wrapper svg {
             width: 30px;
             height: 30px;
-            stroke: #ef4444; 
+            stroke: #ef4444;
             stroke-width: 2.5;
             fill: none;
             stroke-linecap: round;
@@ -1075,7 +1074,7 @@
 
         .btn-modal-ok {
             width: 100%;
-            background: var(--green); 
+            background: var(--green);
             color: white;
             border: none;
             border-radius: 12px;
@@ -1138,7 +1137,7 @@
                 background: white !important;
                 padding: 0 !important;
                 border: none !important;
-                display: block !important; 
+                display: block !important;
             }
 
             .struk-container {
@@ -1152,11 +1151,11 @@
                 font-size: 10.5px !important;
                 line-height: 1.15 !important;
                 page-break-inside: avoid !important;
-                page-break-after: always !important; 
+                page-break-after: always !important;
                 border: none !important;
             }
             .struk-container:last-child {
-                page-break-after: auto !important; 
+                page-break-after: auto !important;
             }
 
             .struk-container > div:last-child { margin-bottom: 0 !important; }
@@ -1242,7 +1241,7 @@
 
         <!-- PANEL INPUT -->
         <div class="panel-card" id="panelSwipeArea">
-            
+
             <!-- Toggle Mode -->
             <div class="mode-tabs" id="modeToggle" data-mode="single">
                 <button type="button" class="mode-tab-btn active" id="modeSingleBtn" onclick="setMode('single')">Personal</button>
@@ -1276,7 +1275,7 @@
 
             <!-- Input Multi -->
             <div class="input-group hidden" id="multiInputGroup">
-                <textarea id="inputIdpelMulti" class="input-field" placeholder=" " 
+                <textarea id="inputIdpelMulti" class="input-field" placeholder=" "
                   inputmode="numeric" autocomplete="off"></textarea>
                 <label for="inputIdpelMulti" class="input-label">
                     <span class="text-full"></span>
@@ -1410,7 +1409,7 @@
            3. POPUP & HELPERS
            ========================================== */
         function showCustomAlert(message) {
-            document.getElementById('modalMessage').innerHTML = message; 
+            document.getElementById('modalMessage').innerHTML = message;
             document.getElementById('customAlert').classList.add('active');
         }
 
@@ -1455,12 +1454,12 @@
         function hitungTotalElement(el) {
             const strukContainer = el.closest('.struk-container');
             if (!strukContainer) return;
-            
+
             const tagihanStr = strukContainer.querySelector('.input-tagihan').value.replace(/[^0-9]/g, '');
             const adminStr = strukContainer.querySelector('.input-admin').value.replace(/[^0-9]/g, '');
             const tagihan = parseInt(tagihanStr) || 0;
             const admin = parseInt(adminStr) || 0;
-            
+
             strukContainer.querySelector('.out-total').innerText = formatRupiah(tagihan + admin);
         }
 
@@ -2896,7 +2895,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
             const tagihanAwal = formatRupiah(pelanggan.tagihan);
             const adminAwal = '3.000';
             const totalAwal = formatRupiah(parseInt(pelanggan.tagihan) + 3000);
-            
+
             const ref1 = generateRandomRef(18);
             const ref2 = generateRandomRef(18);
 
@@ -2991,9 +2990,10 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
         initTheme();
 
         /* ==========================================
-           9. MODE TUNGGAL VS MULTI & SWIPE
+           9. MODE TUNGGAL VS MULTI
+           (Fitur swipe dinonaktifkan sepenuhnya)
            ========================================== */
-        let currentMode = 'single'; 
+        let currentMode = 'single';
         let isDataLoaded = false;
 
         const inputIdpelSingle = document.getElementById('inputIdpelSingle');
@@ -3004,7 +3004,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
         const multiHintEl = document.getElementById('multiHint');
 
         function setMode(mode) {
-            if (currentMode === mode) return; 
+            if (currentMode === mode) return;
 
             currentMode = mode;
             resetForm();
@@ -3016,7 +3016,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
                 multiHintEl.classList.add('hidden');
                 document.getElementById('modeSingleBtn').classList.add('active');
                 document.getElementById('modeMultiBtn').classList.remove('active');
-                
+
                 document.getElementById('btnCari').innerText = "Cek Tagihan";
                 document.getElementById('btnTextDownload').innerText = "Download";
                 document.getElementById('btnTextCetak').innerText = "Cetak";
@@ -3027,37 +3027,10 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
                 multiHintEl.classList.remove('hidden');
                 document.getElementById('modeSingleBtn').classList.remove('active');
                 document.getElementById('modeMultiBtn').classList.add('active');
-                
+
                 document.getElementById('btnCari').innerText = "Cek Tagihan";
                 document.getElementById('btnTextDownload').innerText = "Download";
                 document.getElementById('btnTextCetak').innerText = "Cetak Semua";
-            }
-        }
-
-        /* ====== FITUR SWIPE GESER ====== */
-        const swipeArea = document.getElementById('panelSwipeArea');
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        swipeArea.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        swipeArea.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 50; 
-            const diff = touchStartX - touchEndX; 
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentMode === 'single') {
-                    setMode('multi');
-                } else if (diff < 0 && currentMode === 'multi') {
-                    setMode('single');
-                }
             }
         }
 
@@ -3102,7 +3075,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
 
         function cariData() {
             let ids = [];
-            
+
             if (currentMode === 'single') {
                 const val = inputIdpelSingle.value.trim();
                 if (val) ids.push(val);
@@ -3122,7 +3095,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
             }
 
             const container = document.getElementById('multiStrukContainer');
-            container.innerHTML = ''; 
+            container.innerHTML = '';
 
             let foundCount = 0;
             let notFoundIds = [];
@@ -3173,7 +3146,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
             singleGroupEl.classList.remove('has-value');
             multiGroupEl.classList.remove('has-value');
             isDataLoaded = false;
-            
+
             const container = document.getElementById('multiStrukContainer');
             container.innerHTML = `
                 <div style="text-align:center; color:#94a3b8; font-size:12px; padding:20px;" id="emptyState">
@@ -3194,7 +3167,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
             const btnText = document.getElementById('btnTextDownload');
             const container = document.getElementById('multiStrukContainer');
             const originalText = btnText.textContent;
-            
+
             btnText.textContent = "Memproses...";
             btn.disabled = true;
 
@@ -3202,7 +3175,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
 
             try {
                 await document.fonts.ready;
-                
+
                 container.classList.add('is-capturing-wrapper');
 
                 container.querySelectorAll('.struk-container').forEach(struk => {
@@ -3226,7 +3199,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
                     replacements.push({ input, span });
                 });
 
-                await new Promise(resolve => setTimeout(resolve, 100)); 
+                await new Promise(resolve => setTimeout(resolve, 100));
 
                 const struks = container.querySelectorAll('.struk-container');
                 const canvases = [];
@@ -3260,7 +3233,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
 
                 const imgData = finalCanvas.toDataURL('image/jpeg', 0.95);
                 const link = document.createElement('a');
-                
+
                 if (currentMode === 'single' && struks.length === 1) {
                     const idpel = document.querySelector('.out-idpel').innerText;
                     link.download = `Struk_PLN_${idpel}.jpg`;
@@ -3268,7 +3241,7 @@ const jam = now.toLocaleTimeString('id-ID').replace(/\./g, ':');
                     const dateStr = new Date().toISOString().slice(0,10);
                     link.download = `Struk_PLN_Multi_${dateStr}.jpg`;
                 }
-                
+
                 link.href = imgData;
                 document.body.appendChild(link);
                 link.click();
@@ -3340,9 +3313,9 @@ TOTAL BAYAR : Rp ${total}
      123 atau PLN Terdekat:"
 
               ---`;
-                
+
                 fullText += strukTeks;
-                
+
                 if (index < struks.length - 1) {
                     fullText += "\n\n\n\n";
                 }

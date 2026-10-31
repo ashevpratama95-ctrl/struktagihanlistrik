@@ -3,121 +3,365 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CETAK STRUK TAGIHAN</title>
+    <title>CETAK STRUK PLN</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#0D5DA6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Struk PLN">
+    <link rel="apple-touch-icon" href="https://i.postimg.cc/R0YMVxZK/IMG-20261018-003418.png">
+    <link rel="manifest" href="manifest.json">
 
     <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
+    <!-- ==========================================
+         KUMPULAN CSS
+         ========================================== -->
     <style>
-        /* ==========================================
-           1. RESET & BASE
-           ========================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        button, label, a, input, textarea { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+        /* 0. KEYFRAMES ANIMATIONS */
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.85); opacity: 0; }
+            70% { transform: scale(1.02); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        /* ==========================================
-           2. VARIABLES
-           ========================================== */
+        /* 1. RESET & BASE */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+        
+        button, label, a, input, textarea { 
+            -webkit-tap-highlight-color: transparent; 
+            -webkit-touch-callout: none; 
+        }
+
+        /* 2. VARIABLES */
         :root {
-            /* Warna PLN dari SC satunya */
             --blue: #0D5DA6; 
             --blue-dark: #093E6F; 
             --blue-light: #e6f0f9;
-            
-            --green: #10b981; --green-dark: #059669; --green-light: #ecfdf5;
-            --red: #ef4444; --red-light: #fef2f2;
-            --white: #fff; --text: #172b4d; --muted: #718096; --border: #e2e8f0;
-            --radius: 18px; --shadow: 0 10px 28px rgba(13, 93, 166, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04);
-            --bg-body: #f3f6fb; --bg-card: var(--white); --bg-input: var(--white); --bg-input-focus: var(--white);
-            --bg-preview: #e6eef9; --text-primary: var(--text); --text-secondary: var(--muted); --text-muted: var(--muted);
-            --border-color: var(--border); --border-input: var(--border); --shadow-card: var(--shadow);
-            --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.15); --t-theme: 0.3s;
+            --green: #10b981; 
+            --green-dark: #059669; 
+            --green-light: #ecfdf5;
+            --red: #ef4444; 
+            --red-light: #fef2f2;
+            --white: #fff; 
+            --text: #172b4d; 
+            --muted: #718096; 
+            --border: #e2e8f0;
+            --radius: 18px; 
+            --shadow: 0 10px 28px rgba(13, 93, 166, 0.10), 0 2px 6px rgba(0, 0, 0, 0.04);
+            --bg-body: #f3f6fb; 
+            --bg-card: var(--white); 
+            --bg-input: var(--white); 
+            --bg-input-focus: var(--white);
+            --bg-preview: #e6eef9; 
+            --text-primary: var(--text); 
+            --text-secondary: var(--muted); 
+            --text-muted: var(--muted);
+            --border-color: var(--border); 
+            --border-input: var(--border); 
+            --shadow-card: var(--shadow);
+            --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.15); 
+            --t-theme: 0.4s;
         }
 
         body.dark-mode {
-            --bg-body: #0b1220; --bg-card: #1e293b; --bg-input: #1e293b; --bg-input-focus: #1e293b;
-            --bg-preview: #0f172a; --text-primary: #f1f5f9; --text-secondary: #cbd5e1; --text-muted: #94a3b8;
-            --border-color: #334155; --border-input: #334155;
+            --bg-body: #0b1220; 
+            --bg-card: #1e293b; 
+            --bg-input: #1e293b; 
+            --bg-input-focus: #1e293b;
+            --bg-preview: #0f172a; 
+            --text-primary: #f1f5f9; 
+            --text-secondary: #cbd5e1; 
+            --text-muted: #94a3b8;
+            --border-color: #334155; 
+            --border-input: #334155;
             --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0,0,0,0.3);
             --shadow-modal: 0 15px 35px rgba(0, 0, 0, 0.5);
         }
 
-        /* ==========================================
-           3. BODY & OVERLAY
-           ========================================== */
+        /* 3. BODY & OVERLAY */
         body {
-            font-family: 'Nunito Sans', sans-serif; background-color: var(--bg-body); min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            color: var(--text-primary); overflow-x: hidden; position: relative; margin: 0;
-            transition: background-color var(--t-theme) ease, color var(--t-theme) ease;
+            font-family: 'Nunito Sans', sans-serif; 
+            background-color: var(--bg-body); 
+            min-height: 100vh;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: flex-start;
+            color: var(--text-primary); 
+            overflow-x: hidden; 
+            position: relative; 
+            margin: 0;
+            transition: background-color var(--t-theme) ease-in-out, color var(--t-theme) ease-in-out;
         }
 
         body::before {
-            content: ''; position: fixed; inset: 0; background: linear-gradient(180deg, #ffffff 0%, transparent 100%);
-            pointer-events: none; z-index: -1; opacity: 1; transition: opacity var(--t-theme) ease;
+            content: ''; 
+            position: fixed; 
+            inset: 0; 
+            background: linear-gradient(180deg, #ffffff 0%, transparent 100%);
+            pointer-events: none; 
+            z-index: -1; 
+            opacity: 1; 
+            transition: opacity var(--t-theme) ease-in-out;
         }
-        body.dark-mode::before { opacity: 0; }
+        
+        body.dark-mode::before { 
+            opacity: 0; 
+        }
 
-        /* ==========================================
-           4. APP CONTAINER
-           ========================================== */
-        .app-container { width: 100%; max-width: 480px; min-height: 100vh; position: relative; padding-bottom: 24px; background: transparent; }
+        /* 4. APP CONTAINER */
+        .app-container { 
+            width: 100%; 
+            max-width: 480px; 
+            min-height: 100vh; 
+            position: relative; 
+            padding-bottom: 24px; 
+            background: transparent; 
+        }
 
-        /* ==========================================
-           5. TOP BAR (DISAMAKAN DENGAN SC)
-           ========================================== */
+        /* 5. TOP BAR & PWA BUTTON */
         .top-bar {
-            display: flex; align-items: center; justify-content: space-between; gap: 8px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            gap: 8px; 
             padding: 10px 16px;
             background: linear-gradient(115deg, #093E6F, #0D5DA6 65%, #1A72C4);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
-            position: sticky; top: 0; z-index: 30;
-            transition: background-color var(--t-theme) ease, box-shadow var(--t-theme) ease;
+            position: sticky; 
+            top: 0; 
+            z-index: 30;
+            animation: slideDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: background-color var(--t-theme) ease-in-out, box-shadow var(--t-theme) ease-in-out;
         }
-        body.dark-mode .top-bar { background: linear-gradient(135deg, #050a18 0%, #0f2557 55%, #084080 100%); }
         
-        /* Desain Toggle Neu */
-        .theme-toggle-neu { display: flex; align-items: center; cursor: pointer; }
-        .switch-neu { position: relative; display: inline-block; width: 105px; height: 28px; flex-shrink: 0; }
-        .switch-neu input { opacity: 0; width: 0; height: 0; position: absolute; }
+        body.dark-mode .top-bar { 
+            background: linear-gradient(135deg, #050a18 0%, #0f2557 55%, #084080 100%); 
+        }
+
+        .btn-install-pwa {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255,255,255,0.25);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-install-pwa:hover {
+            background: rgba(255,255,255,0.4);
+        }
+        
+        .btn-install-pwa svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        body.dark-mode .btn-install-pwa {
+            background: rgba(0,0,0,0.3);
+            border-color: rgba(255,255,255,0.2);
+            color: #cbd5e1;
+        }
+        
+        .theme-toggle-neu { 
+            display: flex; 
+            align-items: center; 
+            cursor: pointer; 
+        }
+        
+        .switch-neu { 
+            position: relative; 
+            display: inline-block; 
+            width: 105px; 
+            height: 28px; 
+            flex-shrink: 0; 
+        }
+        
+        .switch-neu input { 
+            opacity: 0; 
+            width: 0; 
+            height: 0; 
+            position: absolute; 
+        }
+        
         .slider-neu {
-            position: absolute; inset: 0; background-color: #e2e8f0; border-radius: 30px;
-            transition: all 0.4s ease; display: flex; align-items: center; justify-content: space-between;
+            position: absolute; 
+            inset: 0; 
+            background-color: #e2e8f0; 
+            border-radius: 30px;
+            transition: all 0.4s ease-in-out; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
             box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1), inset -2px -2px 5px rgba(255,255,255,0.8);
         }
+        
         .switch-neu input:checked + .slider-neu {
             background-color: #1e293b;
             box-shadow: inset 3px 3px 6px rgba(0,0,0,0.5), inset -1px -1px 4px rgba(255,255,255,0.1);
         }
-        .mode-text-neu { font-size: 9px; font-weight: 800; white-space: nowrap; pointer-events: none; transition: all 0.3s ease; z-index: 1; letter-spacing: 0.5px; position: absolute; top: 50%; transform: translateY(-50%); }
-        .mode-text-neu.dark { color: #64748b; opacity: 0; left: 12px; }
-        .mode-text-neu.light { color: #94a3b8; opacity: 1; right: 12px; }
-        .switch-neu input:checked + .slider-neu .mode-text-neu.light { opacity: 0; }
-        .switch-neu input:checked + .slider-neu .mode-text-neu.dark { opacity: 1; }
-        .thumb-neu {
-            position: absolute; height: 24px; width: 24px; left: 2px; top: 2px; background-color: #fff;
-            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1); border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            box-shadow: 1px 1px 4px rgba(0,0,0,0.2); z-index: 2;
+        
+        .mode-text-neu { 
+            font-size: 9px; 
+            font-weight: 800; 
+            white-space: nowrap; 
+            pointer-events: none; 
+            transition: all 0.4s ease-in-out; 
+            z-index: 1; 
+            letter-spacing: 0.5px; 
+            position: absolute; 
+            top: 50%; 
+            transform: translateY(-50%); 
         }
-        .switch-neu input:checked + .slider-neu .thumb-neu { transform: translateX(77px); }
-        .thumb-neu svg { position: absolute; width: 13px; height: 13px; transition: all 0.3s ease; }
-        .thumb-neu .icon-sun-neu { color: #94a3b8; opacity: 1; transform: rotate(0deg) scale(1); }
-        .thumb-neu .icon-moon-neu { color: #94a3b8; opacity: 0; transform: rotate(-90deg) scale(0.5); }
-        .switch-neu input:checked + .slider-neu .thumb-neu .icon-sun-neu { opacity: 0; transform: rotate(90deg) scale(0.5); }
-        .switch-neu input:checked + .slider-neu .thumb-neu .icon-moon-neu { opacity: 1; transform: rotate(0deg) scale(1); }
+        
+        .mode-text-neu.dark { 
+            color: #64748b; 
+            opacity: 0; 
+            left: 12px; 
+        }
+        
+        .mode-text-neu.light { 
+            color: #94a3b8; 
+            opacity: 1; 
+            right: 12px; 
+        }
+        
+        .switch-neu input:checked + .slider-neu .mode-text-neu.light { 
+            opacity: 0; 
+        }
+        
+        .switch-neu input:checked + .slider-neu .mode-text-neu.dark { 
+            opacity: 1; 
+        }
+        
+        .thumb-neu {
+            position: absolute; 
+            height: 24px; 
+            width: 24px; 
+            left: 2px; 
+            top: 2px; 
+            background-color: #fff;
+            transition: all 0.4s cubic-bezier(0.4, 0.0, 0.2, 1); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            box-shadow: 1px 1px 4px rgba(0,0,0,0.2); 
+            z-index: 2;
+        }
+        
+        .switch-neu input:checked + .slider-neu .thumb-neu { 
+            transform: translateX(77px); 
+        }
+        
+        .thumb-neu svg { 
+            position: absolute; 
+            width: 13px; 
+            height: 13px; 
+            transition: all 0.4s ease-in-out; 
+        }
+        
+        .thumb-neu .icon-sun-neu { 
+            color: #94a3b8; 
+            opacity: 1; 
+            transform: rotate(0deg) scale(1); 
+        }
+        
+        .thumb-neu .icon-moon-neu { 
+            color: #94a3b8; 
+            opacity: 0; 
+            transform: rotate(-90deg) scale(0.5); 
+        }
+        
+        .switch-neu input:checked + .slider-neu .thumb-neu .icon-sun-neu { 
+            opacity: 0; 
+            transform: rotate(90deg) scale(0.5); 
+        }
+        
+        .switch-neu input:checked + .slider-neu .thumb-neu .icon-moon-neu { 
+            opacity: 1; 
+            transform: rotate(0deg) scale(1); 
+        }
 
-        /* Profil Kanan */
-        .top-bar-profile { display: flex; align-items: center; gap: 8px; flex-shrink: 0; margin-left: auto; }
-        .top-bar-text { display: flex; flex-direction: column; align-items: flex-end; text-align: right; line-height: 1.15; }
-        .top-bar-role { font-size: 8px; font-weight: 600; color: #a8d1ff; letter-spacing: 0.5px; }
-        .top-bar-name { font-size: 11px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
-        .top-bar-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid #ffffff; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); flex-shrink: 0; }
+        .top-bar-profile { 
+            display: flex; 
+            align-items: center; 
+            gap: 8px; 
+            flex-shrink: 0; 
+            margin-left: auto; 
+        }
+        
+        .top-bar-text { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: flex-end; 
+            text-align: right; 
+            line-height: 1.15; 
+        }
+        
+        .top-bar-role { 
+            font-size: 8px; 
+            font-weight: 600; 
+            color: #a8d1ff; 
+            letter-spacing: 0.5px; 
+        }
+        
+        .top-bar-name { 
+            font-size: 11px; 
+            font-weight: 800; 
+            color: #ffffff; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            margin-top: 1px; 
+        }
+        
+        .top-bar-avatar { 
+            width: 32px; 
+            height: 32px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 2px solid #ffffff; 
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25); 
+            flex-shrink: 0; 
+        }
 
-        @media (max-width: 360px) { .top-bar { padding: 10px 12px; } .top-bar-text { display: none; } }
+        @media (max-width: 360px) { 
+            .top-bar { padding: 10px 12px; } 
+            .top-bar-text { display: none; } 
+            .btn-install-pwa span { display: none; }
+        }
 
-        /* ==========================================
-           6. HERO HEADER (DISAMAKAN DENGAN SC)
-           ========================================== */
+        /* 6. HERO HEADER */
         .hero-header { 
             background: linear-gradient(115deg, #093E6F, #0D5DA6 65%, #1A72C4); 
             padding: 25px 24px 55px; 
@@ -125,178 +369,1054 @@
             z-index: 10; 
             overflow: hidden; 
             box-shadow: 0 8px 24px rgba(15, 23, 42, 0.15); 
+            animation: fadeIn 0.8s ease-out forwards;
+            transition: background var(--t-theme) ease-in-out;
         }
-        body.dark-mode .hero-header { background: linear-gradient(135deg, #050a18 0%, #0f2557 55%, #084080 100%); }
+        
+        body.dark-mode .hero-header { 
+            background: linear-gradient(135deg, #050a18 0%, #0f2557 55%, #084080 100%); 
+        }
         
         .hero-header::before { 
-            content: ''; position: absolute; top: -80px; right: -80px; width: 260px; height: 260px; 
+            content: ''; 
+            position: absolute; 
+            top: -80px; 
+            right: -80px; 
+            width: 260px; 
+            height: 260px; 
             background: radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, transparent 70%); 
-            border-radius: 50%; pointer-events: none; 
-        }
-        .hero-header::after { 
-            content: ''; position: absolute; bottom: -100px; left: -60px; width: 220px; height: 220px; 
-            background: radial-gradient(circle, rgba(26, 114, 196, 0.4) 0%, transparent 70%); 
-            border-radius: 50%; pointer-events: none; 
+            border-radius: 50%; 
+            pointer-events: none; 
         }
         
-        .hero-content { position: relative; z-index: 2; }
-        .hero-title { font-size: 26px; font-weight: 800; color: #ffffff; line-height: 1.1; letter-spacing: -0.5px; margin-bottom: 10px; }
+        .hero-header::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: -100px; 
+            left: -60px; 
+            width: 220px; 
+            height: 220px; 
+            background: radial-gradient(circle, rgba(26, 114, 196, 0.4) 0%, transparent 70%); 
+            border-radius: 50%; 
+            pointer-events: none; 
+        }
+        
+        .hero-content { 
+            position: relative; 
+            z-index: 2; 
+        }
+        
+        .hero-title { 
+            font-size: 26px; 
+            font-weight: 800; 
+            color: #ffffff; 
+            line-height: 1.1; 
+            letter-spacing: -0.5px; 
+            margin-bottom: 10px; 
+        }
+        
         .hero-title .gradient { 
             background: linear-gradient(90deg, #10b981 0%, #06B6D4 100%); 
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            background-clip: text; 
         }
-        .hero-subtitle { font-size: 12px; color: #a8d1ff; font-weight: 600; line-height: 1.45; max-width: 300px; }
-
-        /* ==========================================
-           7. PANEL CARD (INPUT)
-           ========================================== */
-        .panel-card { background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-card); margin: -30px 12px 0; position: relative; z-index: 20; padding: 20px; transition: background-color var(--t-theme) ease, box-shadow var(--t-theme) ease; }
-
-        .mode-tabs { display: flex; border-bottom: 2px solid var(--border-color); margin-bottom: 24px; gap: 10px; }
-        .mode-tab-btn { flex: 1; padding: 10px 5px; border: none; background: transparent; font-size: 13px; font-weight: 700; font-family: inherit; color: var(--text-muted); cursor: pointer; position: relative; transition: color 0.3s ease; }
-        .mode-tab-btn::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px; background-color: var(--blue); transform: scaleX(0); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); border-radius: 2px; }
-        .mode-tab-btn.active { color: var(--blue); }
-        .mode-tab-btn.active::after { transform: scaleX(1); }
-
-        .input-group { position: relative; margin-bottom: 16px; max-height: 220px; opacity: 1; transform: translateY(0); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); overflow: visible; }
-        .input-group.hidden { max-height: 0; opacity: 0; margin-bottom: 0; transform: translateY(-10px); pointer-events: none; overflow: hidden; }
-
-        .input-field { width: 100%; padding: 16px 48px 16px 16px; font-size: 15px; font-weight: 800; color: var(--text-primary); background: var(--bg-input); border: 2px solid var(--border-input); border-radius: 14px; outline: none; font-family: inherit; letter-spacing: 0.5px; transition: all 0.2s ease; position: relative; z-index: 1; }
-        .input-field:focus, .input-field:not(:placeholder-shown) { border: 1px solid var(--text-muted); background: var(--bg-input-focus); padding: 15px 47px 15px 15px; }
-
-        .input-label { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--text-muted); font-weight: 600; pointer-events: none; padding: 0 6px; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); z-index: 10; background-color: transparent; border-radius: 4px; display: flex; align-items: center; white-space: nowrap; }
-        .input-label .text-short { display: none; }
-        .input-field:focus ~ .input-label, .input-field:not(:placeholder-shown) ~ .input-label { top: 0; transform: translateY(-50%) scale(0.85); transform-origin: left center; background-color: var(--bg-card); }
-        .input-field:focus ~ .input-label .text-full, .input-field:not(:placeholder-shown) ~ .input-label .text-full { display: none; }
-        .input-field:focus ~ .input-label .text-short, .input-field:not(:placeholder-shown) ~ .input-label .text-short { display: inline; }
-
-        .btn-clear-input { position: absolute; right: 12px; top: 50%; transform: translateY(-50%) scale(0.85); width: 24px; height: 24px; padding: 0; background: #eef2f7; color: #64748b; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; pointer-events: none; transition: all 0.2s ease; z-index: 5; }
-        body.dark-mode .btn-clear-input { background: #334155; color: #94a3b8; }
-        .input-group.has-value .btn-clear-input { opacity: 1; visibility: visible; pointer-events: auto; transform: translateY(-50%) scale(1); }
-        .btn-clear-input svg { width: 12px; height: 12px; stroke-width: 2.8; }
-
-        .btn-cari { width: 100%; background: var(--blue); color: white; border: none; border-radius: 14px; padding: 15px; font-size: 15px; font-weight: 700; cursor: pointer; font-family: inherit; box-shadow: 0 4px 12px rgba(13, 93, 166, 0.2); transition: all 0.2s ease; }
-        .btn-cari:hover { background: var(--blue-dark); }
-        .btn-cari:active { transform: scale(0.97); }
-        .btn-cari:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        /* ==========================================
-           8. TABEL DATA PELANGGAN
-           ========================================== */
-        .tabel-container { display: none; flex-direction: column; width: 100%; }
-        .tabel-container.active { display: flex; }
         
-        .tabel-search-wrapper { display: flex; gap: 8px; margin-bottom: 15px; }
-        .tabel-search { flex: 1; padding: 12px 16px; font-size: 14px; border: 2px solid var(--border-input); border-radius: 10px; background: var(--bg-input); color: var(--text-primary); outline: none; font-family: inherit; }
-        .tabel-search:focus { border-color: var(--blue); }
-        
-        .btn-reset-tabel { background: var(--bg-body); border: 2px solid var(--border-input); color: var(--text-secondary); border-radius: 10px; padding: 0 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-        .btn-reset-tabel:active { background: var(--border-color); }
-        .btn-reset-tabel svg { width: 18px; height: 18px; }
+        .hero-subtitle { 
+            font-size: 12px; 
+            color: #a8d1ff; 
+            font-weight: 600; 
+            line-height: 1.45; 
+            max-width: 300px; 
+        }
 
-        .table-wrapper { width: 100%; overflow-x: auto; border-radius: 8px; border: 1px solid var(--border-color); }
-        table.data-table-html { width: 100%; border-collapse: collapse; font-size: 12px; }
-        table.data-table-html th { background: var(--bg-body); padding: 10px 8px; text-align: left; font-weight: 800; color: var(--text-primary); border-bottom: 2px solid var(--border-color); cursor: pointer; user-select: none; -webkit-user-select: none; }
-        table.data-table-html th:active { background: var(--border-color); }
-        table.data-table-html th .sort-icon { font-size: 10px; margin-left: 4px; color: var(--text-muted); }
-        
-        table.data-table-html td { padding: 12px 8px; border-bottom: 1px solid var(--border-color); color: var(--text-secondary); }
-        table.data-table-html tr { cursor: pointer; transition: background 0.2s; }
-        table.data-table-html tr:active { background: var(--bg-body); }
-        table.data-table-html tr:last-child td { border-bottom: none; }
-        
-        .status-badge { display: inline-block; padding: 4px 8px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; }
-        .status-badge.lunas { background: var(--green-light); color: var(--green-dark); }
-        .status-badge.belum { background: var(--red-light); color: var(--red); }
-        
-        .harga-text { font-weight: 800; color: var(--text-primary); white-space: nowrap; }
-        
-        .pagination { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px; font-size: 12px; font-weight: 600; color: var(--text-secondary); }
-        .btn-page { padding: 6px 12px; border: 1px solid var(--border-color); background: var(--bg-card); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 12px; }
-        .btn-page:disabled { opacity: 0.5; cursor: not-allowed; }
-        
-        /* ==========================================
-           9. PREVIEW CARD (STRUK)
-           ========================================== */
-        .preview-card-wrapper { display: block; background: var(--bg-card); border-radius: var(--radius); box-shadow: var(--shadow-card); margin: 20px 12px 0; overflow: hidden; position: relative; z-index: 10; animation: fadeInUp 0.4s ease forwards; }
-        .preview-header { padding: 14px 16px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
-        .preview-header-icon { width: 38px; height: 38px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 11px; background: var(--blue-light); color: var(--blue); }
-        body.dark-mode .preview-header-icon { background: rgba(13, 93, 166, 0.15); color: #3b82f6; }
-        .preview-title { font-size: 13px; font-weight: 800; color: var(--text-primary); text-transform: uppercase; }
-        .preview-subtitle { font-size: 10.5px; color: var(--text-muted); font-weight: 600; }
-        
-        .preview-body { background: var(--bg-preview); padding: 25px 15px; display: flex; flex-direction: column; gap: 20px; align-items: center; border-bottom: 1px solid var(--border-color); }
-        .preview-body.is-capturing-wrapper { background: transparent !important; padding: 15px !important; gap: 15px !important; border: none !important; }
-        
-        .preview-actions { padding: 20px; display: flex; gap: 12px; }
-        .btn-action-main { flex: 1; padding: 15px; border: none; border-radius: 12px; cursor: pointer; font-size: 15px; font-weight: 700; font-family: 'Nunito Sans', sans-serif; display: flex; align-items: center; justify-content: center; gap: 8px; color: white; }
-        .btn-action-main svg { width: 18px; height: 18px; }
-        .btn-download { background: var(--green); }
-        .btn-download:hover { background: var(--green-dark); }
-        .btn-print { background: var(--blue); }
-        .btn-print:hover { background: var(--blue-dark); }
+        /* 7. PANEL CARD (INPUT) */
+        .panel-card { 
+            background: var(--bg-card); 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow-card); 
+            margin: -30px 12px 0; 
+            position: relative; 
+            z-index: 20; 
+            padding: 20px; 
+            animation: fadeInUp 0.8s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+            transition: background-color var(--t-theme) ease-in-out, box-shadow var(--t-theme) ease-in-out; 
+        }
 
-        /* ==========================================
-           10. STRUK
-           ========================================== */
-        .struk-container { background: white !important; width: 100%; max-width: 300px; padding: 20px; font-family: 'Courier New', Courier, monospace; font-size: 13px; line-height: 1.3; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); border-radius: 8px; color: #000 !important; border: 1px solid #e2e8f0; position: relative; }
-        .struk-header { text-align: left; margin-bottom: 10px; }
-        .garis { border-top: 1px dashed #000; margin: 8px 0; }
-        .title-struk { text-align: center; margin: 8px 0; font-size: 11.5px; white-space: nowrap; font-weight: normal; }
+        .mode-tabs { 
+            display: flex; 
+            border-bottom: 2px solid var(--border-color); 
+            margin-bottom: 24px; 
+            gap: 10px; 
+        }
         
-        .status-stamp { text-align: center; font-weight: bold; font-size: 14px; margin: 10px 0; padding: 4px; border: 1.5px dashed; border-radius: 4px; letter-spacing: 1px; text-transform: uppercase; }
-        .status-lunas { color: #059669 !important; border-color: #059669 !important; }
-        .status-belum { color: #ef4444 !important; border-color: #ef4444 !important; }
+        .mode-tab-btn { 
+            flex: 1; 
+            padding: 10px 5px; 
+            border: none; 
+            background: transparent; 
+            font-size: 13px; 
+            font-weight: 700; 
+            font-family: inherit; 
+            color: var(--text-muted); 
+            cursor: pointer; 
+            position: relative; 
+            transition: color 0.4s ease-in-out; 
+        }
+        
+        .mode-tab-btn::after { 
+            content: ''; 
+            position: absolute; 
+            bottom: -2px; 
+            left: 0; 
+            width: 100%; 
+            height: 2px; 
+            background-color: var(--blue); 
+            transform: scaleX(0); 
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            border-radius: 2px; 
+        }
+        
+        .mode-tab-btn.active { 
+            color: var(--blue); 
+        }
+        
+        .mode-tab-btn.active::after { 
+            transform: scaleX(1); 
+        }
 
-        .data-table, .footer-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        .data-table td, .footer-table td { padding: 3px 0; vertical-align: middle; overflow-wrap: break-word; word-wrap: break-word; }
-        .data-table td:nth-child(1), .footer-table td:nth-child(1) { width: 38%; white-space: nowrap; }
-        .data-table td:nth-child(2), .footer-table td:nth-child(2) { width: 4%; text-align: left; padding-right: 2px; }
-        .data-table td:nth-child(3), .footer-table td:nth-child(3) { width: 58%; text-align: left; }
-        .footer-table { margin-top: 10px; }
+        .input-group { 
+            position: relative; 
+            margin-bottom: 16px; 
+            max-height: 220px; 
+            opacity: 1; 
+            transform: translateY(0); 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+            overflow: visible; 
+        }
+        
+        .input-group.hidden { 
+            max-height: 0; 
+            opacity: 0; 
+            margin-bottom: 0; 
+            transform: translateY(-10px); 
+            pointer-events: none; 
+            overflow: hidden; 
+        }
 
-        .val-container { display: grid; grid-template-columns: auto 1fr; align-items: center; width: 100%; gap: 4px; }
-        .editable-wrapper { position: relative; display: flex; align-items: center; width: 100%; max-width: 100%; background-color: var(--blue-light) !important; border-radius: 4px; padding: 2px 5px; border: 1px solid var(--blue-light) !important; }
-        .edit-input { border: none; border-bottom: 1px dashed #000 !important; background: transparent !important; font-family: inherit; font-size: inherit; color: var(--blue) !important; outline: none; width: 100%; text-align: left; padding: 0 0 1px 0; }
-        .total-amount { text-align: left; border-bottom: 1px dashed #000 !important; display: inline-block; padding-bottom: 1px; color: #000 !important; }
-        .edit-icon { width: 12px; height: 12px; margin-left: 5px; fill: var(--blue) !important; flex-shrink: 0; cursor: pointer; }
+        .input-field { 
+            width: 100%; 
+            padding: 16px 48px 16px 16px; 
+            font-size: 15px; 
+            font-weight: 800; 
+            color: var(--text-primary); 
+            background: var(--bg-input); 
+            border: 2px solid var(--border-input); 
+            border-radius: 14px; 
+            outline: none; 
+            font-family: inherit; 
+            letter-spacing: 0.5px; 
+            transition: all 0.3s ease-in-out; 
+            position: relative; 
+            z-index: 1; 
+        }
+        
+        .input-field:focus, 
+        .input-field:not(:placeholder-shown) { 
+            border: 1px solid var(--blue); 
+            background: var(--bg-input-focus); 
+            padding: 15px 47px 15px 15px; 
+        }
 
-        .disclaimer { text-align: center; margin: 12px 0; font-size: 12px; color: #000 !important; }
-        .closing-text { text-align: center; margin-top: 15px; font-size: 12px; line-height: 1.4; color: #000 !important; }
+        .input-label { 
+            position: absolute; 
+            left: 13px; 
+            top: 50%; 
+            transform: translateY(-50%); 
+            font-size: 14px; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+            pointer-events: none; 
+            padding: 0 6px; 
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            z-index: 10; 
+            background-color: transparent; 
+            border-radius: 4px; 
+            display: flex; 
+            align-items: center; 
+            white-space: nowrap; 
+        }
+        
+        .input-label .text-short { 
+            display: none; 
+        }
+        
+        .input-field:focus ~ .input-label, 
+        .input-field:not(:placeholder-shown) ~ .input-label { 
+            top: 0; 
+            transform: translateY(-50%) scale(0.85); 
+            transform-origin: left center; 
+            background-color: var(--bg-card); 
+            color: var(--blue);
+        }
+        
+        .input-field:focus ~ .input-label .text-full, 
+        .input-field:not(:placeholder-shown) ~ .input-label .text-full { 
+            display: none; 
+        }
+        
+        .input-field:focus ~ .input-label .text-short, 
+        .input-field:not(:placeholder-shown) ~ .input-label .text-short { 
+            display: inline; 
+        }
 
-        .is-capturing .editable-wrapper { background-color: transparent !important; border: none !important; padding: 0 !important; display: inline-block !important; }
-        .is-capturing .edit-icon { display: none !important; }
-        .is-capturing .edit-input, .is-capturing .total-amount { border-bottom: none !important; color: #000 !important; }
-        .is-capturing .status-stamp { display: none !important; }
+        .btn-clear-input { 
+            position: absolute; 
+            right: 12px; 
+            top: 50%; 
+            transform: translateY(-50%) scale(0.85); 
+            width: 24px; 
+            height: 24px; 
+            padding: 0; 
+            background: #eef2f7; 
+            color: #64748b; 
+            border: none; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            opacity: 0; 
+            visibility: hidden; 
+            pointer-events: none; 
+            transition: all 0.3s ease-in-out; 
+            z-index: 5; 
+        }
+        
+        body.dark-mode .btn-clear-input { 
+            background: #334155; 
+            color: #94a3b8; 
+        }
+        
+        .input-group.has-value .btn-clear-input { 
+            opacity: 1; 
+            visibility: visible; 
+            pointer-events: auto; 
+            transform: translateY(-50%) scale(1); 
+        }
+        
+        .btn-clear-input svg { 
+            width: 12px; 
+            height: 12px; 
+            stroke-width: 2.8; 
+        }
 
-        /* ==========================================
-           11. MODAL & ANIMATIONS
-           ========================================== */
-        .custom-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(3px); display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
-        .custom-modal-overlay.active { opacity: 1; visibility: visible; }
-        .custom-modal-box { background: var(--bg-card); width: 85%; max-width: 320px; border-radius: var(--radius); padding: 25px 20px; text-align: center; box-shadow: var(--shadow-modal); transform: translateY(20px) scale(0.95); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .custom-modal-overlay.active .custom-modal-box { transform: translateY(0) scale(1); }
-        .modal-icon-wrapper { width: 60px; height: 60px; background: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px; }
-        body.dark-mode .modal-icon-wrapper { background: rgba(239, 68, 68, 0.15); }
-        .modal-icon-wrapper svg { width: 30px; height: 30px; stroke: #ef4444; stroke-width: 2.5; fill: none; }
-        .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-        .modal-desc { font-size: 13px; color: var(--text-secondary); font-weight: 600; margin-bottom: 20px; }
-        .btn-modal-ok { width: 100%; background: var(--green); color: white; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 700; cursor: pointer; }
+        .btn-cari { 
+            width: 100%; 
+            background: var(--blue); 
+            color: white; 
+            border: none; 
+            border-radius: 14px; 
+            padding: 15px; 
+            font-size: 15px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-family: inherit; 
+            box-shadow: 0 4px 12px rgba(13, 93, 166, 0.2); 
+            transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-cari:hover { 
+            background: var(--blue-dark); 
+            box-shadow: 0 6px 16px rgba(13, 93, 166, 0.3);
+        }
+        
+        .btn-cari:disabled { 
+            opacity: 0.7; 
+            cursor: not-allowed; 
+        }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* 8. TABEL DATA PELANGGAN */
+        .tabel-container { 
+            display: none; 
+            flex-direction: column; 
+            width: 100%; 
+        }
+        
+        .tabel-container.active { 
+            display: flex; 
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        
+        .tabel-search-wrapper { 
+            display: flex; 
+            gap: 8px; 
+            margin-bottom: 15px; 
+        }
+        
+        .tabel-search { 
+            flex: 1; 
+            padding: 12px 16px; 
+            font-size: 14px; 
+            border: 2px solid var(--border-input); 
+            border-radius: 10px; 
+            background: var(--bg-input); 
+            color: var(--text-primary); 
+            outline: none; 
+            font-family: inherit; 
+            transition: border 0.3s ease-in-out;
+        }
+        
+        .tabel-search:focus { 
+            border-color: var(--blue); 
+        }
+        
+        .btn-reset-tabel { 
+            background: var(--bg-body); 
+            border: 2px solid var(--border-input); 
+            color: var(--text-secondary); 
+            border-radius: 10px; 
+            padding: 0 12px; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: background 0.2s, color 0.2s; 
+        }
+        
+        .btn-reset-tabel:hover { 
+            background: var(--border-color); 
+            color: var(--text-primary);
+        }
+        
+        .btn-reset-tabel svg { 
+            width: 18px; 
+            height: 18px; 
+            transition: transform 0.5s ease-in-out;
+        }
 
-        /* ==========================================
-           12. PRINT STYLES
-           ========================================== */
+        .btn-reset-tabel:hover svg {
+            transform: rotate(-180deg);
+        }
+
+        .table-wrapper { 
+            width: 100%; 
+            overflow-x: auto; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color); 
+        }
+        
+        table.data-table-html { 
+            width: 100%; 
+            border-collapse: collapse; 
+            font-size: 12px; 
+        }
+        
+        table.data-table-html th { 
+            background: var(--bg-body); 
+            padding: 10px 8px; 
+            text-align: left; 
+            font-weight: 800; 
+            color: var(--text-primary); 
+            border-bottom: 2px solid var(--border-color); 
+            cursor: pointer; 
+            user-select: none; 
+            -webkit-user-select: none; 
+        }
+        
+        table.data-table-html th:active { 
+            background: var(--border-color); 
+        }
+        
+        table.data-table-html th .sort-icon { 
+            font-size: 10px; 
+            margin-left: 4px; 
+            color: var(--text-muted); 
+        }
+        
+        table.data-table-html td { 
+            padding: 12px 8px; 
+            border-bottom: 1px solid var(--border-color); 
+            color: var(--text-secondary); 
+        }
+        
+        table.data-table-html tr { 
+            cursor: pointer; 
+            transition: background 0.2s ease-in-out; 
+        }
+        
+        table.data-table-html tr:active { 
+            background: var(--bg-body); 
+        }
+        
+        table.data-table-html tr:last-child td { 
+            border-bottom: none; 
+        }
+        
+        .status-badge { 
+            display: inline-block; 
+            padding: 4px 8px; 
+            border-radius: 6px; 
+            font-size: 10px; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+        }
+        
+        .status-badge.lunas { 
+            background: var(--green-light); 
+            color: var(--green-dark); 
+        }
+        
+        .status-badge.belum { 
+            background: var(--red-light); 
+            color: var(--red); 
+        }
+        
+        .harga-text { 
+            font-weight: 800; 
+            color: var(--text-primary); 
+            white-space: nowrap; 
+        }
+        
+        .pagination { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px; 
+            margin-top: 15px; 
+            font-size: 12px; 
+            font-weight: 600; 
+            color: var(--text-secondary); 
+        }
+        
+        .btn-page { 
+            padding: 6px 12px; 
+            border: 1px solid var(--border-color); 
+            background: var(--bg-card); 
+            color: var(--text-primary); 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            transition: background 0.2s, border 0.2s, color 0.2s;
+        }
+        
+        .btn-page:hover:not(:disabled) { 
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+        
+        .btn-page:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+        }
+
+        /* 9. PREVIEW CARD */
+        .preview-card-wrapper { 
+            display: block; 
+            background: var(--bg-card); 
+            border-radius: var(--radius); 
+            box-shadow: var(--shadow-card); 
+            margin: 20px 12px 0; 
+            overflow: hidden; 
+            position: relative; 
+            z-index: 10; 
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; 
+        }
+        
+        .preview-header { 
+            padding: 14px 16px; 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        
+        .preview-header-icon { 
+            width: 38px; 
+            height: 38px; 
+            flex-shrink: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 11px; 
+            background: var(--blue-light); 
+            color: var(--blue); 
+        }
+        
+        body.dark-mode .preview-header-icon { 
+            background: rgba(13, 93, 166, 0.15); 
+            color: #3b82f6; 
+        }
+        
+        .preview-title { 
+            font-size: 13px; 
+            font-weight: 800; 
+            color: var(--text-primary); 
+            text-transform: uppercase; 
+        }
+        
+        .preview-subtitle { 
+            font-size: 10.5px; 
+            color: var(--text-muted); 
+            font-weight: 600; 
+        }
+        
+        .preview-body { 
+            background: var(--bg-preview); 
+            padding: 25px 15px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            align-items: center; 
+            border-bottom: 1px solid var(--border-color); 
+            transition: background var(--t-theme) ease-in-out;
+        }
+        
+        .preview-body.is-capturing-wrapper { 
+            background: transparent !important; 
+            padding: 15px !important; 
+            gap: 15px !important; 
+            border: none !important; 
+        }
+        
+        /* Toggle Format Struk / Invoice */
+        .format-toggle { 
+            display: flex; 
+            gap: 8px; 
+            justify-content: center; 
+            margin-top: 15px; 
+            margin-bottom: 25px; 
+            width: 100%; 
+            padding: 0 15px; 
+        }
+        
+        .format-toggle button { 
+            flex: 1; 
+            padding: 10px; 
+            border: 1px solid var(--border); 
+            background: var(--bg-card); 
+            border-radius: 10px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 12px; 
+            color: var(--text-muted); 
+            font-family: inherit; 
+            transition: background 0.3s, color 0.3s, border 0.3s; 
+        }
+
+        .format-toggle button:hover {
+            background: var(--bg-body);
+        }
+        
+        .format-toggle button.active { 
+            background: var(--blue); 
+            color: white; 
+            border-color: var(--blue); 
+            box-shadow: 0 4px 10px rgba(13,93,166,0.2); 
+        }
+
+        .preview-actions { 
+            padding: 20px; 
+            display: flex; 
+            gap: 12px; 
+        }
+        
+        .btn-action-main { 
+            flex: 1; 
+            padding: 15px; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 15px; 
+            font-weight: 700; 
+            font-family: 'Nunito Sans', sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            color: white; 
+            transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-action-main svg { 
+            width: 18px; 
+            height: 18px; 
+        }
+        
+        .btn-download { 
+            background: var(--green); 
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+        
+        .btn-download:hover { 
+            background: var(--green-dark); 
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-print { 
+            background: var(--blue); 
+            box-shadow: 0 4px 12px rgba(13, 93, 166, 0.2);
+        }
+        
+        .btn-print:hover { 
+            background: var(--blue-dark); 
+            box-shadow: 0 6px 16px rgba(13, 93, 166, 0.3);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2.5px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+
+        .is-loading .spinner { display: inline-block; }
+        .is-loading .btn-text { display: none; }
+        .is-loading svg { display: none; }
+
+        /* 10. STRUK PEMBAYARAN (PLN) */
+        .struk-container { 
+            background: white !important; 
+            width: 100%; 
+            max-width: 300px; 
+            padding: 20px; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 13px; 
+            line-height: 1.3; 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
+            border-radius: 8px; 
+            color: #000 !important; 
+            border: 1px solid #e2e8f0; 
+            position: relative; 
+            display: none; 
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        .struk-container.active-struk { 
+            display: block; 
+        }
+        
+        .struk-header { 
+            text-align: left; 
+            margin-bottom: 10px; 
+        }
+        
+        .garis { 
+            border-top: 1px dashed #000; 
+            margin: 8px 0; 
+        }
+        
+        .title-struk { 
+            text-align: center; 
+            margin: 8px 0; 
+            font-size: 11.5px; 
+            white-space: nowrap; 
+            font-weight: normal; 
+        }
+        
+        .status-stamp { 
+            text-align: center; 
+            font-weight: bold; 
+            font-size: 14px; 
+            margin: 10px 0; 
+            padding: 4px; 
+            border: 1.5px dashed; 
+            border-radius: 4px; 
+            letter-spacing: 1px; 
+            text-transform: uppercase; 
+            animation: popIn 0.6s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+        }
+        
+        .status-lunas { 
+            color: #059669 !important; 
+            border-color: #059669 !important; 
+        }
+        
+        .status-belum { 
+            color: #ef4444 !important; 
+            border-color: #ef4444 !important; 
+        }
+
+        .data-table, 
+        .footer-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            table-layout: fixed; 
+        }
+        
+        .data-table td, 
+        .footer-table td { 
+            padding: 3px 0; 
+            vertical-align: middle; 
+            overflow-wrap: break-word; 
+            word-wrap: break-word; 
+        }
+        
+        .data-table td:nth-child(1), 
+        .footer-table td:nth-child(1) { 
+            width: 38%; 
+            white-space: nowrap; 
+        }
+        
+        .data-table td:nth-child(2), 
+        .footer-table td:nth-child(2) { 
+            width: 4%; 
+            text-align: left; 
+            padding-right: 2px; 
+        }
+        
+        .data-table td:nth-child(3), 
+        .footer-table td:nth-child(3) { 
+            width: 58%; 
+            text-align: left; 
+        }
+        
+        .footer-table { 
+            margin-top: 10px; 
+        }
+
+        .val-container { 
+            display: grid; 
+            grid-template-columns: auto 1fr; 
+            align-items: center; 
+            width: 100%; 
+            gap: 4px; 
+        }
+        
+        .editable-wrapper { 
+            position: relative; 
+            display: flex; 
+            align-items: center; 
+            width: 100%; 
+            max-width: 100%; 
+            background-color: var(--blue-light) !important; 
+            border-radius: 4px; 
+            padding: 2px 5px; 
+            border: 1px solid var(--blue-light) !important; 
+        }
+        
+        .edit-input { 
+            border: none; 
+            border-bottom: 1px dashed #000 !important; 
+            background: transparent !important; 
+            font-family: inherit; 
+            font-size: inherit; 
+            color: var(--blue) !important; 
+            outline: none; 
+            width: 100%; 
+            text-align: left; 
+            padding: 0 0 1px 0; 
+        }
+        
+        .total-amount { 
+            text-align: left; 
+            border-bottom: 1px dashed #000 !important; 
+            display: inline-block; 
+            padding-bottom: 1px; 
+            color: #000 !important; 
+        }
+        
+        .edit-icon { 
+            width: 12px; 
+            height: 12px; 
+            margin-left: 5px; 
+            fill: var(--blue) !important; 
+            flex-shrink: 0; 
+            cursor: pointer; 
+        }
+
+        .disclaimer { 
+            text-align: center; 
+            margin: 12px 0; 
+            font-size: 12px; 
+            color: #000 !important; 
+        }
+        
+        .closing-text { 
+            text-align: center; 
+            margin-top: 15px; 
+            font-size: 12px; 
+            line-height: 1.4; 
+            color: #000 !important; 
+        }
+
+        /* 10.1 INVOICE TAGIHAN */
+        .invoice-container { 
+            background: white !important; 
+            width: 100%; 
+            max-width: 320px; 
+            padding: 25px 20px; 
+            font-family: 'Courier New', Courier, monospace; 
+            font-size: 13px; 
+            line-height: 1.4;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); 
+            border-radius: 8px; 
+            color: #000 !important; 
+            display: none; 
+            text-align: left;
+            border: 1px solid #e2e8f0;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        
+        .invoice-container.active-invoice { 
+            display: block; 
+        }
+        
+        .invoice-logo { 
+            text-align: center; 
+            font-size: 20px; 
+            font-weight: normal; 
+            color: #000; 
+            letter-spacing: 2px; 
+            margin-bottom: 5px; 
+        }
+        
+        .invoice-line { 
+            border-top: 1.5px dashed #555; 
+            margin: 12px 0; 
+        }
+        
+        .invoice-date { 
+            font-size: 13px; 
+            font-weight: normal; 
+            margin-bottom: 20px; 
+            color: #000; 
+        }
+        
+        .invoice-details { 
+            font-size: 13px; 
+            line-height: 1.5; 
+            margin-bottom: 20px; 
+        }
+        
+        .invoice-details table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        
+        .invoice-details td { 
+            padding: 2px 0; 
+            vertical-align: top; 
+        }
+        
+        .invoice-details td:first-child { 
+            width: 25%; 
+            font-weight: normal; 
+        }
+        
+        .invoice-details td:nth-child(2) { 
+            width: 3%; 
+        }
+        
+        .invoice-details td:last-child { 
+            font-weight: normal; 
+        }
+        
+        .invoice-msg { 
+            font-size: 13px; 
+            margin-bottom: 15px; 
+        }
+        
+        .invoice-amount { 
+            font-size: 20px; 
+            font-weight: normal; 
+            text-align: center; 
+            margin: 15px 0 5px; 
+            color: #000; 
+            letter-spacing: 1px; 
+        }
+        
+        .invoice-note { 
+            font-size: 13px; 
+            font-weight: normal; 
+            text-align: center; 
+            margin-bottom: 20px; 
+            color: #000; 
+        }
+        
+        .invoice-warning { 
+            font-size: 13px; 
+            text-align: left; 
+            line-height: 1.5; 
+            margin-bottom: 20px; 
+            font-weight: normal; 
+        }
+        
+        .invoice-footer { 
+            font-size: 13px; 
+            line-height: 1.5; 
+            font-weight: normal; 
+        }
+        
+        .invoice-thanks { 
+            text-align: center; 
+            margin-top: 25px; 
+            font-weight: normal; 
+        }
+
+        /* 11. CAPTURING STATES */
+        .is-capturing .editable-wrapper { 
+            background-color: transparent !important; 
+            border: none !important; 
+            padding: 0 !important; 
+            display: inline-block !important; 
+        }
+        
+        .is-capturing .edit-icon { 
+            display: none !important; 
+        }
+        
+        .is-capturing .edit-input, 
+        .is-capturing .total-amount { 
+            border-bottom: none !important; 
+            color: #000 !important; 
+        }
+        
+        .is-capturing .status-stamp { 
+            display: none !important; 
+        }
+
+        /* 12. MODAL & ANIMATIONS */
+        .custom-modal-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            right: 0; 
+            bottom: 0; 
+            background: rgba(15, 23, 42, 0.5); 
+            backdrop-filter: blur(3px); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 9999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: all 0.3s ease-in-out; 
+        }
+        
+        .custom-modal-overlay.active { 
+            opacity: 1; 
+            visibility: visible; 
+        }
+        
+        .custom-modal-box { 
+            background: var(--bg-card); 
+            width: 85%; 
+            max-width: 320px; 
+            border-radius: var(--radius); 
+            padding: 25px 20px; 
+            text-align: center; 
+            box-shadow: var(--shadow-modal); 
+            transform: scale(0.8); 
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        
+        .custom-modal-overlay.active .custom-modal-box { 
+            transform: scale(1); 
+        }
+        
+        .modal-icon-wrapper { 
+            width: 60px; 
+            height: 60px; 
+            background: #fef2f2; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 15px; 
+        }
+        
+        body.dark-mode .modal-icon-wrapper { 
+            background: rgba(239, 68, 68, 0.15); 
+        }
+        
+        .modal-icon-wrapper svg { 
+            width: 30px; 
+            height: 30px; 
+            stroke: #ef4444; 
+            stroke-width: 2.5; 
+            fill: none; 
+        }
+        
+        .modal-title { 
+            font-size: 18px; 
+            font-weight: 800; 
+            margin-bottom: 8px; 
+        }
+        
+        .modal-desc { 
+            font-size: 13px; 
+            color: var(--text-secondary); 
+            font-weight: 600; 
+            margin-bottom: 20px; 
+        }
+        
+        .btn-modal-ok { 
+            width: 100%; 
+            background: var(--green); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            padding: 14px; 
+            font-size: 15px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            transition: background 0.3s ease-in-out;
+        }
+
+        .btn-modal-ok:hover {
+            background: var(--green-dark);
+        }
+
+        /* 13. PRINT STYLES */
         @media print {
             @page { margin: 0; size: 58mm auto; }
             html, body { background: white !important; margin: 0; padding: 0; }
             body::before { display: none !important; }
-            .top-bar, .hero-header, .panel-card, .preview-header, .preview-actions, .custom-modal-overlay { display: none !important; }
+            .top-bar, .hero-header, .panel-card, .preview-header, .preview-actions, .custom-modal-overlay, .format-toggle { display: none !important; }
             .app-container { max-width: 100%; box-shadow: none; }
-            .preview-card-wrapper { display: block !important; margin: 0 !important; box-shadow: none !important; border: none !important; }
+            .preview-card-wrapper { display: block !important; margin: 0 !important; box-shadow: none !important; border: none !important; animation: none !important; }
             .preview-body { background: white !important; padding: 0 !important; display: block !important; }
-            .struk-container { box-shadow: none !important; width: 58mm !important; max-width: 58mm !important; padding: 2mm !important; margin: 0 auto !important; border-radius: 0 !important; font-size: 10.5px !important; page-break-inside: avoid !important; page-break-after: always !important; border: none !important; }
+            
+            .struk-container.active-struk { 
+                box-shadow: none !important; 
+                width: 58mm !important; 
+                max-width: 58mm !important; 
+                padding: 2mm !important; 
+                margin: 0 auto !important; 
+                border-radius: 0 !important; 
+                font-size: 10.5px !important; 
+                page-break-inside: avoid !important; 
+                page-break-after: always !important; 
+                border: none !important; 
+                animation: none !important;
+            }
+            
+            .invoice-container.active-invoice { 
+                box-shadow: none !important; 
+                width: 58mm !important; 
+                max-width: 58mm !important; 
+                padding: 2mm !important; 
+                margin: 0 auto !important; 
+                border-radius: 0 !important; 
+                font-size: 10.5px !important; 
+                page-break-inside: avoid !important; 
+                page-break-after: always !important; 
+                border: none !important; 
+                animation: none !important;
+            }
+
             .editable-wrapper { background: transparent !important; border: none !important; padding: 0 !important; }
             .edit-icon { display: none !important; }
             .edit-input, .total-amount { border-bottom: none !important; color: black !important; }
@@ -324,6 +1444,12 @@
             </label>
 
             <div class="top-bar-profile">
+                <!-- Tombol Install PWA -->
+                <button id="btnInstallApp" class="btn-install-pwa" style="display: none;" onclick="installPWA()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <span>Install</span>
+                </button>
+
                 <div class="top-bar-text">
                     <div class="top-bar-role">Created By</div>
                     <div class="top-bar-name">ASEP SAEPUDIN</div>
@@ -339,15 +1465,14 @@
                     CETAK STRUK<br>
                     <span class="gradient">TAGIHAN LISTRIK PLN</span>
                 </h1>
-                
             </div>
         </header>
 
         <!-- PANEL INPUT -->
         <div class="panel-card" id="panelSwipeArea">
             <div class="mode-tabs" id="modeToggle" data-mode="single">
-                <button type="button" class="mode-tab-btn active" id="modeSingleBtn" onclick="setMode('single')">Cetak Struk</button>
-                <button type="button" class="mode-tab-btn" id="modeTableBtn" onclick="setMode('table')">Data Pelanggan</button>
+                <button type="button" class="mode-tab-btn active" id="modeSingleBtn" onclick="setMode('single')">CETAK STRUK</button>
+                <button type="button" class="mode-tab-btn" id="modeTableBtn" onclick="setMode('table')">DATA PELANGGAN</button>
             </div>
 
             <div class="input-group" id="singleInputGroup">
@@ -361,7 +1486,10 @@
                 </button>
             </div>
 
-            <button class="btn-cari" id="btnCari" onclick="cariData()">Cek Tagihan</button>
+            <button class="btn-cari" id="btnCari" onclick="cariData()">
+                <div class="spinner"></div>
+                <span class="btn-text">Cek Tagihan</span>
+            </button>
 
             <div class="tabel-container" id="tabelDataContainer">
                 <div class="tabel-search-wrapper">
@@ -393,24 +1521,31 @@
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                 </div>
                 <div class="preview-header-text">
-                    <div class="preview-title">LIHAT STRUK TAGIHAN</div>
-                    <div class="preview-subtitle">Silahkan atur nominal bila ingin di sesuaikan.</div>
+                    <div class="preview-title">LIHAT STRUK</div>
+                    <div class="preview-subtitle">Pilih struk dan sesuaikan bila perlu.</div>
                 </div>
             </div>
 
+            <!-- Toggle Format Struk / Invoice -->
+            <div class="format-toggle" id="formatToggle">
+                <button type="button" class="active" id="btnFormatStruk" onclick="setFormat('struk')">STRUK PEMBAYARAN</button>
+                <button type="button" id="btnFormatInvoice" onclick="setFormat('invoice')">INVOICE TAGIHAN</button>
+            </div>
+
             <div class="preview-body" id="multiStrukContainer">
-                <div style="text-align:center; color:#94a3b8; font-size:12px; padding:20px;" id="emptyState">
+                <div style="text-align:center; color:#94a3b8; font-size:12px; padding:20px; animation: fadeIn 0.5s ease;" id="emptyState">
                     Masukkan ID Pelanggan terlebih dahulu.
                 </div>
             </div>
 
             <div class="preview-actions">
                 <button class="btn-action-main btn-download" id="btnDownloadJpg" onclick="downloadJPG()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    <div class="spinner"></div>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
                     <span class="btn-text" id="btnTextDownload">Download</span>
                 </button>
                 <button class="btn-action-main btn-print" id="btnCetakRawBT" onclick="cetakInstanRawBT()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
                     <span class="btn-text" id="btnTextCetak">Print</span>
                 </button>
             </div>
@@ -429,18 +1564,30 @@
         </div>
     </div>
 
+    <!-- ==========================================
+         KUMPULAN SCRIPT JAVASCRIPT
+         ========================================== -->
     <script>
-        /* ==========================================
-           1. THEME & TOP BAR
-           ========================================== */
-        function getAutoTheme() { return (new Date().getHours() >= 18 || new Date().getHours() < 6) ? 'dark' : 'light'; }
-        function getPreferredTheme() { const saved = localStorage.getItem('themeMode'); return (saved === 'dark' || saved === 'light') ? saved : getAutoTheme(); }
+        /* 1. THEME & TOP BAR */
+        function getAutoTheme() { 
+            return (new Date().getHours() >= 18 || new Date().getHours() < 6) ? 'dark' : 'light'; 
+        }
+        
+        function getPreferredTheme() { 
+            const saved = localStorage.getItem('themeMode'); 
+            return (saved === 'dark' || saved === 'light') ? saved : getAutoTheme(); 
+        }
+        
         function applyTheme(theme) { 
             const isDark = theme === 'dark'; 
             document.getElementById('themeToggleSwitch').checked = isDark; 
             document.body.classList.toggle('dark-mode', isDark); 
         }
-        function initTheme() { applyTheme(getPreferredTheme()); }
+        
+        function initTheme() { 
+            applyTheme(getPreferredTheme()); 
+        }
+        
         function toggleTheme() { 
             const newTheme = document.getElementById('themeToggleSwitch').checked ? 'dark' : 'light'; 
             localStorage.setItem('themeMode', newTheme); 
@@ -448,16 +1595,42 @@
         }
 
         const topBarEl = document.getElementById('topBar');
-        window.addEventListener('scroll', () => { topBarEl.classList.toggle('is-stuck', window.scrollY > 10); }, { passive: true });
+        window.addEventListener('scroll', () => { 
+            topBarEl.classList.toggle('is-stuck', window.scrollY > 10); 
+        }, { passive: true });
 
-        /* ==========================================
-           2. POPUP & HELPERS
-           ========================================== */
-        function showCustomAlert(message) { document.getElementById('modalMessage').innerHTML = message; document.getElementById('customAlert').classList.add('active'); }
-        function closeCustomAlert() { document.getElementById('customAlert').classList.remove('active'); }
-        function focusInput(el) { if (el) { el.focus(); const val = el.value; el.value = ''; el.value = val; } }
-        function formatRibuanInput(input) { let value = input.value.replace(/[^0-9]/g, ''); if (value === '') { input.value = ''; return; } input.value = new Intl.NumberFormat('id-ID').format(parseInt(value, 10)); }
-        function formatRupiah(angka) { return new Intl.NumberFormat('id-ID').format(angka); }
+        /* 2. POPUP & HELPERS */
+        function showCustomAlert(message) { 
+            document.getElementById('modalMessage').innerHTML = message; 
+            document.getElementById('customAlert').classList.add('active'); 
+        }
+        
+        function closeCustomAlert() { 
+            document.getElementById('customAlert').classList.remove('active'); 
+        }
+        
+        function focusInput(el) { 
+            if (el) { 
+                el.focus(); 
+                const val = el.value; 
+                el.value = ''; 
+                el.value = val; 
+            } 
+        }
+        
+        function formatRibuanInput(input) { 
+            let value = input.value.replace(/[^0-9]/g, ''); 
+            if (value === '') { 
+                input.value = ''; 
+                return; 
+            } 
+            input.value = new Intl.NumberFormat('id-ID').format(parseInt(value, 10)); 
+        }
+        
+        function formatRupiah(angka) { 
+            return new Intl.NumberFormat('id-ID').format(angka); 
+        }
+        
         function hitungTotalElement(el) {
             const strukContainer = el.closest('.struk-container');
             if (!strukContainer) return;
@@ -466,16 +1639,23 @@
             strukContainer.querySelector('.out-total').innerText = formatRupiah((parseInt(tagihanStr) || 0) + (parseInt(adminStr) || 0));
         }
 
-        /* ==========================================
-           3. DATA PELANGGAN & FETCH API
-           ========================================== */
+        function padCenter(text, width = 32) {
+            text = text.toString().trim();
+            if (text.length >= width) return text;
+            let leftPad = Math.floor((width - text.length) / 2);
+            return " ".repeat(leftPad) + text;
+        }
+
+        /* 3. DATA PELANGGAN & FETCH API */
         const URL_APPS_SCRIPT = "https://script.google.com/macros/s/AKfycbzhb1FJSCtwgEA54AY8bCQvLLWSHWhwJWSO8ARBaFi4lETvx66Q4T7Kmu0rUwP0fVgN/exec";
         let databasePelanggan = [];
         let isDataReady = false;
+        let currentFormat = 'struk';
 
         async function muatDataDariSpreadsheet() {
             const btnCari = document.getElementById('btnCari');
-            btnCari.innerText = "Memuat data...";
+            
+            btnCari.classList.add('is-loading');
             btnCari.disabled = true;
 
             try {
@@ -496,39 +1676,46 @@
                         daya: String(kolom[3]).trim(),
                         lembar: parseInt(kolom[4]) || 1,
                         tagihan: String(kolom[5]).replace(/[^0-9]/g, ''),
-                        status: String(kolom[6] || '').trim().toUpperCase()
+                        status: String(kolom[6] || '').trim().toUpperCase(),
+                        alamat: String(kolom[7] || 'ALAMAT BELUM DIISI').trim()
                     });
                 });
 
                 console.log(`✅ ${databasePelanggan.length} data pelanggan dimuat.`);
                 isDataReady = true;
-                btnCari.innerText = "Cek Tagihan";
+                
+                btnCari.classList.remove('is-loading');
+                btnCari.querySelector('.btn-text').innerText = "Cek Tagihan";
                 btnCari.disabled = false;
                 
                 if (currentMode === 'table') renderTabel();
             } catch (error) {
                 console.error('Gagal memuat data:', error);
                 showCustomAlert("Gagal terhubung ke database Spreadsheet. Periksa koneksi internet atau URL Apps Script.");
-                btnCari.innerText = "Coba Lagi";
+                
+                btnCari.classList.remove('is-loading');
+                btnCari.querySelector('.btn-text').innerText = "Coba Lagi";
                 btnCari.disabled = false;
             }
         }
 
         function getBulanTahun(offsetBulan) {
             const namaBulan = ["JAN","FEB","MAR","APR","MEI","JUN","JUL","AGU","SEP","OKT","NOV","DES"];
-            let d = new Date(); d.setMonth(d.getMonth() - offsetBulan);
+            let d = new Date(); 
+            d.setMonth(d.getMonth() - offsetBulan);
             return namaBulan[d.getMonth()] + d.getFullYear().toString().slice(-2);
         }
 
         function generateRandomRef(length) {
-            let result = ''; const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            for (let i = 0; i < length; i++) result += characters.charAt(Math.floor(Math.random() * characters.length));
+            let result = ''; 
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
             return result;
         }
 
-        /* ==========================================
-           4. TEMPLATE STRUK
-           ========================================== */
+        /* 4. TEMPLATE STRUK & INVOICE */
         function generateStrukHTML(pelanggan) {
             let blthTeks = "";
             if (pelanggan.lembar === 1) blthTeks = getBulanTahun(0);
@@ -542,14 +1729,15 @@
             const adminAwal = '3.000';
             const totalAwal = formatRupiah(parseInt(pelanggan.tagihan) + 3000);
 
-            const ref1 = generateRandomRef(18); const ref2 = generateRandomRef(18);
+            const ref1 = generateRandomRef(18); 
+            const ref2 = generateRandomRef(18);
 
             let statusHTML = '';
             if (pelanggan.status === 'LUNAS') statusHTML = `<div class="status-stamp status-lunas">L U N A S</div>`;
             else statusHTML = `<div class="status-stamp status-belum">BELUM LUNAS</div>`;
 
             return `
-            <div class="struk-container" data-idpel="${pelanggan.idpel}">
+            <div class="struk-container active-struk" data-idpel="${pelanggan.idpel}">
                 <div class="struk-header">m-Payment<br><span class="out-date">${tgl}</span> <span class="out-time">${jam}</span><br>CKG_53704.PLN LEMAHABANG</div>
                 <div class="garis"></div>
                 <div class="title-struk">STRUK PEMBAYARAN TAGIHAN LISTRIK</div>
@@ -600,10 +1788,51 @@
             </div>`;
         }
 
-        /* ==========================================
-           5. INIT & MODE
-           ========================================== */
-        window.addEventListener('load', () => { muatDataDariSpreadsheet(); initTheme(); });
+        function generateInvoiceHTML(pelanggan) {
+            const now = new Date();
+            const optionsDate = { day: '2-digit', month: 'long', year: 'numeric' };
+            const tgl = now.toLocaleDateString('id-ID', optionsDate);
+            const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(/\./g, ':');
+            const tagihanAwal = formatRupiah(pelanggan.tagihan);
+
+            return `
+            <div class="invoice-container active-invoice" data-idpel="${pelanggan.idpel}">
+                <div class="invoice-logo">** INVOICE PLN **</div>
+                <div class="invoice-line"></div>
+                
+                <div class="invoice-date">${tgl} ${jam}</div>
+                
+                <div class="invoice-details">
+                    <div>Kepada Yth,</div>
+                    <table>
+                        <tr><td>NAMA</td><td>:</td><td>${pelanggan.nama}</td></tr>
+                        <tr><td>IDPEL</td><td>:</td><td>${pelanggan.idpel}</td></tr>
+                        <tr><td>ALAMAT</td><td>:</td><td>${pelanggan.alamat}</td></tr>
+                    </table>
+                </div>
+                
+                <div class="invoice-msg">Kami Informasikan,<br>Tagihan listrik anda bulan ini:</div>
+                
+                <div class="invoice-amount">Rp${tagihanAwal}</div>
+                <div class="invoice-note">(belum termasuk admin bank)</div>
+                
+                <div class="invoice-warning">
+                    Mohon segera dilunasi untuk menghindari <b>PEMUTUSAN SEMENTARA.</b>
+                </div>
+                
+                <div class="invoice-footer">
+                    Abaikan apabila sudah melakukan pembayaran.
+                </div>
+                
+                <div class="invoice-thanks">Terimakasih</div>
+            </div>`;
+        }
+
+        /* 5. INIT & MODE */
+        window.addEventListener('load', () => { 
+            muatDataDariSpreadsheet(); 
+            initTheme(); 
+        });
         initTheme();
 
         let currentMode = 'single';
@@ -619,6 +1848,25 @@
         const tabelContainer = document.getElementById('tabelDataContainer');
         const previewWrapper = document.getElementById('previewWrapper');
 
+        function setFormat(format) {
+            currentFormat = format;
+            if(format === 'struk') {
+                document.getElementById('btnFormatStruk').classList.add('active');
+                document.getElementById('btnFormatInvoice').classList.remove('active');
+            } else {
+                document.getElementById('btnFormatStruk').classList.remove('active');
+                document.getElementById('btnFormatInvoice').classList.add('active');
+            }
+            
+            if(isDataLoaded) {
+                const idpel = document.querySelector('.struk-container, .invoice-container')?.getAttribute('data-idpel');
+                if(idpel) {
+                    const pelanggan = databasePelanggan.find(p => p.idpel === idpel);
+                    renderDokumen(pelanggan);
+                }
+            }
+        }
+
         function setMode(mode) {
             if (currentMode === mode) return;
             currentMode = mode;
@@ -629,15 +1877,13 @@
 
             singleGroupEl.classList.add('hidden');
             tabelContainer.classList.remove('active');
-            btnCari.style.display = 'block';
+            btnCari.style.display = 'flex';
 
             if (mode === 'single') {
                 document.getElementById('modeSingleBtn').classList.add('active');
                 singleGroupEl.classList.remove('hidden');
-                btnCari.innerText = "Cek Tagihan";
-                btnCari.style.display = 'block';
-                document.getElementById('btnTextDownload').innerText = "Download";
-                document.getElementById('btnTextCetak').innerText = "Print";
+                btnCari.querySelector('.btn-text').innerText = "Cek Tagihan";
+                btnCari.style.display = 'flex';
             } else if (mode === 'table') {
                 document.getElementById('modeTableBtn').classList.add('active');
                 tabelContainer.classList.add('active');
@@ -651,9 +1897,7 @@
             singleGroupEl.classList.toggle('has-value', this.value.length > 0);
         });
 
-        /* ==========================================
-           6. RENDER TABEL & MULTI-SORT
-           ========================================== */
+        /* 6. RENDER TABEL & MULTI-SORT */
         function renderTabel() {
             const tbody = document.getElementById('tabelBody');
             const searchVal = document.getElementById('searchTabel').value.toLowerCase();
@@ -698,7 +1942,7 @@
             const startIndex = (currentPage - 1) * rowsPerPage;
             const paginatedData = filteredData.slice(startIndex, startIndex + rowsPerPage);
 
-            paginatedData.forEach(p => {
+            paginatedData.forEach((p) => {
                 const tr = document.createElement('tr');
                 let badgeHtml = p.status === 'LUNAS' ? `<span class="status-badge lunas">Lunas</span>` : `<span class="status-badge belum">Belum</span>`;
                 let hargaHtml = `<span class="harga-text">Rp ${formatRupiah(p.tagihan)}</span>`;
@@ -761,16 +2005,26 @@
         function aksiTabel(idpel) {
             const pelanggan = databasePelanggan.find(p => p.idpel === idpel);
             if (!pelanggan) return;
+            renderDokumen(pelanggan);
+        }
 
+        function renderDokumen(pelanggan) {
             const container = document.getElementById('multiStrukContainer');
-            container.innerHTML = generateStrukHTML(pelanggan);
             
-            container.querySelectorAll('.input-tagihan, .input-admin').forEach(input => {
-                input.addEventListener('input', function() {
-                    formatRibuanInput(this);
-                    hitungTotalElement(this);
+            container.style.animation = 'none';
+            container.offsetHeight; 
+            
+            if (currentFormat === 'struk') {
+                container.innerHTML = generateStrukHTML(pelanggan);
+                container.querySelectorAll('.input-tagihan, .input-admin').forEach(input => {
+                    input.addEventListener('input', function() {
+                        formatRibuanInput(this);
+                        hitungTotalElement(this);
+                    });
                 });
-            });
+            } else {
+                container.innerHTML = generateInvoiceHTML(pelanggan);
+            }
 
             isDataLoaded = true;
             previewWrapper.style.display = 'block';
@@ -780,16 +2034,26 @@
             }, 100);
         }
 
-        /* ==========================================
-           7. CARI DATA MANUAL & RESET
-           ========================================== */
-        function validasiDataLoaded() { if (!isDataLoaded) { showCustomAlert("Masukkan ID Pelanggan terlebih dulu !"); return false; } return true; }
+        /* 7. CARI DATA MANUAL & RESET */
+        function validasiDataLoaded() { 
+            if (!isDataLoaded) { 
+                showCustomAlert("Masukkan ID Pelanggan terlebih dulu !"); 
+                return false; 
+            } 
+            return true; 
+        }
 
         function cariData() {
-            if (!isDataReady) { showCustomAlert("Data pelanggan masih dimuat dari server. Mohon tunggu sebentar ya."); return; }
+            if (!isDataReady) { 
+                showCustomAlert("Data pelanggan masih dimuat dari server. Mohon tunggu sebentar ya."); 
+                return; 
+            }
 
             const id = inputIdpelSingle.value.trim();
-            if (id === '') { showCustomAlert("Masukkan ID Pelanggan terlebih dahulu !"); return; }
+            if (id === '') { 
+                showCustomAlert("Masukkan ID Pelanggan terlebih dahulu !"); 
+                return; 
+            }
 
             const pelanggan = databasePelanggan.find(p => p.idpel === id);
 
@@ -800,16 +2064,7 @@
                 return;
             }
 
-            const container = document.getElementById('multiStrukContainer');
-            container.innerHTML = generateStrukHTML(pelanggan);
-
-            container.querySelectorAll('.input-tagihan, .input-admin').forEach(input => {
-                input.addEventListener('input', function() { formatRibuanInput(this); hitungTotalElement(this); });
-            });
-
-            isDataLoaded = true;
-            previewWrapper.style.display = 'block';
-            setTimeout(() => { previewWrapper.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 100);
+            renderDokumen(pelanggan);
         }
 
         function resetForm() {
@@ -821,17 +2076,13 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* ==========================================
-           8. DOWNLOAD & PRINT
-           ========================================== */
+        /* 8. DOWNLOAD & PRINT */
         async function downloadJPG() {
             if (!validasiDataLoaded()) return;
             const btn = document.getElementById('btnDownloadJpg');
-            const btnText = document.getElementById('btnTextDownload');
             const container = document.getElementById('multiStrukContainer');
-            const originalText = btnText.textContent;
 
-            btnText.textContent = "Memproses...";
+            btn.classList.add('is-loading');
             btn.disabled = true;
             const replacements = [];
 
@@ -839,39 +2090,48 @@
                 await document.fonts.ready;
                 container.classList.add('is-capturing-wrapper');
                 
-                container.querySelectorAll('.struk-container').forEach(struk => {
-                    struk.classList.add('is-capturing');
-                    const statusEl = struk.querySelector('.status-stamp');
-                    if (statusEl) statusEl.style.display = 'none';
-                });
+                if(currentFormat === 'struk') {
+                    container.querySelectorAll('.struk-container').forEach(struk => {
+                        struk.classList.add('is-capturing');
+                        const statusEl = struk.querySelector('.status-stamp');
+                        if (statusEl) statusEl.style.display = 'none';
+                    });
 
-                const inputs = container.querySelectorAll('input.edit-input');
-                inputs.forEach(input => {
-                    const span = document.createElement('span');
-                    span.textContent = input.value;
-                    span.style.fontFamily = 'inherit'; span.style.fontSize = 'inherit'; span.style.color = '#000';
-                    span.style.display = 'inline-block'; span.style.width = '100%'; span.style.lineHeight = '1.3';
-                    span.style.background = 'transparent'; span.style.textAlign = 'left';
-                    input.style.display = 'none';
-                    input.parentNode.insertBefore(span, input.nextSibling);
-                    replacements.push({ input, span });
-                });
+                    const inputs = container.querySelectorAll('input.edit-input');
+                    inputs.forEach(input => {
+                        const span = document.createElement('span');
+                        span.textContent = input.value;
+                        span.style.fontFamily = 'inherit'; 
+                        span.style.fontSize = 'inherit'; 
+                        span.style.color = '#000';
+                        span.style.display = 'inline-block'; 
+                        span.style.width = '100%'; 
+                        span.style.lineHeight = '1.3';
+                        span.style.background = 'transparent'; 
+                        span.style.textAlign = 'left';
+                        input.style.display = 'none';
+                        input.parentNode.insertBefore(span, input.nextSibling);
+                        replacements.push({ input, span });
+                    });
+                }
 
                 await new Promise(resolve => setTimeout(resolve, 100));
 
-                const struks = container.querySelectorAll('.struk-container');
+                const elementsToCapture = container.querySelectorAll(currentFormat === 'struk' ? '.struk-container' : '.invoice-container');
                 const canvases = [];
-                for (const struk of struks) {
-                    canvases.push(await html2canvas(struk, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false }));
+                for (const el of elementsToCapture) {
+                    canvases.push(await html2canvas(el, { scale: 3, backgroundColor: '#ffffff', useCORS: true, logging: false }));
                 }
 
                 const gap = 20;
                 const maxW = Math.max(...canvases.map(c => c.width));
                 const totalH = canvases.reduce((s, c) => s + c.height, 0) + gap * (canvases.length - 1);
                 const finalCanvas = document.createElement('canvas');
-                finalCanvas.width = maxW; finalCanvas.height = totalH;
+                finalCanvas.width = maxW; 
+                finalCanvas.height = totalH;
                 const ctx = finalCanvas.getContext('2d');
-                ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, maxW, totalH);
+                ctx.fillStyle = '#ffffff'; 
+                ctx.fillRect(0, 0, maxW, totalH);
 
                 let y = 0;
                 canvases.forEach((c, i) => {
@@ -881,10 +2141,11 @@
                     if (i < canvases.length - 1) y += gap;
                 });
 
+                const idpelStr = document.querySelector('.out-idpel, .invoice-container').innerText || 'Pelanggan';
                 const link = document.createElement('a');
-                link.download = (struks.length === 1) 
-                    ? `Struk_PLN_${document.querySelector('.out-idpel').innerText}.jpg` 
-                    : `Struk_PLN_Multi_${new Date().toISOString().slice(0,10)}.jpg`;
+                link.download = (elementsToCapture.length === 1) 
+                    ? `${currentFormat === 'struk' ? 'Struk' : 'Invoice'}_PLN_${idpelStr}.jpg` 
+                    : `${currentFormat === 'struk' ? 'Struk' : 'Invoice'}_PLN_Multi_${new Date().toISOString().slice(0,10)}.jpg`;
                 link.href = finalCanvas.toDataURL('image/jpeg', 0.95);
                 document.body.appendChild(link);
                 link.click();
@@ -892,7 +2153,7 @@
 
             } catch (error) {
                 console.error(error);
-                showCustomAlert("Maaf, terjadi kesalahan saat memproses gambar struk.");
+                showCustomAlert("Maaf, terjadi kesalahan saat memproses gambar.");
             } finally {
                 container.classList.remove('is-capturing-wrapper');
                 container.querySelectorAll('.struk-container').forEach(struk => {
@@ -900,8 +2161,12 @@
                     const statusEl = struk.querySelector('.status-stamp');
                     if (statusEl) statusEl.style.display = '';
                 });
-                replacements.forEach(({ input, span }) => { input.style.display = ''; span.remove(); });
-                btnText.textContent = originalText;
+                replacements.forEach(({ input, span }) => { 
+                    input.style.display = ''; 
+                    span.remove(); 
+                });
+                
+                btn.classList.remove('is-loading');
                 btn.disabled = false;
             }
         }
@@ -910,10 +2175,11 @@
             if (!validasiDataLoaded()) return;
 
             let fullText = "";
-            const struks = document.querySelectorAll('#multiStrukContainer .struk-container');
 
-            struks.forEach((struk, index) => {
-                const strukTeks =
+            if (currentFormat === 'struk') {
+                const struks = document.querySelectorAll('#multiStrukContainer .struk-container');
+                struks.forEach((struk, index) => {
+                    const strukTeks =
 `m-Payment
 ${struk.querySelector('.out-date').innerText} ${struk.querySelector('.out-time').innerText}
 CKG_53704.PLN LEMAHABANG
@@ -938,18 +2204,88 @@ TOTAL BAYAR : Rp ${struk.querySelector('.out-total').innerText}
  "Informasi Hubungi Call Center
      123 atau PLN Terdekat:"
               ---`;
-                fullText += strukTeks + (index < struks.length - 1 ? "\n\n\n\n" : "");
-            });
+                    fullText += strukTeks + (index < struks.length - 1 ? "\n\n\n\n" : "");
+                });
+            } else {
+                const invoices = document.querySelectorAll('#multiStrukContainer .invoice-container');
+                invoices.forEach((inv, index) => {
+                    const dateText = inv.querySelector('.invoice-date').innerText;
+                    const nama = inv.querySelector('.invoice-details tr:nth-child(1) td:last-child').innerText;
+                    const idpel = inv.querySelector('.invoice-details tr:nth-child(2) td:last-child').innerText;
+                    const alamat = inv.querySelector('.invoice-details tr:nth-child(3) td:last-child').innerText;
+                    const nominal = inv.querySelector('.invoice-amount').innerText;
+
+                    const invTeks =
+`${padCenter('** INVOICE PLN **')}
+--------------------------------
+${dateText}
+
+Kepada Yth,
+NAMA   : ${nama}
+IDPEL  : ${idpel}
+ALAMAT : ${alamat}
+
+Kami Informasikan,
+Tagihan listrik anda bulan ini:
+
+${padCenter(nominal)}
+${padCenter('(belum termasuk admin bank)')}
+
+Mohon segera dilunasi untuk
+menghindari PEMUTUSAN SEMENTARA.
+
+Abaikan apabila sudah melakukan
+pembayaran.
+
+${padCenter('Terimakasih')}`;
+                    fullText += invTeks + (index < invoices.length - 1 ? "\n\n\n\n" : "");
+                });
+            }
 
             if (navigator.share) {
-                navigator.share({ title: 'Struk Tagihan PLN', text: fullText }).catch(() => {});
+                navigator.share({ title: 'Tagihan PLN', text: fullText }).catch(() => {});
             } else {
                 navigator.clipboard.writeText(fullText).then(() => {
-                    showCustomAlert("Fitur share tidak didukung. Teks struk disalin ke clipboard, silakan paste ke RawBT.");
+                    showCustomAlert("Fitur share tidak didukung. Teks disalin ke clipboard, silakan paste ke RawBT.");
                 }).catch(() => {
                     showCustomAlert("Perangkat tidak mendukung fitur cetak / share otomatis.");
                 });
             }
+        }
+        
+        /* ==========================================
+           14. PWA (ADD TO HOME SCREEN)
+           ========================================== */
+        let deferredPrompt;
+        const btnInstallApp = document.getElementById('btnInstallApp');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Mencegah mini-infobar muncul otomatis di mobile
+            e.preventDefault();
+            deferredPrompt = e;
+            // Munculkan tombol install
+            btnInstallApp.style.display = 'flex';
+        });
+
+        async function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    console.log('User menginstall PWA');
+                    btnInstallApp.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        }
+
+        // Daftarkan Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('Service Worker OK'))
+                .catch(err => console.log('Service Worker Gagal', err));
+            });
         }
     </script>
 </body>
